@@ -5,10 +5,10 @@
       <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="text-center">
           <h1 class="text-4xl font-bold mb-2">
-            ¡Bienvenido{{ user ? `, ${user.full_name.split(' ')[0]}` : '' }}!
+            {{ t('home.welcome') }}{{ user ? `, ${user.full_name.split(' ')[0]}` : '' }}!
           </h1>
           <p class="text-lg opacity-90 mb-6">
-            Descubre proyectos increíbles y conecta con desarrolladores talentosos
+            {{ t('home.welcomeMessage') }}
           </p>
 
           <!-- Barra de búsqueda -->
@@ -17,7 +17,7 @@
               <input
                 v-model="searchQuery"
                 type="text"
-                placeholder="Buscar proyectos, usuarios, tecnologías..."
+                :placeholder="t('home.search.placeholder')"
                 class="input input-lg w-full pl-12 pr-20 bg-base-100 text-base-content border-0 shadow-lg"
                 @keyup.enter="performSearch"
               />
@@ -28,7 +28,7 @@
                 @click="performSearch"
                 class="btn btn-primary btn-sm absolute right-2 top-1/2 transform -translate-y-1/2"
               >
-                Buscar
+                {{ t('home.search.button') }}
               </button>
             </div>
 
@@ -37,7 +37,7 @@
               <div class="bg-base-100 rounded-lg shadow-lg p-4 text-left">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div v-if="projectSuggestions.length > 0">
-                    <h4 class="font-semibold text-sm text-base-content/70 mb-2">Proyectos</h4>
+                    <h4 class="font-semibold text-sm text-base-content/70 mb-2">{{ t('home.search.projects') }}</h4>
                     <div class="space-y-1">
                       <button
                         v-for="project in projectSuggestions.slice(0, 3)"
@@ -50,7 +50,7 @@
                     </div>
                   </div>
                   <div v-if="userSuggestions.length > 0">
-                    <h4 class="font-semibold text-sm text-base-content/70 mb-2">Usuarios</h4>
+                    <h4 class="font-semibold text-sm text-base-content/70 mb-2">{{ t('home.search.users') }}</h4>
                     <div class="space-y-1">
                       <button
                         v-for="suggUser in userSuggestions.slice(0, 3)"
@@ -95,11 +95,11 @@
                 <div class="grid grid-cols-2 gap-4 w-full text-center">
                   <div>
                     <div class="text-lg font-bold text-primary">{{ myProjects.length }}</div>
-                    <div class="text-xs text-base-content/60">Proyectos</div>
+                    <div class="text-xs text-base-content/60">{{ t('profile.stats.projects') }}</div>
                   </div>
                   <div>
                     <div class="text-lg font-bold text-warning">{{ totalLikes }}</div>
-                    <div class="text-xs text-base-content/60">Likes</div>
+                    <div class="text-xs text-base-content/60">{{ t('profile.stats.likes') }}</div>
                   </div>
                 </div>
               </div>
@@ -129,7 +129,7 @@
                     @click="showCreateForm = !showCreateForm"
                   >
                     <PlusIcon class="h-5 w-5" />
-                    ¿En qué estás trabajando?
+                    {{ t('home.createProject.button') }}
                   </button>
                 </div>
               </div>
@@ -142,10 +142,20 @@
                       <RocketLaunchIcon class="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 class="text-xl font-bold text-base-content">Crear Nuevo Proyecto</h3>
-                      <p class="text-sm text-base-content/60">Comparte tu idea con la comunidad</p>
+                      <h3 class="text-xl font-bold text-base-content">{{ t('home.createProject.formTitle') }}</h3>
+                      <p class="text-sm text-base-content/60">{{ t('home.createProject.formSubtitle') }}</p>
                     </div>
                   </div>
+
+                  <!-- Progress Bar -->
+                  <FormProgress
+                    :progress="createProjectProgress"
+                    :label="createProjectProgressLabel"
+                    :show-steps="true"
+                    :steps="3"
+                    :current-step="createProjectCurrentStep"
+                    :step-labels="createProjectStepLabels"
+                  />
 
                   <div class="space-y-6">
                     <!-- Título -->
@@ -153,13 +163,13 @@
                       <label class="label">
                         <span class="label-text font-semibold text-base-content flex items-center gap-2">
                           <DocumentIcon class="h-4 w-4" />
-                          Título del proyecto *
+                          {{ t('home.createProject.titleLabel') }} *
                         </span>
                       </label>
                       <input
                         v-model="newProjectTitle"
                         type="text"
-                        placeholder="Dale un nombre increíble a tu proyecto..."
+                        :placeholder="t('home.createProject.titlePlaceholder')"
                         class="input input-bordered input-lg w-full focus:input-primary transition-all duration-300"
                       />
                     </div>
@@ -170,14 +180,14 @@
                         <label class="label">
                           <span class="label-text font-semibold text-base-content flex items-center gap-2">
                             <ClockIcon class="h-4 w-4" />
-                            Estado del proyecto
+                            {{ t('home.createProject.statusLabel') }}
                           </span>
                         </label>
                         <select v-model="newProjectStatus" class="select select-bordered select-lg w-full focus:select-primary">
-                          <option value="planning">Planificando</option>
-                          <option value="in_progress">En Progreso</option>
-                          <option value="completed">Completado</option>
-                          <option value="on_hold">En Pausa</option>
+                          <option value="planning">{{ t('project.status.planning') }}</option>
+                          <option value="in_progress">{{ t('project.status.in_progress') }}</option>
+                          <option value="completed">{{ t('project.status.completed') }}</option>
+                          <option value="on_hold">{{ t('project.status.on_hold') }}</option>
                         </select>
                       </div>
 
@@ -186,13 +196,13 @@
                         <label class="label">
                           <span class="label-text font-semibold text-base-content flex items-center gap-2">
                             <PhotoIcon class="h-4 w-4" />
-                            Imagen del proyecto
+                            {{ t('home.createProject.imageLabel') }}
                           </span>
                         </label>
                         <input
                           v-model="newProjectImageUrl"
                           type="url"
-                          placeholder="https://ejemplo.com/imagen.jpg"
+                          :placeholder="t('home.createProject.imagePlaceholder')"
                           class="input input-bordered input-lg w-full focus:input-primary"
                         />
                       </div>
@@ -201,7 +211,7 @@
                     <!-- Vista previa de imagen -->
                     <div v-if="newProjectImageUrl" class="form-control">
                       <div class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-base-300">
-                        <p class="text-sm font-medium text-base-content/60 mb-2">Vista previa:</p>
+                        <p class="text-sm font-medium text-base-content/60 mb-2">{{ t('home.createProject.imagePreview') }}</p>
                         <img
                           :src="newProjectImageUrl"
                           alt="Vista previa"
@@ -216,16 +226,16 @@
                       <label class="label">
                         <span class="label-text font-semibold text-base-content flex items-center gap-2">
                           <ChatBubbleLeftIcon class="h-4 w-4" />
-                          Descripción *
+                          {{ t('home.createProject.descriptionLabel') }} *
                         </span>
                       </label>
                       <textarea
                         v-model="newProjectDescription"
-                        placeholder="Cuéntanos sobre tu proyecto: objetivos, tecnologías, desafíos, lo que sea que te emocione compartir..."
+                        :placeholder="t('home.createProject.descriptionPlaceholder')"
                         class="textarea textarea-bordered textarea-lg h-32 w-full focus:textarea-primary resize-none"
                       ></textarea>
                       <label class="label">
-                        <span class="label-text-alt text-base-content/40">{{ newProjectDescription.length }}/500 caracteres</span>
+                        <span class="label-text-alt text-base-content/40">{{ t('home.createProject.charactersCount', { count: newProjectDescription.length }) }}</span>
                       </label>
                     </div>
 
@@ -235,17 +245,17 @@
                         <label class="label">
                           <span class="label-text font-semibold text-base-content flex items-center gap-2">
                             <TagIcon class="h-4 w-4" />
-                            Tecnologías y etiquetas
+                            {{ t('home.createProject.tagsLabel') }}
                           </span>
                         </label>
                         <input
                           v-model="newProjectTags"
                           type="text"
-                          placeholder="React, Node.js, TypeScript..."
+                          :placeholder="t('home.createProject.tagsPlaceholder')"
                           class="input input-bordered input-lg w-full focus:input-primary"
                         />
                         <label class="label">
-                          <span class="label-text-alt text-base-content/40">Separadas por comas</span>
+                          <span class="label-text-alt text-base-content/40">{{ t('home.createProject.tagsSeparator') }}</span>
                         </label>
                       </div>
 
@@ -254,17 +264,17 @@
                         <label class="label">
                           <span class="label-text font-semibold text-base-content flex items-center gap-2">
                             <UsersIcon class="h-4 w-4" />
-                            Colaboradores
+                            {{ t('home.createProject.teamLabel') }}
                           </span>
                         </label>
                         <input
                           v-model="newProjectTeamMembers"
                           type="text"
-                          placeholder="juan@email.com, maria@email.com..."
+                          :placeholder="t('home.createProject.teamPlaceholder')"
                           class="input input-bordered input-lg w-full focus:input-primary"
                         />
                         <label class="label">
-                          <span class="label-text-alt text-base-content/40">Emails separados por comas</span>
+                          <span class="label-text-alt text-base-content/40">{{ t('home.createProject.teamHelper') }}</span>
                         </label>
                       </div>
                     </div>
@@ -276,7 +286,7 @@
                         @click="resetCreateForm"
                       >
                         <XMarkIcon class="h-5 w-5" />
-                        Cancelar
+                        {{ t('home.createProject.cancel') }}
                       </button>
                       <button
                         class="btn btn-primary btn-lg"
@@ -285,7 +295,7 @@
                       >
                         <span v-if="isLoading" class="loading loading-spinner loading-sm"></span>
                         <RocketLaunchIcon v-else class="h-5 w-5" />
-                        Crear Proyecto
+                        {{ isLoading ? t('home.createProject.creating') : t('home.createProject.create') }}
                       </button>
                     </div>
                   </div>
@@ -320,8 +330,8 @@
             <div class="card bg-base-100 shadow-lg border border-base-300">
               <div class="card-body p-12">
                 <FolderIcon class="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <h3 class="text-xl font-semibold mb-2">No hay proyectos</h3>
-                <p class="text-base-content/70">Sé el primero en compartir un proyecto</p>
+                <h3 class="text-xl font-semibold mb-2">{{ t('common.noProjects') }}</h3>
+                <p class="text-base-content/70">{{ t('common.beFirst') }}</p>
               </div>
             </div>
           </div>
@@ -415,7 +425,7 @@
                       class="btn btn-primary btn-sm"
                       @click="viewProject(project)"
                     >
-                      Ver Proyecto
+                      {{ t('common.viewProject') }}
                     </button>
                   </div>
                 </div>
@@ -431,7 +441,7 @@
             <div class="card-body p-6">
               <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
                 <ClockIcon class="h-5 w-5 text-info" />
-                Recientes
+                {{ t('home.trending.title') }}
               </h3>
               <div v-if="recentProjects.length > 0" class="space-y-3">
                 <div
@@ -457,7 +467,7 @@
               </div>
               <div v-else class="text-center text-base-content/60 py-4">
                 <ClockIcon class="h-8 w-8 mx-auto mb-2 opacity-50" />
-                <p class="text-sm">No hay proyectos recientes</p>
+                <p class="text-sm">{{ t('common.noRecentProjects') }}</p>
               </div>
             </div>
           </div>
@@ -475,10 +485,9 @@
 
           <!-- Información institucional -->
           <div class="col-span-1 md:col-span-2">
-            <h3 class="text-xl font-bold text-base-content mb-4">DevConnect Platform</h3>
+            <h3 class="text-xl font-bold text-base-content mb-4">{{ t('footer.title') }}</h3>
             <p class="text-base-content/70 mb-4">
-              La plataforma líder para desarrolladores que buscan colaborar, compartir proyectos
-              y construir el futuro de la tecnología juntos.
+              {{ t('footer.description') }}
             </p>
             <div class="flex space-x-4">
               <a href="#" class="text-base-content/60 hover:text-primary">
@@ -501,23 +510,23 @@
 
           <!-- Soporte/Contacto -->
           <div>
-            <h4 class="text-lg font-semibold text-base-content mb-4">Soporte</h4>
+            <h4 class="text-lg font-semibold text-base-content mb-4">{{ t('footer.support.title') }}</h4>
             <ul class="space-y-2 text-base-content/70">
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Centro de Ayuda</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.helpCenter') }}</a>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Contacto</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.contact') }}</a>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Chat en vivo</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.liveChat') }}</a>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Reportar problema</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.reportIssue') }}</a>
               </li>
               <li>
                 <a href="mailto:support@devconnect.com" class="hover:text-primary transition-colors">
-                  support@devconnect.com
+                  {{ t('footer.support.email') }}
                 </a>
               </li>
             </ul>
@@ -525,22 +534,22 @@
 
           <!-- Políticas/Términos -->
           <div>
-            <h4 class="text-lg font-semibold text-base-content mb-4">Legal</h4>
+            <h4 class="text-lg font-semibold text-base-content mb-4">{{ t('footer.legal.title') }}</h4>
             <ul class="space-y-2 text-base-content/70">
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Términos de Uso</a>
+                <button @click="showTermsModal = true" class="hover:text-primary transition-colors">{{ t('footer.legal.terms') }}</button>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Política de Privacidad</a>
+                <button @click="showPrivacyModal = true" class="hover:text-primary transition-colors">{{ t('footer.legal.privacy') }}</button>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Cookies</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.legal.cookies') }}</a>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Código de Conducta</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.legal.conduct') }}</a>
               </li>
               <li>
-                <a href="#" class="hover:text-primary transition-colors">Licencias</a>
+                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.legal.licenses') }}</a>
               </li>
             </ul>
           </div>
@@ -549,14 +558,299 @@
         <!-- Copyright -->
         <div class="border-t border-base-300 mt-8 pt-8 text-center">
           <p class="text-base-content/60">
-            © {{ new Date().getFullYear() }} DevConnect Platform. Todos los derechos reservados.
+            {{ t('footer.copyright', { year: new Date().getFullYear() }) }}
           </p>
           <p class="text-base-content/50 text-sm mt-2">
-            Hecho con ❤️ para la comunidad de desarrolladores
+            {{ t('footer.madeWith') }}
           </p>
         </div>
       </div>
     </footer>
+
+    <!-- Modal de Términos de Uso -->
+    <div v-if="showTermsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div class="bg-base-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- Header del Modal -->
+        <div class="bg-gradient-to-r from-primary to-secondary text-primary-content p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold">{{ t('termsModal.title') }}</h2>
+              <p class="text-sm opacity-90 mt-1">{{ t('termsModal.lastUpdated') }}</p>
+            </div>
+            <button
+              @click="showTermsModal = false"
+              class="btn btn-ghost btn-sm btn-circle text-primary-content hover:bg-primary-content/20"
+            >
+              <XMarkIcon class="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Contenido del Modal -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+          <!-- Sección 1: Aceptación -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <DocumentIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.acceptance.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.acceptance.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 2: Cuenta de Usuario -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <UsersIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.userAccount.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.userAccount.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 3: Contenido -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <PhotoIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.content.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.content.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 4: Código de Conducta -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <StarIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.conduct.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.conduct.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 5: Propiedad Intelectual -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <DocumentIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.intellectual.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.intellectual.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 6: Terminación -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <XMarkIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.termination.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.termination.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 7: Modificaciones -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <ClockIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.changes.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.changes.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 8: Contacto -->
+          <div class="space-y-3 bg-base-200 p-4 rounded-lg">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <ChatBubbleLeftIcon class="h-5 w-5 text-primary" />
+              {{ t('termsModal.sections.contact.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('termsModal.sections.contact.content') }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer del Modal -->
+        <div class="border-t border-base-300 p-6 bg-base-200">
+          <button
+            @click="showTermsModal = false"
+            class="btn btn-primary w-full"
+          >
+            {{ t('common.close') }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Política de Privacidad -->
+    <div v-if="showPrivacyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div class="bg-base-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- Header del Modal -->
+        <div class="bg-gradient-to-r from-primary to-secondary text-primary-content p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold">{{ t('privacyModal.title') }}</h2>
+              <p class="text-sm opacity-90 mt-1">{{ t('privacyModal.lastUpdated') }}</p>
+            </div>
+            <button
+              @click="showPrivacyModal = false"
+              class="btn btn-ghost btn-sm btn-circle text-primary-content hover:bg-primary-content/20"
+            >
+              <XMarkIcon class="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Contenido del Modal -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+          <!-- Sección 1: Introducción -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <DocumentIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.intro.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.intro.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 2: Información que Recopilamos -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <FolderIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.collection.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.collection.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 3: Uso de la Información -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <StarIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.usage.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.usage.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 4: Compartir Información -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <UsersIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.sharing.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.sharing.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 5: Seguridad -->
+          <div class="space-y-3 bg-success/10 p-4 rounded-lg border border-success/20">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <svg class="h-5 w-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              {{ t('privacyModal.sections.security.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.security.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 6: Cookies -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+              </svg>
+              {{ t('privacyModal.sections.cookies.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.cookies.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 7: Sus Derechos -->
+          <div class="space-y-3 bg-info/10 p-4 rounded-lg border border-info/20">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <svg class="h-5 w-5 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {{ t('privacyModal.sections.rights.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.rights.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 8: Privacidad de Menores -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <UsersIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.children.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.children.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 9: Transferencias Internacionales -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {{ t('privacyModal.sections.international.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.international.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 10: Cambios -->
+          <div class="space-y-3">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <ClockIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.changes.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.changes.content') }}
+            </p>
+          </div>
+
+          <!-- Sección 11: Contacto -->
+          <div class="space-y-3 bg-base-200 p-4 rounded-lg">
+            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
+              <ChatBubbleLeftIcon class="h-5 w-5 text-primary" />
+              {{ t('privacyModal.sections.contact.title') }}
+            </h3>
+            <p class="text-base-content/80 leading-relaxed">
+              {{ t('privacyModal.sections.contact.content') }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer del Modal -->
+        <div class="border-t border-base-300 p-6 bg-base-200">
+          <button
+            @click="showPrivacyModal = false"
+            class="btn btn-primary w-full"
+          >
+            {{ t('common.close') }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -566,6 +860,8 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
 import { useRouter } from 'vue-router'
+import { useTranslation } from '@/composables/useTranslation'
+import FormProgress from '@/components/ui/FormProgress.vue'
 import type { Project } from '@/types'
 import {
   PlusIcon,
@@ -585,6 +881,7 @@ import {
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
 const router = useRouter()
+const { t, locale } = useTranslation()
 
 const { profile } = storeToRefs(authStore)
 const { projects, loading } = storeToRefs(projectsStore)
@@ -598,6 +895,8 @@ const user = computed(() => profile.value)
 
 const activeFilter = ref('todos')
 const showCreateForm = ref(false)
+const showTermsModal = ref(false)
+const showPrivacyModal = ref(false)
 const newProjectTitle = ref('')
 const newProjectDescription = ref('')
 const newProjectStatus = ref<'planning' | 'in_progress' | 'completed' | 'on_hold'>('planning')
@@ -606,13 +905,13 @@ const newProjectTags = ref('')
 const newProjectTeamMembers = ref('')
 const isLoading = ref(false)
 
-// Filtros para el feed
-const feedFilters = ref([
-  { key: 'todos', label: 'Todos' },
-  { key: 'recientes', label: 'Recientes' },
-  { key: 'planificando', label: 'Planificando' },
-  { key: 'en-progreso', label: 'En Progreso' },
-  { key: 'completados', label: 'Completados' }
+// Filtros para el feed - computed para reactividad con traducciones
+const feedFilters = computed(() => [
+  { key: 'todos', label: t('home.feed.all') },
+  { key: 'recientes', label: t('home.feed.recent') },
+  { key: 'planificando', label: t('home.feed.planning') },
+  { key: 'en-progreso', label: t('home.feed.inProgress') },
+  { key: 'completados', label: t('home.feed.completed') }
 ])
 
 // Computed properties
@@ -699,6 +998,52 @@ const filteredProjects = computed(() => {
   return filtered
 })
 
+// Create Project Form Progress
+const createProjectProgress = computed(() => {
+  let progress = 0
+  
+  // Título (obligatorio) - 40%
+  if (newProjectTitle.value.trim().length > 0) progress += 40
+  
+  // Descripción (obligatoria) - 40%
+  if (newProjectDescription.value.trim().length > 0) progress += 40
+  
+  // Campos opcionales - 20%
+  let optionalFields = 0
+  if (newProjectImageUrl.value.trim().length > 0) optionalFields += 1
+  if (newProjectTags.value.trim().length > 0) optionalFields += 1
+  if (newProjectTeamMembers.value.trim().length > 0) optionalFields += 1
+  progress += (optionalFields / 3) * 20
+  
+  return progress
+})
+
+const createProjectCurrentStep = computed(() => {
+  if (newProjectDescription.value.trim().length > 0 && 
+      (newProjectTags.value || newProjectImageUrl.value || newProjectTeamMembers.value)) return 3
+  if (newProjectDescription.value.trim().length > 0) return 2
+  if (newProjectTitle.value.trim().length > 0) return 1
+  return 1
+})
+
+const createProjectStepLabels = computed(() => {
+  const isSpanish = locale.value === 'es'
+  return isSpanish
+    ? ['Básico', 'Detalles', 'Extra']
+    : ['Basic', 'Details', 'Extra']
+})
+
+const createProjectProgressLabel = computed(() => {
+  const isSpanish = locale.value === 'es'
+  if (createProjectProgress.value >= 80) {
+    return isSpanish ? '¡Listo para crear!' : 'Ready to create!'
+  } else if (createProjectProgress.value >= 50) {
+    return isSpanish ? 'Casi listo...' : 'Almost there...'
+  } else {
+    return isSpanish ? 'Completa el proyecto' : 'Complete the project'
+  }
+})
+
 // Methods
 const setActiveFilter = (filterKey: string) => {
   activeFilter.value = filterKey
@@ -712,10 +1057,14 @@ const viewProject = (project: Project) => {
 
 const getProjectStatusText = (status: string): string => {
   const statusMap: Record<string, string> = {
-    'planning': 'Planificando',
-    'in_progress': 'En Progreso',
-    'completed': 'Completado',
-    'on_hold': 'En Pausa'
+    'planning': t('project.status.planning'),
+    'Planificando': t('project.status.planning'),
+    'in_progress': t('project.status.in_progress'),
+    'En Progreso': t('project.status.in_progress'),
+    'completed': t('project.status.completed'),
+    'Completado': t('project.status.completed'),
+    'on_hold': t('project.status.on_hold'),
+    'En Pausa': t('project.status.on_hold')
   }
   return statusMap[status] || status
 }
@@ -742,13 +1091,18 @@ const formatTimeAgo = (dateString: string): string => {
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const weeks = Math.floor(days / 7)
 
   if (minutes < 60) {
-    return `hace ${minutes} min`
+    return `${minutes} min`
   } else if (hours < 24) {
-    return `hace ${hours}h`
+    return `${hours}h`
+  } else if (days === 1) {
+    return t('common.dates.yesterday')
+  } else if (days < 7) {
+    return t('common.dates.daysAgo', { days })
   } else {
-    return `hace ${days}d`
+    return t('common.dates.weeksAgo', { weeks })
   }
 }
 

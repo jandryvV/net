@@ -3,7 +3,7 @@
     <div v-if="loading" class="flex justify-center items-center py-20">
       <div class="text-center space-y-4">
         <span class="loading loading-spinner loading-lg text-primary"></span>
-        <p class="text-base-content/60">Cargando perfil...</p>
+        <p class="text-base-content/60">{{ t('profile.loading') }}</p>
       </div>
     </div>
 
@@ -42,7 +42,7 @@
                   </div>
                   <div class="flex items-center gap-2 text-base-content/60 text-sm">
                     <CalendarIcon class="h-4 w-4" />
-                    Miembro desde {{ formatDate(profile.created_at) }}
+                    {{ t('profile.memberSince') }} {{ formatDate(profile.created_at) }}
                   </div>
                 </div>
                 <button
@@ -50,7 +50,7 @@
                   @click="showEditModal = true"
                 >
                   <PencilSquareIcon class="h-5 w-5" />
-                  Editar Perfil
+                  {{ t('profile.edit') }}
                 </button>
               </div>
 
@@ -58,7 +58,7 @@
                 <div class="flex items-start gap-2">
                   <DocumentTextIcon class="h-5 w-5 text-primary mt-1" />
                   <div>
-                    <h3 class="font-semibold text-lg mb-2">Acerca de mí</h3>
+                    <h3 class="font-semibold text-lg mb-2">{{ t('profile.aboutMe') }}</h3>
                     <p class="text-base-content/80 leading-relaxed">{{ profile.bio }}</p>
                   </div>
                 </div>
@@ -71,13 +71,13 @@
             <div class="card-body">
               <h2 class="card-title text-2xl mb-4 flex items-center gap-2">
                 <FolderIcon class="h-6 w-6 text-primary" />
-                Proyectos Recientes
+                {{ t('profile.recentProjects') }}
               </h2>
               <div class="space-y-3">
                 <div v-if="recentProjects.length === 0" class="text-center py-8 text-base-content/60">
                   <RocketLaunchIcon class="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>No tienes proyectos aún</p>
-                  <p class="text-sm">¡Crea tu primer proyecto!</p>
+                  <p>{{ t('profile.noProjects') }}</p>
+                  <p class="text-sm">{{ t('profile.createFirst') }}</p>
                 </div>
                 <div
                   v-for="project in recentProjects"
@@ -117,7 +117,7 @@
               <div class="card-body text-center">
                 <FolderIcon class="h-12 w-12 text-primary mx-auto mb-2" />
                 <div class="text-3xl font-bold text-primary">{{ projectCount }}</div>
-                <div class="text-sm text-base-content/70">Proyectos Creados</div>
+                <div class="text-sm text-base-content/70">{{ t('profile.stats.projectsCreated') }}</div>
               </div>
             </div>
 
@@ -125,7 +125,7 @@
               <div class="card-body text-center">
                 <HeartIcon class="h-12 w-12 text-secondary mx-auto mb-2" />
                 <div class="text-3xl font-bold text-secondary">{{ totalLikes }}</div>
-                <div class="text-sm text-base-content/70">Likes Recibidos</div>
+                <div class="text-sm text-base-content/70">{{ t('profile.stats.likesReceived') }}</div>
               </div>
             </div>
 
@@ -133,7 +133,7 @@
               <div class="card-body text-center">
                 <ChatBubbleLeftIcon class="h-12 w-12 text-accent mx-auto mb-2" />
                 <div class="text-3xl font-bold text-accent">{{ totalComments }}</div>
-                <div class="text-sm text-base-content/70">Comentarios</div>
+                <div class="text-sm text-base-content/70">{{ t('profile.stats.comments') }}</div>
               </div>
             </div>
           </div>
@@ -143,20 +143,20 @@
             <div class="card-body">
               <h3 class="card-title text-lg mb-4 flex items-center gap-2">
                 <BoltIcon class="h-5 w-5 text-primary" />
-                Acciones Rápidas
+                {{ t('profile.quickActions') }}
               </h3>
               <div class="space-y-3">
                 <RouterLink to="/projects/create" class="btn btn-outline btn-block gap-2 justify-start">
                   <PlusIcon class="h-4 w-4" />
-                  Crear Proyecto
+                  {{ t('profile.createProject') }}
                 </RouterLink>
                 <RouterLink to="/my-projects" class="btn btn-outline btn-block gap-2 justify-start">
                   <EyeIcon class="h-4 w-4" />
-                  Ver Mis Proyectos
+                  {{ t('profile.viewProjects') }}
                 </RouterLink>
                 <RouterLink to="/settings" class="btn btn-outline btn-block gap-2 justify-start">
                   <Cog6ToothIcon class="h-4 w-4" />
-                  Configuración
+                  {{ t('profile.settings') }}
                 </RouterLink>
               </div>
             </div>
@@ -175,8 +175,8 @@
               <UserIcon class="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h3 class="text-2xl font-bold mb-1">Editar Perfil</h3>
-              <p class="text-base-content/60">Actualiza tu información personal</p>
+              <h3 class="text-2xl font-bold mb-1">{{ t('profile.editTitle') }}</h3>
+              <p class="text-base-content/60">{{ t('profile.editSubtitle') }}</p>
             </div>
           </div>
         </div>
@@ -186,14 +186,14 @@
             <label class="label">
               <span class="label-text text-lg font-semibold flex items-center gap-2">
                 <UserIcon class="h-5 w-5 text-primary" />
-                Nombre completo
+                {{ t('profile.fullName') }}
               </span>
             </label>
             <input
               v-model="editForm.full_name"
               type="text"
               class="input input-bordered input-lg focus:input-primary transition-all duration-300 bg-base-100 shadow-sm hover:shadow-md w-full"
-              placeholder="Tu nombre completo..."
+              :placeholder="t('profile.placeholders.fullName')"
               required
             />
           </div>
@@ -202,17 +202,17 @@
             <label class="label">
               <span class="label-text text-lg font-semibold flex items-center gap-2">
                 <DocumentTextIcon class="h-5 w-5 text-primary" />
-                Biografía
+                {{ t('profile.bio') }}
               </span>
             </label>
             <textarea
               v-model="editForm.bio"
               class="textarea textarea-bordered h-32 text-base focus:textarea-primary transition-all duration-300 bg-base-100 shadow-sm hover:shadow-md resize-none w-full"
-              placeholder="Cuéntanos sobre ti, tus intereses, experiencia..."
+              :placeholder="t('profile.placeholders.bio')"
               maxlength="500"
             ></textarea>
             <div class="label">
-              <span class="label-text-alt text-sm">{{ (editForm.bio || '').length }}/500 caracteres</span>
+              <span class="label-text-alt text-sm">{{ (editForm.bio || '').length }}/500 {{ t('home.createProject.charactersCount').split('/')[1] }}</span>
             </div>
           </div>
 
@@ -220,26 +220,26 @@
             <label class="label">
               <span class="label-text text-lg font-semibold flex items-center gap-2">
                 <PhotoIcon class="h-5 w-5 text-primary" />
-                Avatar (URL)
+                {{ t('profile.avatarUrl') }}
               </span>
             </label>
             <input
               v-model="editForm.avatar_url"
               type="url"
               class="input input-bordered input-lg focus:input-primary transition-all duration-300 bg-base-100 shadow-sm hover:shadow-md w-full"
-              placeholder="https://ejemplo.com/avatar.jpg"
+              :placeholder="t('profile.placeholders.avatarUrl')"
             />
             <div v-if="editForm.avatar_url" class="mt-4">
               <div class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-primary/30 flex flex-col items-center">
                 <img
                   :src="editForm.avatar_url"
-                  alt="Vista previa del avatar"
+                  :alt="t('common.imagePreview')"
                   class="w-24 h-24 rounded-full mx-auto shadow-md"
                   @error="avatarError = true"
                 />
                 <p v-if="avatarError" class="text-error text-sm mt-2 text-center flex items-center justify-center gap-1">
                   <ExclamationTriangleIcon class="h-4 w-4" />
-                  No se pudo cargar la imagen
+                  {{ t('common.imageError') }}
                 </p>
               </div>
             </div>
@@ -248,7 +248,7 @@
           <div v-if="error" class="alert alert-error shadow-lg w-full">
             <ExclamationTriangleIcon class="h-6 w-6" />
             <div>
-              <h3 class="font-bold">Error</h3>
+              <h3 class="font-bold">{{ t('common.error') }}</h3>
               <div class="text-xs">{{ error }}</div>
             </div>
           </div>
@@ -260,7 +260,7 @@
               @click="showEditModal = false"
             >
               <XMarkIcon class="h-5 w-5" />
-              Cancelar
+              {{ t('profile.cancel') }}
             </button>
             <button
               type="submit"
@@ -270,7 +270,7 @@
             >
               <CheckIcon v-if="!updating" class="h-5 w-5" />
               <span v-if="updating" class="loading loading-spinner loading-sm"></span>
-              {{ updating ? 'Guardando...' : 'Guardar Cambios' }}
+              {{ updating ? t('profile.saving') : t('profile.save') }}
             </button>
           </div>
         </form>
@@ -285,6 +285,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
+import { useTranslation } from '@/composables/useTranslation'
 import type { Project } from '@/types'
 import {
   EnvelopeIcon,
@@ -310,6 +311,7 @@ import {
 
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
+const { t } = useTranslation()
 
 const { profile, loading } = storeToRefs(authStore)
 

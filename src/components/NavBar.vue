@@ -28,6 +28,16 @@
             {{ $t('nav.home') }}
           </router-link>
         </li>
+        <li>
+          <router-link
+            to="/news"
+            class="btn btn-ghost btn-sm"
+            :class="{ 'btn-active': $route.path === '/news' }"
+          >
+            <NewspaperIcon class="h-4 w-4" />
+            {{ $t('nav.news') }}
+          </router-link>
+        </li>
         <li v-if="profile">
           <router-link
             to="/my-projects"
@@ -85,6 +95,56 @@
           <li>
             <a @click="changeLanguage('en')" :class="{ 'active': locale === 'en' }">
               🇺🇸 {{ $t('language.english') }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Accessibility Menu - Hidden on very small screens -->
+      <div class="dropdown dropdown-end hidden sm:block">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm" :class="{ 'btn-primary': highContrast || ttsEnabled }">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-64 border border-base-300 z-50">
+          <li class="menu-title">
+            <span>{{ $t('accessibility.title') }}</span>
+          </li>
+          <li>
+            <a @click="toggleHighContrast" :class="{ 'active': highContrast }">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              {{ $t('accessibility.highContrast') }}
+              <span v-if="highContrast" class="badge badge-primary badge-sm">{{ $t('common.active') }}</span>
+            </a>
+          </li>
+          <li>
+            <a @click="handleToggleTTS" :class="{ 'active': ttsEnabled }">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.586a2 2 0 001.414.586h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 012.828 0l.814.814A2 2 0 0017.414 16h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 000-2.828l-.814-.814a2 2 0 01-.586-1.414V8a2 2 0 00-.586-1.414L19 5.172a2 2 0 00-2.828 0L15 6" />
+              </svg>
+              {{ $t('accessibility.textToSpeech') }}
+              <span v-if="ttsEnabled" class="badge badge-primary badge-sm">{{ $t('common.active') }}</span>
+            </a>
+          </li>
+          <div v-if="ttsEnabled" class="divider my-1"></div>
+          <li v-if="ttsEnabled">
+            <a @click="handleReadPage" :disabled="isSpeaking">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              {{ $t('accessibility.readPage') }}
+            </a>
+          </li>
+          <li v-if="ttsEnabled && isSpeaking">
+            <a @click="handleStopTTS" class="text-error">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+              </svg>
+              {{ $t('accessibility.stop') }}
             </a>
           </li>
         </ul>
@@ -190,6 +250,12 @@
               {{ $t('nav.home') }}
             </router-link>
           </li>
+          <li>
+            <router-link to="/news" @click="closeSidebar" class="flex items-center gap-3 p-3 rounded-lg">
+              <NewspaperIcon class="h-5 w-5" />
+              {{ $t('nav.news') }}
+            </router-link>
+          </li>
           <li v-if="profile">
             <router-link to="/my-projects" @click="closeSidebar" class="flex items-center gap-3 p-3 rounded-lg">
               <FolderIcon class="h-5 w-5" />
@@ -269,7 +335,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { useTranslation } from '@/composables/useTranslation'
+import { useTextToSpeech } from '@/composables/useTextToSpeech'
 import { useAuthStore } from '@/stores/auth'
 import { useUIStore } from '@/stores/ui'
 import {
@@ -285,26 +352,31 @@ import {
   MoonIcon,
   ComputerDesktopIcon,
   LanguageIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  NewspaperIcon
 } from '@/icons'
 
 const router = useRouter()
-const { t, locale } = useI18n()
+const { t, locale, changeLanguage } = useTranslation()
 const authStore = useAuthStore()
 const uiStore = useUIStore()
 
+// Text to Speech
+const { 
+  isEnabled: ttsEnabled, 
+  isSpeaking, 
+  toggleEnabled: toggleTTS,
+  speak,
+  stop: stopTTS
+} = useTextToSpeech()
+
 const { profile } = storeToRefs(authStore)
-const { theme, sidebarOpen } = storeToRefs(uiStore)
-const { setTheme, toggleSidebar, closeSidebar, setLanguage } = uiStore
+const { theme, sidebarOpen, highContrast } = storeToRefs(uiStore)
+const { setTheme, toggleSidebar, closeSidebar, toggleHighContrast } = uiStore
 
 const handleSignOut = async () => {
   await authStore.signOut()
   router.push('/login')
-}
-
-const changeLanguage = (lang: 'es' | 'en') => {
-  locale.value = lang
-  setLanguage(lang)
 }
 
 const handleThemeChange = (event: Event) => {
@@ -315,5 +387,20 @@ const handleThemeChange = (event: Event) => {
 const handleLanguageChange = (event: Event) => {
   const target = event.target as HTMLSelectElement
   changeLanguage(target.value as 'es' | 'en')
+}
+
+// Text to Speech handlers
+const handleToggleTTS = () => {
+  toggleTTS()
+}
+
+const handleReadPage = () => {
+  const mainContent = document.querySelector('main') || document.body
+  const text = mainContent.textContent || ''
+  speak(text)
+}
+
+const handleStopTTS = () => {
+  stopTTS()
 }
 </script>

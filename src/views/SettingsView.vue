@@ -9,10 +9,10 @@
           </div>
           <div>
             <h1 class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Configuración
+              {{ t('settings.title') }}
             </h1>
             <p class="text-base-content/70 text-lg">
-              Personaliza tu experiencia y gestiona tu cuenta
+              {{ t('settings.subtitle') }}
             </p>
           </div>
         </div>
@@ -31,7 +31,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
                     <UserIcon class="h-5 w-5" />
-                    Cuenta
+                    {{ t('settings.tabs.account') }}
                   </a>
                 </li>
                 <li>
@@ -41,7 +41,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
                     <LockClosedIcon class="h-5 w-5" />
-                    Seguridad
+                    {{ t('settings.tabs.security') }}
                   </a>
                 </li>
                 <li>
@@ -51,7 +51,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
                     <PaintBrushIcon class="h-5 w-5" />
-                    Apariencia
+                    {{ t('settings.tabs.appearance') }}
                   </a>
                 </li>
                 <li>
@@ -61,7 +61,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
                     <BellIcon class="h-5 w-5" />
-                    Notificaciones
+                    {{ t('settings.tabs.notifications') }}
                   </a>
                 </li>
                 <li>
@@ -71,7 +71,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
                     <ShieldCheckIcon class="h-5 w-5" />
-                    Privacidad
+                    {{ t('settings.tabs.privacy') }}
                   </a>
                 </li>
                 <li>
@@ -81,7 +81,7 @@
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
                     <InformationCircleIcon class="h-5 w-5" />
-                    Acerca de
+                    {{ t('settings.tabs.about') }}
                   </a>
                 </li>
               </ul>
@@ -97,26 +97,26 @@
                 <div class="card-body">
                 <h2 class="card-title text-2xl mb-6 flex items-center gap-2">
                 <UserIcon class="h-6 w-6 text-primary" />
-                Información de la Cuenta
+                {{ t('settings.account.title') }}
                 </h2>
 
                 <form @submit.prevent="updateAccount" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="form-control flex flex-col">
                   <label class="label mb-2">
-                  <span class="label-text font-semibold">Nombre completo</span>
+                  <span class="label-text font-semibold">{{ t('settings.account.fullName') }}</span>
                   </label>
                   <input
                   v-model="accountForm.full_name"
                   type="text"
                   class="input input-bordered input-lg"
-                  placeholder="Tu nombre completo"
+                  :placeholder="t('settings.account.placeholders.fullName')"
                   />
                   </div>
 
                   <div class="form-control flex flex-col">
                   <label class="label mb-2">
-                  <span class="label-text font-semibold">Email</span>
+                  <span class="label-text font-semibold">{{ t('settings.account.email') }}</span>
                   </label>
                   <input
                   v-model="accountForm.email"
@@ -133,12 +133,12 @@
 
                 <div class="form-control flex flex-col">
                   <label class="label mb-2">
-                  <span class="label-text font-semibold">Biografía</span>
+                  <span class="label-text font-semibold">{{ t('settings.account.bio') }}</span>
                   </label>
                   <textarea
                   v-model="accountForm.bio"
                   class="textarea textarea-bordered h-32"
-                  placeholder="Cuéntanos sobre ti..."
+                  :placeholder="t('settings.account.placeholders.bio')"
                   maxlength="500"
                   readonly
                     :style="{
@@ -154,13 +154,13 @@
 
                 <div class="form-control flex flex-col">
                   <label class="label mb-2">
-                  <span class="label-text font-semibold">Avatar URL</span>
+                  <span class="label-text font-semibold">{{ t('settings.account.avatarUrl') }}</span>
                   </label>
                   <input
                   v-model="accountForm.avatar_url"
                   type="url"
                   class="input input-bordered input-lg"
-                  placeholder="https://ejemplo.com/avatar.jpg"
+                  :placeholder="t('settings.account.placeholders.avatarUrl')"
                   />
                 </div>
 
@@ -172,7 +172,7 @@
                   :disabled="updating"
                   >
                   <CheckIcon v-if="!updating" class="h-5 w-5" />
-                  {{ updating ? 'Guardando...' : 'Guardar Cambios' }}
+                  {{ updating ? t('settings.account.saving') : t('settings.account.saveChanges') }}
                   </button>
                 </div>
                 </form>
@@ -184,19 +184,19 @@
               <div class="card-body">
                 <h3 class="card-title text-error mb-4 flex items-center gap-2">
                   <ExclamationTriangleIcon class="h-6 w-6" />
-                  Zona Peligrosa
+                  {{ t('settings.account.deleteAccount') }}
                 </h3>
                 <div class="space-y-4">
                   <div class="flex justify-between items-center p-4 bg-base-100 rounded-lg border">
                     <div>
-                      <h4 class="font-semibold">Eliminar cuenta</h4>
-                      <p class="text-sm text-base-content/70">Esta acción no se puede deshacer</p>
+                      <h4 class="font-semibold">{{ t('settings.account.deleteAccount') }}</h4>
+                      <p class="text-sm text-base-content/70">{{ t('settings.account.deleteAccountWarning') }}</p>
                     </div>
                     <button
                       class="btn btn-error btn-outline"
                       @click="showDeleteModal = true"
                     >
-                      Eliminar Cuenta
+                      {{ t('settings.account.deleteAccountConfirm') }}
                     </button>
                   </div>
                 </div>
@@ -210,32 +210,32 @@
               <div class="card-body">
               <h2 class="card-title text-2xl mb-6 flex items-center gap-2">
                 <LockClosedIcon class="h-6 w-6 text-primary" />
-                Cambiar Contraseña
+                {{ t('settings.security.title') }}
               </h2>
 
               <form @submit.prevent="changePassword" class="space-y-6">
                 <div class="form-control flex flex-col">
                 <label class="label mb-2">
-                  <span class="label-text font-semibold">Contraseña actual</span>
+                  <span class="label-text font-semibold">{{ t('settings.security.currentPassword') }}</span>
                 </label>
                 <input
                   v-model="passwordForm.currentPassword"
                   type="password"
                   class="input input-bordered input-lg"
-                  placeholder="Tu contraseña actual"
+                  :placeholder="t('settings.security.placeholders.currentPassword')"
                   required
                 />
                 </div>
 
                 <div class="form-control flex flex-col">
                 <label class="label mb-2">
-                  <span class="label-text font-semibold">Nueva contraseña</span>
+                  <span class="label-text font-semibold">{{ t('settings.security.newPassword') }}</span>
                 </label>
                 <input
                   v-model="passwordForm.newPassword"
                   type="password"
                   class="input input-bordered input-lg"
-                  placeholder="Nueva contraseña"
+                  :placeholder="t('settings.security.placeholders.newPassword')"
                   required
                   minlength="6"
                 />
@@ -243,13 +243,13 @@
 
                 <div class="form-control flex flex-col">
                 <label class="label mb-2">
-                  <span class="label-text font-semibold">Confirmar nueva contraseña</span>
+                  <span class="label-text font-semibold">{{ t('settings.security.confirmPassword') }}</span>
                 </label>
                 <input
                   v-model="passwordForm.confirmPassword"
                   type="password"
                   class="input input-bordered input-lg"
-                  placeholder="Confirmar nueva contraseña"
+                  :placeholder="t('settings.security.placeholders.confirmPassword')"
                   required
                 />
                 </div>
@@ -267,7 +267,7 @@
                   :disabled="changingPassword"
                 >
                   <KeyIcon v-if="!changingPassword" class="h-5 w-5" />
-                  {{ changingPassword ? 'Cambiando...' : 'Cambiar Contraseña' }}
+                  {{ changingPassword ? t('settings.security.changing') : t('settings.security.changePassword') }}
                 </button>
                 </div>
               </form>
@@ -279,11 +279,11 @@
               <div class="card-body">
                 <h3 class="card-title text-xl mb-4 flex items-center gap-2">
                   <KeyIcon class="h-6 w-6 text-warning" />
-                  Recuperar Contraseña
+                  {{ t('settings.security.resetTitle') }}
                 </h3>
                 <div class="space-y-4">
                   <p class="text-base-content/80">
-                    Envía un enlace de recuperación a tu email registrado
+                    {{ t('settings.security.resetDescription') }}
                   </p>
                   <button
                     @click="sendPasswordReset"
@@ -292,7 +292,7 @@
                     :class="{ 'loading': sendingReset }"
                   >
                     <KeyIcon v-if="!sendingReset" class="h-5 w-5" />
-                    {{ sendingReset ? 'Enviando...' : 'Enviar enlace de recuperación' }}
+                    {{ sendingReset ? t('settings.security.sending') : t('settings.security.sendResetLink') }}
                   </button>
                 </div>
               </div>
@@ -668,6 +668,7 @@ import { ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import { useTranslation } from '@/composables/useTranslation'
 import {
   Cog6ToothIcon,
   UserIcon,
@@ -688,6 +689,7 @@ import {
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { t } = useTranslation()
 const { profile } = storeToRefs(authStore)
 
 // Active tab

@@ -152,11 +152,12 @@ const formatDate = (dateString: string) => {
   const now = new Date()
   const diffTime = Math.abs(now.getTime() - date.getTime())
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  const diffWeeks = Math.ceil(diffDays / 7)
 
-  if (diffDays === 1) return 'Hace 1 día'
-  if (diffDays < 7) return `Hace ${diffDays} días`
-  if (diffDays < 30) return `Hace ${Math.ceil(diffDays / 7)} semana${Math.ceil(diffDays / 7) > 1 ? 's' : ''}`
-  return date.toLocaleDateString('es-ES')
+  if (diffDays === 1) return t('common.dates.yesterday')
+  if (diffDays < 7) return t('common.dates.daysAgo', { days: diffDays })
+  if (diffDays < 30) return t('common.dates.weeksAgo', { weeks: diffWeeks })
+  return date.toLocaleDateString()
 }
 
 const getStatusClass = (status: string) => {
@@ -170,13 +171,17 @@ const getStatusClass = (status: string) => {
 }
 
 const getStatusText = (status: string) => {
-  const texts = {
-    planning: 'Planificando',
-    in_progress: 'En Progreso',
-    completed: 'Completado',
-    on_hold: 'En Pausa'
+  const statusMap: Record<string, string> = {
+    'planning': t('project.status.planning'),
+    'Planificando': t('project.status.planning'),
+    'in_progress': t('project.status.in_progress'),
+    'En Progreso': t('project.status.in_progress'),
+    'completed': t('project.status.completed'),
+    'Completado': t('project.status.completed'),
+    'on_hold': t('project.status.on_hold'),
+    'En Pausa': t('project.status.on_hold')
   }
-  return texts[status as keyof typeof texts] || status
+  return statusMap[status] || status
 }
 </script>
 

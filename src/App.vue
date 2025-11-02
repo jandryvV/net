@@ -8,6 +8,9 @@
       <router-view />
     </main>
 
+    <!-- Text to Speech Floating Button -->
+    <TextToSpeechButton />
+
     <!-- Loading overlay -->
     <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <span class="loading loading-spinner loading-lg text-primary"></span>
@@ -21,6 +24,7 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useUIStore } from '@/stores/ui'
 import NavBar from '@/components/NavBar.vue'
+import TextToSpeechButton from '@/components/TextToSpeechButton.vue'
 
 const authStore = useAuthStore()
 const uiStore = useUIStore()

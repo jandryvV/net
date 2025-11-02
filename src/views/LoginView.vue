@@ -10,6 +10,12 @@
           <p class="text-base-content/60 mt-2">{{ $t('app.tagline') }}</p>
         </div>
 
+        <!-- Progress Bar -->
+        <FormProgress
+          :progress="formProgress"
+          :label="progressLabel"
+        />
+
         <form @submit.prevent="handleLogin" class="space-y-6">
           <BaseInput
             v-model="form.email"
@@ -46,11 +52,13 @@
           <BaseButton
             type="submit"
             :loading="loading"
-            :disabled="!isValid || loading"
+            :disabled="!isValid || loading || isLocked"
             variant="primary"
             size="lg"
             block
-            :label="loading ? $t('auth.login.loading') : $t('auth.login.submit')"
+            :label="isLocked 
+              ? (useI18n().locale.value === 'es' ? `Bloqueado (${formatTime(remainingTime)})` : `Locked (${formatTime(remainingTime)})`)
+              : (loading ? $t('auth.login.loading') : $t('auth.login.submit'))"
           />
         </form>
 
@@ -68,6 +76,37 @@
         <div v-if="generalError" class="alert alert-error mt-4">
           <ExclamationCircleIcon class="h-5 w-5" />
           <span>{{ generalError }}</span>
+        </div>
+
+        <!-- Advertencia de intentos restantes -->
+        <div v-if="!isLocked && loginAttempts.count > 0 && loginAttempts.count < MAX_ATTEMPTS" class="alert alert-warning mt-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span>
+            {{ useI18n().locale.value === 'es' 
+              ? `Atención: Te quedan ${MAX_ATTEMPTS - loginAttempts.count} intentos antes del bloqueo.`
+              : `Warning: ${MAX_ATTEMPTS - loginAttempts.count} attempts remaining before lockout.`
+            }}
+          </span>
+        </div>
+
+        <!-- Alerta de cuenta bloqueada -->
+        <div v-if="isLocked" class="alert alert-error mt-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <div>
+            <div class="font-bold">
+              {{ useI18n().locale.value === 'es' ? 'Cuenta temporalmente bloqueada' : 'Account temporarily locked' }}
+            </div>
+            <div class="text-sm">
+              {{ useI18n().locale.value === 'es' 
+                ? `Por seguridad, debes esperar ${formatTime(remainingTime)} antes de intentar nuevamente.`
+                : `For security, you must wait ${formatTime(remainingTime)} before trying again.`
+              }}
+            </div>
+          </div>
         </div>
 
         <!-- Success Toast -->
@@ -124,13 +163,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useFormValidation, validationRules } from '@/composables/useValidation'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import FormProgress from '@/components/ui/FormProgress.vue'
 import {
   ArrowRightOnRectangleIcon,
   AtSymbolIcon,
@@ -163,6 +203,21 @@ const { errors, isValid, validate, validateAll, clearErrors } = useFormValidatio
 const loading = ref(false)
 const generalError = ref('')
 
+// Sistema de bloqueo por intentos fallidos
+const STORAGE_KEY = 'login_attempts'
+const MAX_ATTEMPTS = 5
+const LOCKOUT_DURATION = 15 * 60 * 1000 // 15 minutos en milisegundos
+
+interface LoginAttempts {
+  count: number
+  lockedUntil: number | null
+  lastAttempt: number
+}
+
+const loginAttempts = ref<LoginAttempts>(getLoginAttempts())
+const isLocked = ref(false)
+const remainingTime = ref(0)
+
 // Recuperar contraseña
 const showForgotPassword = ref(false)
 const resetEmail = ref('')
@@ -173,6 +228,111 @@ const resetLoading = ref(false)
 const showSuccessToast = ref(false)
 const successMessage = ref('')
 
+// Funciones para manejar intentos de login
+function getLoginAttempts(): LoginAttempts {
+  const stored = localStorage.getItem(STORAGE_KEY)
+  if (stored) {
+    const data = JSON.parse(stored)
+    // Verificar si el bloqueo ya expiró
+    if (data.lockedUntil && Date.now() > data.lockedUntil) {
+      return { count: 0, lockedUntil: null, lastAttempt: 0 }
+    }
+    return data
+  }
+  return { count: 0, lockedUntil: null, lastAttempt: 0 }
+}
+
+function saveLoginAttempts(attempts: LoginAttempts) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(attempts))
+  loginAttempts.value = attempts
+}
+
+function checkIfLocked() {
+  const attempts = getLoginAttempts()
+  
+  if (attempts.lockedUntil && Date.now() < attempts.lockedUntil) {
+    isLocked.value = true
+    remainingTime.value = Math.ceil((attempts.lockedUntil - Date.now()) / 1000)
+    
+    // Actualizar contador cada segundo
+    const interval = setInterval(() => {
+      const remaining = Math.ceil((attempts.lockedUntil! - Date.now()) / 1000)
+      if (remaining <= 0) {
+        clearInterval(interval)
+        isLocked.value = false
+        remainingTime.value = 0
+        saveLoginAttempts({ count: 0, lockedUntil: null, lastAttempt: 0 })
+      } else {
+        remainingTime.value = remaining
+      }
+    }, 1000)
+    
+    return true
+  }
+  
+  isLocked.value = false
+  return false
+}
+
+function recordFailedAttempt() {
+  const attempts = getLoginAttempts()
+  const newCount = attempts.count + 1
+  
+  if (newCount >= MAX_ATTEMPTS) {
+    // Bloquear usuario
+    const lockedUntil = Date.now() + LOCKOUT_DURATION
+    saveLoginAttempts({
+      count: newCount,
+      lockedUntil,
+      lastAttempt: Date.now()
+    })
+    checkIfLocked()
+  } else {
+    saveLoginAttempts({
+      count: newCount,
+      lockedUntil: null,
+      lastAttempt: Date.now()
+    })
+  }
+}
+
+function resetAttempts() {
+  saveLoginAttempts({ count: 0, lockedUntil: null, lastAttempt: 0 })
+  isLocked.value = false
+  remainingTime.value = 0
+}
+
+function formatTime(seconds: number): string {
+  const minutes = Math.floor(seconds / 60)
+  const secs = seconds % 60
+  return `${minutes}:${secs.toString().padStart(2, '0')}`
+}
+
+// Verificar bloqueo al montar el componente
+checkIfLocked()
+
+// Form Progress
+const formProgress = computed(() => {
+  let progress = 0
+  const totalFields = 2
+  
+  if (form.email && !errors.value.email) progress += 50
+  if (form.password && !errors.value.password) progress += 50
+  
+  return progress
+})
+
+const progressLabel = computed(() => {
+  const locale = useI18n().locale.value
+  if (formProgress.value === 100) {
+    return locale === 'es' ? '¡Listo para iniciar sesión!' : 'Ready to sign in!'
+  } else if (formProgress.value >= 50) {
+    return locale === 'es' ? 'Casi listo...' : 'Almost there...'
+  } else {
+    return locale === 'es' ? 'Completa el formulario' : 'Complete the form'
+  }
+})
+
 const validateField = (field: string, value: any) => {
   validate(field, value)
 }
@@ -180,6 +340,15 @@ const validateField = (field: string, value: any) => {
 const handleLogin = async () => {
   clearErrors()
   generalError.value = ''
+
+  // Verificar si está bloqueado
+  if (checkIfLocked()) {
+    const locale = useI18n().locale.value
+    generalError.value = locale === 'es' 
+      ? `Demasiados intentos fallidos. Cuenta bloqueada por ${formatTime(remainingTime.value)}.`
+      : `Too many failed attempts. Account locked for ${formatTime(remainingTime.value)}.`
+    return
+  }
 
   if (!validateAll(form)) {
     return
@@ -191,8 +360,26 @@ const handleLogin = async () => {
     const { error: loginError } = await authStore.signIn(form.email, form.password)
 
     if (loginError) {
-      generalError.value = t('auth.validation.invalidCredentials')
+      // Registrar intento fallido
+      recordFailedAttempt()
+      
+      const locale = useI18n().locale.value
+      const attemptsLeft = MAX_ATTEMPTS - loginAttempts.value.count
+      
+      if (attemptsLeft > 0) {
+        generalError.value = locale === 'es'
+          ? `${t('auth.validation.invalidCredentials')}. Te quedan ${attemptsLeft} intentos.`
+          : `${t('auth.validation.invalidCredentials')}. ${attemptsLeft} attempts remaining.`
+      } else {
+        generalError.value = locale === 'es'
+          ? `Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos.`
+          : `Too many failed attempts. Account locked for 15 minutes.`
+        checkIfLocked()
+      }
     } else {
+      // Login exitoso - resetear intentos
+      resetAttempts()
+      
       // Mostrar mensaje de éxito
       showSuccess('Inicio de sesión exitoso')
 

@@ -40,6 +40,12 @@
             </div>
           </div>
 
+          <!-- Progress Bar -->
+          <FormProgress
+            :progress="editFormProgress"
+            :label="editFormProgressLabel"
+          />
+
           <form @submit.prevent="updateProject" class="space-y-6">
             <!-- Título -->
             <div class="form-control">
@@ -234,6 +240,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
+import FormProgress from '@/components/ui/FormProgress.vue'
 import type { Project } from '@/types'
 import {
   ArrowLeftIcon,
@@ -283,6 +290,36 @@ const editForm = ref({
   image_url: '',
   tags: '',
   team_members: ''
+})
+
+// Edit Form Progress
+const editFormProgress = computed(() => {
+  let progress = 0
+  
+  // Título (obligatorio) - 40%
+  if (editForm.value.title.trim().length > 0) progress += 40
+  
+  // Descripción (obligatoria) - 40%
+  if (editForm.value.description.trim().length > 0) progress += 40
+  
+  // Campos opcionales - 20%
+  let optionalFields = 0
+  if (editForm.value.image_url.trim().length > 0) optionalFields += 1
+  if (editForm.value.tags.trim().length > 0) optionalFields += 1
+  if (editForm.value.team_members.trim().length > 0) optionalFields += 1
+  progress += (optionalFields / 3) * 20
+  
+  return progress
+})
+
+const editFormProgressLabel = computed(() => {
+  if (editFormProgress.value >= 80) {
+    return '¡Listo para actualizar!'
+  } else if (editFormProgress.value >= 50) {
+    return 'Casi listo...'
+  } else {
+    return 'Completa la información'
+  }
 })
 
 // Methods

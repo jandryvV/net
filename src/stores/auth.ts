@@ -58,6 +58,8 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       console.log('Starting sign up process...')
+      console.log('Email:', email)
+      console.log('Full name:', fullName)
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -101,7 +103,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       console.log('Sign up completed successfully')
       return { data, error: null }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Unexpected error signing up:', error)
       return { data: null, error }
     } finally {

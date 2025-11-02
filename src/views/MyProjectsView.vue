@@ -6,10 +6,10 @@
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div>
             <h1 class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Mis Proyectos
+              {{ t('myProjects.title') }}
             </h1>
             <p class="text-base-content/70 text-lg">
-              Gestiona y comparte tus proyectos con la comunidad
+              {{ t('myProjects.subtitle') }}
             </p>
           </div>
           <button
@@ -17,7 +17,7 @@
             @click="showCreateModal = true"
           >
             <PlusIcon class="h-6 w-6" />
-            Nuevo Proyecto
+            {{ t('myProjects.newProject') }}
           </button>
         </div>
       </div>
@@ -32,7 +32,7 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-primary">{{ userProjects.length }}</div>
-                <div class="text-sm text-base-content/60">Proyectos totales</div>
+                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.total') }}</div>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-success">{{ completedCount }}</div>
-                <div class="text-sm text-base-content/60">Completados</div>
+                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.completed') }}</div>
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-warning">{{ inProgressCount }}</div>
-                <div class="text-sm text-base-content/60">En progreso</div>
+                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.inProgress') }}</div>
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-error">{{ totalLikes }}</div>
-                <div class="text-sm text-base-content/60">Likes totales</div>
+                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.totalLikes') }}</div>
               </div>
             </div>
           </div>
@@ -87,24 +87,24 @@
           <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2 text-base-content/60">
           <FunnelIcon class="h-5 w-5" />
-          <span class="font-medium">Filtrar y ordenar:</span>
+          <span class="font-medium">{{ t('myProjects.filters.title') }}</span>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 w-full">
           <div class="form-control">
             <select v-model="statusFilter" class="select select-bordered select-lg w-full lg:w-auto">
-          <option value="">Todos los estados</option>
-          <option value="planning">Planificando</option>
-          <option value="in_progress">En Progreso</option>
-          <option value="completed">Completado</option>
-          <option value="on_hold">En Pausa</option>
+          <option value="">{{ t('myProjects.filters.allStatus') }}</option>
+          <option value="planning">{{ t('project.status.planning') }}</option>
+          <option value="in_progress">{{ t('project.status.in_progress') }}</option>
+          <option value="completed">{{ t('project.status.completed') }}</option>
+          <option value="on_hold">{{ t('project.status.on_hold') }}</option>
             </select>
           </div>
           <div class="form-control">
             <select v-model="sortBy" class="select select-bordered select-lg w-full lg:w-auto">
-          <option value="created_at">Más recientes</option>
-          <option value="updated_at">Última actualización</option>
-          <option value="likes_count">Más populares</option>
-          <option value="title">Alfabético</option>
+          <option value="created_at">{{ t('myProjects.filters.sortBy.newest') }}</option>
+          <option value="updated_at">{{ t('myProjects.filters.sortBy.lastUpdate') }}</option>
+          <option value="likes_count">{{ t('myProjects.filters.sortBy.popular') }}</option>
+          <option value="title">{{ t('myProjects.filters.sortBy.alphabetic') }}</option>
             </select>
           </div>
           <div class="form-control flex-1">
@@ -112,7 +112,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Buscar en mis proyectos..."
+            :placeholder="t('myProjects.filters.searchPlaceholder')"
             class="input input-bordered input-lg w-full"
           />
             </div>
@@ -130,17 +130,17 @@
     <div v-else-if="filteredProjects.length === 0" class="text-center py-12">
       <FolderIcon class="mx-auto h-16 w-16 text-base-content/30 mb-4" />
       <h3 class="text-xl font-semibold mb-2">
-      {{ statusFilter ? 'No hay proyectos con este estado' : 'No tienes proyectos aún' }}
+      {{ statusFilter ? t('myProjects.empty.titleFiltered') : t('myProjects.empty.title') }}
       </h3>
       <p class="text-base-content/70 mb-4">
-      {{ statusFilter ? 'Prueba con otro filtro' : '¡Crea tu primer proyecto y compártelo con la comunidad!' }}
+      {{ statusFilter ? t('myProjects.empty.subtitleFiltered') : t('myProjects.empty.subtitle') }}
       </p>
       <button
       v-if="!statusFilter"
       class="btn btn-primary"
       @click="showCreateModal = true"
       >
-      Crear Mi Primer Proyecto
+      {{ t('myProjects.empty.action') }}
       </button>
     </div>
 
@@ -302,6 +302,7 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
+import { useTranslation } from '@/composables/useTranslation'
 import CreateProjectModal from '../components/CreateProjectModal.vue'
 import type { Project } from '@/types'
 import {
@@ -320,12 +321,14 @@ import {
   TagIcon,
   RocketLaunchIcon,
   DocumentIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
+  FunnelIcon
 } from '@/icons'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
+const { t } = useTranslation()
 
 const { profile } = storeToRefs(authStore)
 const { loading } = storeToRefs(projectsStore)
@@ -482,13 +485,17 @@ const getStatusClass = (status: string) => {
 }
 
 const getStatusText = (status: string) => {
-  const texts = {
-    planning: 'Planificando',
-    in_progress: 'En Progreso',
-    completed: 'Completado',
-    on_hold: 'En Pausa'
+  const statusMap: Record<string, string> = {
+    'planning': t('project.status.planning'),
+    'Planificando': t('project.status.planning'),
+    'in_progress': t('project.status.in_progress'),
+    'En Progreso': t('project.status.in_progress'),
+    'completed': t('project.status.completed'),
+    'Completado': t('project.status.completed'),
+    'on_hold': t('project.status.on_hold'),
+    'En Pausa': t('project.status.on_hold')
   }
-  return texts[status as keyof typeof texts] || status
+  return statusMap[status] || status
 }
 
 onMounted(() => {

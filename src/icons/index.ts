@@ -45,5 +45,9 @@ export {
   ViewColumnsIcon,
   ArrowDownTrayIcon,
   QuestionMarkCircleIcon,
-  FunnelIcon
+  FunnelIcon,
+  SparklesIcon,
+  WrenchScrewdriverIcon,
+  MegaphoneIcon,
+  NewspaperIcon
 } from '@heroicons/vue/24/outline'

@@ -8,6 +8,8 @@ export const useUIStore = defineStore('ui', () => {
   const theme = ref<Theme>((localStorage.getItem('theme') as Theme) || 'auto')
   const language = ref<Language>((localStorage.getItem('language') as Language) || 'es')
   const sidebarOpen = ref(false)
+  const highContrast = ref<boolean>(localStorage.getItem('highContrast') === 'true')
+  const textToSpeechEnabled = ref<boolean>(localStorage.getItem('ttsEnabled') === 'true')
 
   // Theme management
   const setTheme = (newTheme: Theme) => {
@@ -25,6 +27,37 @@ export const useUIStore = defineStore('ui', () => {
     } else {
       root.setAttribute('data-theme', theme.value)
     }
+
+    // Apply high contrast mode
+    if (highContrast.value) {
+      root.classList.add('high-contrast')
+    } else {
+      root.classList.remove('high-contrast')
+    }
+  }
+
+  // Accessibility management
+  const toggleHighContrast = () => {
+    highContrast.value = !highContrast.value
+    localStorage.setItem('highContrast', highContrast.value.toString())
+    applyTheme()
+  }
+
+  const setHighContrast = (value: boolean) => {
+    highContrast.value = value
+    localStorage.setItem('highContrast', value.toString())
+    applyTheme()
+  }
+
+  // Text to speech management
+  const toggleTextToSpeech = () => {
+    textToSpeechEnabled.value = !textToSpeechEnabled.value
+    localStorage.setItem('ttsEnabled', textToSpeechEnabled.value.toString())
+  }
+
+  const setTextToSpeech = (value: boolean) => {
+    textToSpeechEnabled.value = value
+    localStorage.setItem('ttsEnabled', value.toString())
   }
 
   // Language management
@@ -54,10 +87,16 @@ export const useUIStore = defineStore('ui', () => {
     theme,
     language,
     sidebarOpen,
+    highContrast,
+    textToSpeechEnabled,
     setTheme,
     setLanguage,
     toggleSidebar,
     closeSidebar,
-    applyTheme
+    applyTheme,
+    toggleHighContrast,
+    setHighContrast,
+    toggleTextToSpeech,
+    setTextToSpeech
   }
 })

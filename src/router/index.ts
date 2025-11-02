@@ -9,6 +9,7 @@ import MyProjectsView from '@/views/MyProjectsView.vue'
 import ProjectDetailView from '@/views/ProjectDetailView.vue'
 import ProjectEditView from '@/views/ProjectEditView.vue'
 import SettingsView from '@/views/SettingsView.vue'
+import NewsView from '@/views/NewsView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 
 const router = createRouter({
@@ -30,6 +31,11 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
       meta: { requiresGuest: true }
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: NewsView
     },
     {
       path: '/profile',
