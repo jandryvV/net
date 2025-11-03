@@ -15,6 +15,16 @@
       </div>
 
       <form @submit.prevent="handleSubmit" class="space-y-8">
+        <!-- Form Progress Bar -->
+        <FormProgress
+          :progress="formProgress"
+          :label="progressLabel"
+          :show-steps="true"
+          :steps="5"
+          :current-step="currentStep"
+          :step-labels="stepLabels"
+        />
+
         <!-- Barra de progreso durante la creación -->
         <div v-if="loading" class="mb-4">
           <progress class="progress progress-primary w-full" />
@@ -63,6 +73,7 @@
           </label>
           <div>
             <select v-model="form.status" class="select select-bordered select-lg focus:select-primary transition-all duration-300 bg-base-100 shadow-sm hover:shadow-md">
+              <option value="">Selecciona un estado</option>
               <option value="planning">Planificando</option>
               <option value="in_progress">En Progreso</option>
               <option value="completed">Completado</option>
@@ -264,6 +275,7 @@ import {
   ExclamationTriangleIcon,
   InformationCircleIcon
 } from '@heroicons/vue/24/outline'
+import FormProgress from '@/components/ui/FormProgress.vue'
 
 interface Props {
   show: boolean
@@ -283,7 +295,7 @@ const { profile } = storeToRefs(authStore)
 const form = ref({
   title: '',
   description: '',
-  status: 'planning' as const,
+  status: '' as const,
   tags: [] as string[],
   image_url: '',
   team_members: [] as string[]
@@ -310,6 +322,44 @@ const memberSuggestions = computed(() => {
   const q = memberInput.value.toLowerCase()
   if (!q) return []
   return allUsers.filter(u => u.email.toLowerCase().includes(q) || u.full_name.toLowerCase().includes(q)).slice(0, 6)
+})
+
+// Form Progress Computeds
+const formProgress = computed(() => {
+  let progress = 0
+
+  if (form.value.title.trim().length > 0) progress += 20
+  if (form.value.description.trim().length > 0) progress += 20
+  if (form.value.status !== '') progress += 20
+  if (form.value.tags.length > 0) progress += 20
+  if (form.value.image_url.trim().length > 0 || form.value.team_members.length > 0) progress += 20
+
+  return progress
+})
+
+const currentStep = computed(() => {
+  if ((form.value.image_url.trim().length > 0 || form.value.team_members.length > 0) && form.value.tags.length > 0 && form.value.status && form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 5
+  if (form.value.tags.length > 0 && form.value.status && form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 4
+  if (form.value.status && form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 3
+  if (form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 2
+  if (form.value.title.trim().length > 0) return 1
+  return 0
+})
+
+const stepLabels = computed(() => {
+  return ['Título', 'Descripción', 'Estado', 'Etiquetas', 'Extras']
+})
+
+const progressLabel = computed(() => {
+  if (formProgress.value === 100) {
+    return '¡Listo para crear!'
+  } else if (formProgress.value >= 80) {
+    return 'Casi completo...'
+  } else if (formProgress.value >= 50) {
+    return 'Vas por buen camino'
+  } else {
+    return 'Completa tu proyecto'
+  }
 })
 
 const addTag = () => {
@@ -360,7 +410,7 @@ const resetForm = () => {
   form.value = {
     title: '',
     description: '',
-    status: 'planning',
+    status: '',
     tags: [],
     image_url: '',
     team_members: []
@@ -414,7 +464,7 @@ const handleSubmit = async () => {
       resetForm()
       emit('created')
     }
-  } catch (err) {
+  } catch {
     error.value = 'Error inesperado al crear el proyecto'
   } finally {
     loading.value = false
