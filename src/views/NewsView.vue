@@ -41,6 +41,7 @@
           v-for="item in filteredNews"
           :key="item.id"
           class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all duration-300"
+          @contextmenu.prevent="(e) => handleNewsContextMenu(e, item)"
         >
           <div class="card-body">
             <!-- Header -->
@@ -56,8 +57,16 @@
                   </p>
                 </div>
               </div>
-              <div class="badge" :class="getCategoryBadgeColor(item.category)">
-                {{ getCategoryLabel(item.category) }}
+              <div class="flex items-center gap-2">
+                <div class="badge" :class="getCategoryBadgeColor(item.category)">
+                  {{ getCategoryLabel(item.category) }}
+                </div>
+                <button 
+                  @click="(e) => handleNewsMenuClick(e, item)"
+                  class="btn btn-ghost btn-sm btn-circle"
+                >
+                  <EllipsisVerticalIcon class="w-5 h-5" />
+                </button>
               </div>
             </div>
 
@@ -133,6 +142,9 @@
 
     <!-- Footer -->
     <AppFooter />
+
+    <!-- Context Menu -->
+    <ContextMenu ref="newsContextMenuRef" :items="newsContextMenuItems" />
   </div>
 </template>
 
@@ -140,19 +152,27 @@
 import { ref, computed } from 'vue'
 import { useTranslation } from '@/composables/useTranslation'
 import AppFooter from '@/components/AppFooter.vue'
+import ContextMenu from '@/components/ContextMenu.vue'
+import type { ContextMenuItem } from '@/components/ContextMenu.vue'
 import {
   SparklesIcon,
   RocketLaunchIcon,
   WrenchScrewdriverIcon,
   ExclamationTriangleIcon,
   MegaphoneIcon,
-  NewspaperIcon
+  NewspaperIcon,
+  EllipsisVerticalIcon,
+  ShareIcon,
+  BookmarkIcon,
+  ClipboardDocumentIcon
 } from '@/icons'
 
 const { t, locale } = useTranslation()
 
 const activeCategory = ref('all')
 const expandedItems = ref<Record<string, boolean>>({})
+const newsContextMenuRef = ref<InstanceType<typeof ContextMenu> | null>(null)
+const currentNewsItem = ref<any>(null)
 
 // Categories
 const categories = computed(() => [
@@ -360,5 +380,64 @@ const formatDate = (dateString: string) => {
 
 const toggleExpand = (id: number) => {
   expandedItems.value[id] = !expandedItems.value[id]
+}
+
+// Context menu handlers
+const newsContextMenuItems = computed((): ContextMenuItem[] => [
+  {
+    label: locale.value === 'es' ? 'Compartir' : 'Share',
+    icon: ShareIcon,
+    action: () => handleShareNews()
+  },
+  {
+    label: locale.value === 'es' ? 'Copiar enlace' : 'Copy link',
+    icon: ClipboardDocumentIcon,
+    action: () => handleCopyLink()
+  },
+  {
+    label: locale.value === 'es' ? 'Guardar' : 'Save',
+    icon: BookmarkIcon,
+    action: () => handleSaveNews()
+  }
+])
+
+const handleNewsContextMenu = (event: MouseEvent, item: any) => {
+  currentNewsItem.value = item
+  newsContextMenuRef.value?.show(event.clientX, event.clientY)
+}
+
+const handleNewsMenuClick = (event: MouseEvent, item: any) => {
+  currentNewsItem.value = item
+  const button = event.currentTarget as HTMLElement
+  const rect = button.getBoundingClientRect()
+  newsContextMenuRef.value?.show(rect.left - 180, rect.bottom + 5)
+}
+
+const handleShareNews = () => {
+  if (!currentNewsItem.value) return
+  
+  const url = `${window.location.origin}/news#${currentNewsItem.value.id}`
+  const text = currentNewsItem.value.title
+  
+  if (navigator.share) {
+    navigator.share({ title: text, url })
+  } else {
+    navigator.clipboard.writeText(url)
+    // TODO: Show toast
+  }
+}
+
+const handleCopyLink = () => {
+  if (!currentNewsItem.value) return
+  
+  const url = `${window.location.origin}/news#${currentNewsItem.value.id}`
+  navigator.clipboard.writeText(url)
+  // TODO: Show toast "Enlace copiado"
+}
+
+const handleSaveNews = () => {
+  if (!currentNewsItem.value) return
+  // TODO: Save to user's saved items
+  console.log('Guardando noticia:', currentNewsItem.value.id)
 }
 </script>

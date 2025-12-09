@@ -4,6 +4,8 @@ import { storeToRefs } from 'pinia'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import ResetPasswordView from '@/views/ResetPasswordView.vue'
+import AboutView from '@/views/AboutView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import MyProjectsView from '@/views/MyProjectsView.vue'
 import ProjectDetailView from '@/views/ProjectDetailView.vue'
@@ -33,9 +35,20 @@ const router = createRouter({
       meta: { requiresGuest: true }
     },
     {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPasswordView
+      // No requiere guest ni auth - permite acceso directo desde email
+    },
+    {
       path: '/news',
       name: 'news',
       component: NewsView
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView
     },
     {
       path: '/profile',

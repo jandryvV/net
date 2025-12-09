@@ -12,7 +12,7 @@
       <!-- Input Field -->
       <input
         :id="id"
-        :type="type"
+        :type="computedType"
         :placeholder="placeholder"
         :disabled="disabled"
         :readonly="readonly"
@@ -30,9 +30,20 @@
         <component :is="icon" class="h-5 w-5 text-base-content/40" />
       </div>
 
+      <!-- Toggle password visibility -->
+      <button
+        v-if="type === 'password' && modelValue"
+        type="button"
+        @click="togglePasswordVisibility"
+        class="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-base-content/80 transition-colors"
+      >
+        <EyeIcon v-if="!showPassword" class="h-5 w-5 text-base-content/40" />
+        <EyeSlashIcon v-else class="h-5 w-5 text-base-content/40" />
+      </button>
+
       <!-- Clear button -->
       <button
-        v-if="clearable && modelValue && !disabled && !readonly"
+        v-else-if="clearable && modelValue && !disabled && !readonly && type !== 'password'"
         type="button"
         @click="handleClear"
         class="absolute inset-y-0 right-0 pr-3 flex items-center"
@@ -64,8 +75,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { XMarkIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import { computed, ref } from 'vue'
+import { XMarkIcon, ExclamationCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 
 interface Props {
   id?: string
@@ -101,6 +112,19 @@ const emit = defineEmits<{
   focus: [event: Event]
   clear: []
 }>()
+
+const showPassword = ref(false)
+
+const computedType = computed(() => {
+  if (props.type === 'password' && showPassword.value) {
+    return 'text'
+  }
+  return props.type
+})
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
 
 const characterCount = computed(() => {
   return String(props.modelValue || '').length

@@ -211,9 +211,10 @@ export const useAuthStore = defineStore('auth', () => {
       })
 
       if (error) throw error
+      return { error: null }
     } catch (error: any) {
       console.error('Error sending password reset:', error)
-      throw error
+      return { error }
     } finally {
       loading.value = false
     }

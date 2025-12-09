@@ -1,5 +1,8 @@
 <template>
-  <div class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
+  <div 
+    class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow"
+    @contextmenu.prevent="handleContextMenu"
+  >
     <figure v-if="project.image_url" class="aspect-video">
       <img
         :src="project.image_url"
@@ -26,18 +29,16 @@
           </div>
         </div>
 
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-            </svg>
-          </div>
-          <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Reportar</a></li>
-            <li><a>Compartir</a></li>
-          </ul>
-        </div>
+        <button 
+          @click="handleMenuClick"
+          class="btn btn-ghost btn-sm btn-circle"
+        >
+          <EllipsisVerticalIcon class="w-5 h-5" />
+        </button>
       </div>
+
+    <!-- Context Menu -->
+    <ContextMenu ref="contextMenuRef" :items="contextMenuItems" />
 
       <!-- Project Content -->
       <h2 class="card-title text-lg mb-2">{{ project.title }}</h2>
@@ -124,10 +125,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import ContextMenu from '@/components/ContextMenu.vue'
 import type { Project } from '@/types'
+import {
+  EllipsisVerticalIcon,
+  PencilIcon,
+  TrashIcon,
+  ShareIcon,
+  EyeIcon,
+  BookmarkIcon,
+  FlagIcon
+} from '@/icons'
 
 interface Props {
   project: Project & { creator?: { full_name: string; avatar_url?: string } }
@@ -135,12 +148,101 @@ interface Props {
 
 const props = defineProps<Props>()
 const { t } = useI18n()
+const router = useRouter()
+const authStore = useAuthStore()
+const contextMenuRef = ref<InstanceType<typeof ContextMenu> | null>(null)
 
-defineEmits<{
+const emit = defineEmits<{
   like: [projectId: string]
   comment: [projectId: string]
   view: [projectId: string]
+  edit: [projectId: string]
+  delete: [projectId: string]
+  share: [projectId: string]
+  save: [projectId: string]
+  report: [projectId: string]
 }>()
+
+const isOwner = computed(() => {
+  return authStore.user?.id === props.project.user_id
+})
+
+const contextMenuItems = computed(() => {
+  const items = [
+    {
+      label: t('common.view') || 'Ver Proyecto',
+      icon: EyeIcon,
+      action: () => handleViewProject()
+    },
+    {
+      label: 'Guardar',
+      icon: BookmarkIcon,
+      action: () => emit('save', props.project.id)
+    },
+    {
+      label: t('common.share') || 'Compartir',
+      icon: ShareIcon,
+      action: () => handleShare()
+    }
+  ]
+
+  if (isOwner.value) {
+    items.push({ divider: true } as any)
+    items.push(
+      {
+        label: t('common.edit') || 'Editar',
+        icon: PencilIcon,
+        action: () => emit('edit', props.project.id)
+      },
+      {
+        label: t('common.delete') || 'Eliminar',
+        icon: TrashIcon,
+        danger: true,
+        action: () => emit('delete', props.project.id)
+      }
+    )
+  } else {
+    items.push({ divider: true } as any)
+    items.push({
+      label: 'Reportar',
+      icon: FlagIcon,
+      warning: true,
+      action: () => emit('report', props.project.id)
+    })
+  }
+
+  return items
+})
+
+const handleContextMenu = (event: MouseEvent) => {
+  contextMenuRef.value?.show(event.clientX, event.clientY)
+}
+
+const handleMenuClick = (event: MouseEvent) => {
+  const button = event.currentTarget as HTMLElement
+  const rect = button.getBoundingClientRect()
+  contextMenuRef.value?.show(rect.left, rect.bottom + 5)
+}
+
+const handleViewProject = () => {
+  router.push(`/projects/${props.project.id}`)
+  emit('view', props.project.id)
+}
+
+const handleShare = () => {
+  const url = `${window.location.origin}/projects/${props.project.id}`
+  if (navigator.share) {
+    navigator.share({
+      title: props.project.title,
+      text: props.project.description,
+      url: url
+    })
+  } else {
+    navigator.clipboard.writeText(url)
+    // TODO: Mostrar toast de "Enlace copiado"
+  }
+  emit('share', props.project.id)
+}
 
 const isLiked = computed(() => {
   // TODO: Check if current user has liked this project

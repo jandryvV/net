@@ -10,6 +10,7 @@ const messages = {
       home: 'Inicio',
       myProjects: 'Mis Proyectos',
       news: 'Noticias y Novedades',
+      about: 'Acerca de',
       profile: 'Perfil',
       login: 'Iniciar Sesión',
       register: 'Registrarse',
@@ -59,6 +60,11 @@ const messages = {
           passwordLength: 'La contraseña debe tener al menos 6 caracteres',
           createAccount: 'Error al crear la cuenta'
         }
+      },
+      resetPassword: {
+        title: 'Restablecer Contraseña',
+        subtitle: 'Ingresa tu nueva contraseña',
+        backToLogin: 'Volver al inicio de sesión'
       },
       validation: {
         required: 'Este campo es obligatorio',
@@ -382,6 +388,30 @@ const messages = {
         hoursAgo: 'Hace {hours}h'
       }
     },
+    keyboardShortcuts: {
+      title: 'Atajos de Teclado',
+      description: 'Usa estos atajos para navegar más rápido por ProjectHub',
+      navigation: 'Navegación',
+      actions: 'Acciones',
+      settings: 'Configuración',
+      tip: 'Consejo',
+      tipText: 'Presiona Alt + ? en cualquier momento para ver esta ayuda',
+      close: 'Cerrar',
+      gotIt: '¡Entendido!',
+      shortcuts: {
+        home: 'Ir a Inicio',
+        about: 'Acerca de ProjectHub',
+        news: 'Ver Noticias',
+        projects: 'Mis Proyectos',
+        loginProfile: 'Login / Perfil',
+        register: 'Registrarse',
+        logout: 'Cerrar Sesión',
+        settings: 'Configuración',
+        theme: 'Cambiar Tema',
+        language: 'Cambiar Idioma',
+        help: 'Mostrar Ayuda'
+      }
+    },
     footer: {
       title: 'DevConnect Platform',
       description: 'La plataforma líder para desarrolladores que buscan colaborar, compartir proyectos y construir el futuro de la tecnología juntos.',
@@ -545,6 +575,7 @@ const messages = {
       home: 'Home',
       myProjects: 'My Projects',
       news: 'News & Updates',
+      about: 'About',
       profile: 'Profile',
       login: 'Sign In',
       register: 'Sign Up',
@@ -594,6 +625,11 @@ const messages = {
           passwordLength: 'Password must be at least 6 characters',
           createAccount: 'Error creating account'
         }
+      },
+      resetPassword: {
+        title: 'Reset Password',
+        subtitle: 'Enter your new password',
+        backToLogin: 'Back to sign in'
       },
       validation: {
         required: 'This field is required',
@@ -915,6 +951,30 @@ const messages = {
         weeksAgo: '{weeks} weeks ago',
         minutesAgo: '{minutes} min ago',
         hoursAgo: '{hours}h ago'
+      }
+    },
+    keyboardShortcuts: {
+      title: 'Keyboard Shortcuts',
+      description: 'Use these shortcuts to navigate faster through ProjectHub',
+      navigation: 'Navigation',
+      actions: 'Actions',
+      settings: 'Settings',
+      tip: 'Tip',
+      tipText: 'Press Alt + ? anytime to see this help',
+      close: 'Close',
+      gotIt: 'Got it!',
+      shortcuts: {
+        home: 'Go to Home',
+        about: 'About ProjectHub',
+        news: 'View News',
+        projects: 'My Projects',
+        loginProfile: 'Login / Profile',
+        register: 'Register',
+        logout: 'Logout',
+        settings: 'Settings',
+        theme: 'Toggle Theme',
+        language: 'Toggle Language',
+        help: 'Show Help'
       }
     },
     footer: {

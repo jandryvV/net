@@ -38,6 +38,16 @@
             {{ $t('nav.news') }}
           </router-link>
         </li>
+        <li>
+          <router-link
+            to="/about"
+            class="btn btn-ghost btn-sm"
+            :class="{ 'btn-active': $route.path === '/about' }"
+          >
+            <InformationCircleIcon class="h-4 w-4" />
+            {{ $t('nav.about') }}
+          </router-link>
+        </li>
         <li v-if="profile">
           <router-link
             to="/my-projects"
@@ -99,6 +109,15 @@
           </li>
         </ul>
       </div>
+
+      <!-- Keyboard Shortcuts Help Button -->
+      <button 
+        @click="toggleKeyboardShortcutsHelp" 
+        class="btn btn-ghost btn-circle btn-sm hidden sm:flex"
+        :title="$t('keyboardShortcuts.title')"
+      >
+        <CommandLineIcon class="h-4 w-4" />
+      </button>
 
       <!-- Accessibility Menu - Hidden on very small screens -->
       <div class="dropdown dropdown-end hidden sm:block">
@@ -256,6 +275,12 @@
               {{ $t('nav.news') }}
             </router-link>
           </li>
+          <li>
+            <router-link to="/about" @click="closeSidebar" class="flex items-center gap-3 p-3 rounded-lg">
+              <InformationCircleIcon class="h-5 w-5" />
+              {{ $t('nav.about') }}
+            </router-link>
+          </li>
           <li v-if="profile">
             <router-link to="/my-projects" @click="closeSidebar" class="flex items-center gap-3 p-3 rounded-lg">
               <FolderIcon class="h-5 w-5" />
@@ -353,7 +378,8 @@ import {
   ComputerDesktopIcon,
   LanguageIcon,
   Cog6ToothIcon,
-  NewspaperIcon
+  NewspaperIcon,
+  CommandLineIcon
 } from '@/icons'
 
 const router = useRouter()
@@ -372,7 +398,7 @@ const {
 
 const { profile } = storeToRefs(authStore)
 const { theme, sidebarOpen, highContrast } = storeToRefs(uiStore)
-const { setTheme, toggleSidebar, closeSidebar, toggleHighContrast } = uiStore
+const { setTheme, toggleSidebar, closeSidebar, toggleHighContrast, toggleKeyboardShortcutsHelp } = uiStore
 
 const handleSignOut = async () => {
   await authStore.signOut()

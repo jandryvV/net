@@ -49,5 +49,13 @@ export {
   SparklesIcon,
   WrenchScrewdriverIcon,
   MegaphoneIcon,
-  NewspaperIcon
+  NewspaperIcon,
+  CommandLineIcon,
+  ArrowPathIcon,
+  BoltIcon,
+  CogIcon,
+  EllipsisVerticalIcon,
+  BookmarkIcon,
+  FlagIcon,
+  ClipboardDocumentIcon
 } from '@heroicons/vue/24/outline'

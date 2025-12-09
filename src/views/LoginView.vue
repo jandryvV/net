@@ -43,7 +43,7 @@
 
           <div class="flex items-center justify-between">
             <label class="label cursor-pointer">
-              <input type="checkbox" class="checkbox checkbox-primary checkbox-sm" />
+              <input v-model="rememberMe" type="checkbox" class="checkbox checkbox-primary checkbox-sm" />
               <span class="label-text ml-2">Recordarme</span>
             </label>
             <a @click="showForgotPassword = true" class="link link-primary text-sm cursor-pointer">{{ $t('auth.login.forgotPassword') }}</a>
@@ -57,7 +57,7 @@
             size="lg"
             block
             :label="isLocked 
-              ? (useI18n().locale.value === 'es' ? `Bloqueado (${formatTime(remainingTime)})` : `Locked (${formatTime(remainingTime)})`)
+              ? (locale === 'es' ? `Bloqueado (${formatTime(remainingTime)})` : `Locked (${formatTime(remainingTime)})`)
               : (loading ? $t('auth.login.loading') : $t('auth.login.submit'))"
           />
         </form>
@@ -84,7 +84,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span>
-            {{ useI18n().locale.value === 'es' 
+            {{ locale === 'es' 
               ? `Atención: Te quedan ${MAX_ATTEMPTS - loginAttempts.count} intentos antes del bloqueo.`
               : `Warning: ${MAX_ATTEMPTS - loginAttempts.count} attempts remaining before lockout.`
             }}
@@ -98,10 +98,10 @@
           </svg>
           <div>
             <div class="font-bold">
-              {{ useI18n().locale.value === 'es' ? 'Cuenta temporalmente bloqueada' : 'Account temporarily locked' }}
+              {{ locale === 'es' ? 'Cuenta temporalmente bloqueada' : 'Account temporarily locked' }}
             </div>
             <div class="text-sm">
-              {{ useI18n().locale.value === 'es' 
+              {{ locale === 'es' 
                 ? `Por seguridad, debes esperar ${formatTime(remainingTime)} antes de intentar nuevamente.`
                 : `For security, you must wait ${formatTime(remainingTime)} before trying again.`
               }}
@@ -121,10 +121,15 @@
     <!-- Modal Recuperar Contraseña -->
     <div v-if="showForgotPassword" class="modal modal-open">
       <div class="modal-box">
-        <h3 class="font-bold text-lg mb-4">Recuperar Contraseña</h3>
+        <h3 class="font-bold text-lg mb-4">
+          {{ locale === 'es' ? 'Recuperar Contraseña' : 'Recover Password' }}
+        </h3>
         <div class="space-y-4">
           <p class="text-sm text-base-content/70">
-            Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.
+            {{ locale === 'es' 
+              ? 'Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.'
+              : 'Enter your email and we will send you a link to reset your password.'
+            }}
           </p>
           <div class="form-control">
             <label class="label">
@@ -133,7 +138,7 @@
             <input
               v-model="resetEmail"
               type="email"
-              placeholder="tu@email.com"
+              :placeholder="locale === 'es' ? 'tu@email.com' : 'your@email.com'"
               class="input input-bordered"
               required
             />
@@ -142,10 +147,16 @@
             <ExclamationCircleIcon class="h-5 w-5" />
             <span>{{ resetError }}</span>
           </div>
+          <div v-if="resetSuccess" class="alert alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{{ resetSuccess }}</span>
+          </div>
         </div>
         <div class="modal-action">
-          <button @click="showForgotPassword = false" class="btn btn-ghost">
-            Cancelar
+          <button @click="closeForgotPasswordModal" class="btn btn-ghost">
+            {{ locale === 'es' ? 'Cancelar' : 'Cancel' }}
           </button>
           <button
             @click="handleForgotPassword"
@@ -153,11 +164,14 @@
             :class="{ 'loading': resetLoading }"
             :disabled="resetLoading || !resetEmail"
           >
-            {{ resetLoading ? 'Enviando...' : 'Enviar enlace' }}
+            {{ resetLoading 
+              ? (locale === 'es' ? 'Enviando...' : 'Sending...') 
+              : (locale === 'es' ? 'Enviar enlace' : 'Send link')
+            }}
           </button>
         </div>
       </div>
-      <div class="modal-backdrop" @click="showForgotPassword = false"></div>
+      <div class="modal-backdrop" @click="closeForgotPasswordModal"></div>
     </div>
   </div>
 </template>
@@ -179,13 +193,15 @@ import {
 } from '@/icons'
 
 const router = useRouter()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const authStore = useAuthStore()
 
 const form = reactive({
   email: '',
   password: ''
 })
+
+const rememberMe = ref(false)
 
 const rules = {
   email: [
@@ -222,6 +238,7 @@ const remainingTime = ref(0)
 const showForgotPassword = ref(false)
 const resetEmail = ref('')
 const resetError = ref('')
+const resetSuccess = ref('')
 const resetLoading = ref(false)
 
 // Success toast
@@ -311,6 +328,22 @@ function formatTime(seconds: number): string {
 // Verificar bloqueo al montar el componente
 checkIfLocked()
 
+// Cargar credenciales guardadas si existen
+const loadSavedCredentials = () => {
+  const saved = localStorage.getItem('saved_credentials')
+  if (saved) {
+    try {
+      const { email, rememberMeEnabled } = JSON.parse(saved)
+      form.email = email
+      rememberMe.value = rememberMeEnabled
+    } catch (e) {
+      console.error('Error loading saved credentials:', e)
+    }
+  }
+}
+
+loadSavedCredentials()
+
 // Form Progress
 const formProgress = computed(() => {
   let progress = 0
@@ -321,30 +354,13 @@ const formProgress = computed(() => {
   
   return progress
 })
-
-const progressLabel = computed(() => {
-  const locale = useI18n().locale.value
-  if (formProgress.value === 100) {
-    return locale === 'es' ? '¡Listo para iniciar sesión!' : 'Ready to sign in!'
-  } else if (formProgress.value >= 50) {
-    return locale === 'es' ? 'Casi listo...' : 'Almost there...'
-  } else {
-    return locale === 'es' ? 'Completa el formulario' : 'Complete the form'
-  }
-})
-
-const validateField = (field: string, value: any) => {
-  validate(field, value)
-}
-
 const handleLogin = async () => {
   clearErrors()
   generalError.value = ''
 
   // Verificar si está bloqueado
   if (checkIfLocked()) {
-    const locale = useI18n().locale.value
-    generalError.value = locale === 'es' 
+    generalError.value = locale.value === 'es' 
       ? `Demasiados intentos fallidos. Cuenta bloqueada por ${formatTime(remainingTime.value)}.`
       : `Too many failed attempts. Account locked for ${formatTime(remainingTime.value)}.`
     return
@@ -380,6 +396,17 @@ const handleLogin = async () => {
       // Login exitoso - resetear intentos
       resetAttempts()
       
+      // Guardar credenciales si está marcado recordarme
+      if (rememberMe.value) {
+        localStorage.setItem('saved_credentials', JSON.stringify({
+          email: form.email,
+          rememberMeEnabled: true
+        }))
+      } else {
+        // Limpiar credenciales guardadas si se desactiva
+        localStorage.removeItem('saved_credentials')
+      }
+      
       // Mostrar mensaje de éxito
       showSuccess('Inicio de sesión exitoso')
 
@@ -396,33 +423,55 @@ const handleLogin = async () => {
     loading.value = false
   }
 }
-
 const handleForgotPassword = async () => {
   if (!resetEmail.value) {
-    resetError.value = 'Por favor ingresa tu email'
+    resetError.value = locale.value === 'es' ? 'Por favor ingresa tu email' : 'Please enter your email'
     return
   }
 
   if (!/\S+@\S+\.\S+/.test(resetEmail.value)) {
-    resetError.value = 'Por favor ingresa un email válido'
+    resetError.value = locale.value === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email'
     return
   }
 
   resetLoading.value = true
   resetError.value = ''
+  resetSuccess.value = ''
 
   try {
-    // Simular envío de email (aquí usarías supabase.auth.resetPasswordForEmail)
-    await new Promise(resolve => setTimeout(resolve, 1500)) // Simular delay
+    // Enviar email de recuperación con Supabase
+    const result = await authStore.resetPassword(resetEmail.value)
 
-    showSuccess('Enlace de recuperación enviado a tu email')
-    showForgotPassword.value = false
-    resetEmail.value = ''
-  } catch (error) {
-    resetError.value = 'Error al enviar el enlace. Intenta nuevamente.'
+    if (result && result.error) {
+      console.error('Reset password error details:', result.error)
+      resetError.value = locale.value === 'es' 
+        ? `Error al enviar el enlace: ${result.error.message || 'Intenta nuevamente'}`
+        : `Error sending link: ${result.error.message || 'Please try again'}`
+    } else {
+      resetSuccess.value = locale.value === 'es'
+        ? '¡Enlace enviado! Revisa tu email (también en spam)'
+        : 'Link sent! Check your email (also spam folder)'
+      
+      // Limpiar el email y cerrar modal después de 3 segundos
+      setTimeout(() => {
+        closeForgotPasswordModal()
+      }, 3000)
+    }
+  } catch (error: any) {
+    console.error('Unexpected error:', error)
+    resetError.value = locale.value === 'es'
+      ? `Error inesperado: ${error.message || 'Intenta nuevamente'}`
+      : `Unexpected error: ${error.message || 'Please try again'}`
   } finally {
     resetLoading.value = false
   }
+}
+
+const closeForgotPasswordModal = () => {
+  showForgotPassword.value = false
+  resetEmail.value = ''
+  resetError.value = ''
+  resetSuccess.value = ''
 }
 
 const showSuccess = (message: string) => {
