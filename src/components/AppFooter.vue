@@ -44,7 +44,7 @@
               <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.reportIssue') }}</a>
             </li>
             <li>
-              <a href="mailto:support@devconnect.com" class="hover:text-primary transition-colors">
+              <a href="mailto:support@projectHub.com" class="hover:text-primary transition-colors">
                 {{ t('footer.support.email') }}
               </a>
             </li>

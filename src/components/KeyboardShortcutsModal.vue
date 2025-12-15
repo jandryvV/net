@@ -87,6 +87,24 @@
               </div>
             </div>
 
+            <!-- Accessibility shortcuts -->
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+                <SpeakerWaveIcon class="w-5 h-5 text-secondary" />
+                {{ t('keyboardShortcuts.accessibility') }}
+              </h3>
+              <div class="space-y-2">
+                <div
+                  v-for="shortcut in accessibilityShortcuts"
+                  :key="shortcut.key"
+                  class="flex items-center justify-between p-3 bg-base-200 rounded-lg hover:bg-base-300 transition-colors"
+                >
+                  <span class="text-sm">{{ t(shortcut.description) }}</span>
+                  <kbd class="kbd kbd-sm">{{ shortcut.key }}</kbd>
+                </div>
+              </div>
+            </div>
+
             <!-- Help section -->
             <div class="bg-base-200 rounded-lg p-4">
               <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
@@ -122,7 +140,8 @@ import {
   ArrowPathIcon,
   BoltIcon,
   CogIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  SpeakerWaveIcon
 } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
@@ -153,6 +172,16 @@ const settingsShortcuts = computed(() => [
   { key: 'Alt + I', description: 'keyboardShortcuts.shortcuts.language', requiresAuth: false },
   { key: 'Alt + ?', description: 'keyboardShortcuts.shortcuts.help', requiresAuth: false }
 ].filter(s => !s.requiresAuth || authStore.user))
+
+const accessibilityShortcuts = computed(() => [
+  { key: 'Alt + V', description: 'keyboardShortcuts.shortcuts.toggleTTS', requiresAuth: false },
+  { key: 'Alt + Q', description: 'keyboardShortcuts.shortcuts.readPage', requiresAuth: false },
+  { key: 'Alt + W', description: 'keyboardShortcuts.shortcuts.readSelection', requiresAuth: false },
+  { key: 'Alt + E', description: 'keyboardShortcuts.shortcuts.stopReading', requiresAuth: false },
+  { key: 'Alt + +', description: 'keyboardShortcuts.shortcuts.zoomIn', requiresAuth: false },
+  { key: 'Alt + -', description: 'keyboardShortcuts.shortcuts.zoomOut', requiresAuth: false },
+  { key: 'Alt + 0', description: 'keyboardShortcuts.shortcuts.resetZoom', requiresAuth: false }
+])
 </script>
 
 <style scoped>

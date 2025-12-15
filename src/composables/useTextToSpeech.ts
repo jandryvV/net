@@ -21,15 +21,15 @@ export function useTextToSpeech() {
   const getVoiceForLanguage = () => {
     const voices = getVoices()
     const lang = locale.value === 'es' ? 'es' : 'en'
-    
+
     // Try to find a voice matching the current language
     let voice = voices.find(v => v.lang.startsWith(lang))
-    
+
     // Fallback to default voice
     if (!voice && voices.length > 0) {
       voice = voices[0]
     }
-    
+
     return voice
   }
 
@@ -42,7 +42,7 @@ export function useTextToSpeech() {
 
     const utterance = new SpeechSynthesisUtterance(text)
     const voice = getVoiceForLanguage()
-    
+
     if (voice) {
       utterance.voice = voice
     }
@@ -94,7 +94,7 @@ export function useTextToSpeech() {
   const toggleEnabled = () => {
     isEnabled.value = !isEnabled.value
     localStorage.setItem('ttsEnabled', isEnabled.value.toString())
-    
+
     if (!isEnabled.value) {
       stop()
     }
@@ -133,42 +133,8 @@ export function useTextToSpeech() {
     }
   }
 
-  // Keyboard shortcuts
-  const handleKeyPress = (event: KeyboardEvent) => {
-    // Alt + R: Read page
-    if (event.altKey && event.key === 'r') {
-      event.preventDefault()
-      const mainContent = document.querySelector('main') || document.body
-      const text = mainContent.textContent || ''
-      speak(text)
-    }
-    
-    // Alt + S: Read selection
-    if (event.altKey && event.key === 's') {
-      event.preventDefault()
-      readSelection()
-    }
-    
-    // Alt + X: Stop reading
-    if (event.altKey && event.key === 'x') {
-      event.preventDefault()
-      stop()
-    }
-
-    // Alt + T: Toggle TTS
-    if (event.altKey && event.key === 't') {
-      event.preventDefault()
-      toggleEnabled()
-    }
-  }
-
-  // Setup keyboard listeners
-  onMounted(() => {
-    window.addEventListener('keydown', handleKeyPress)
-  })
-
+  // Cleanup on unmount
   onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyPress)
     stop()
   })
 

@@ -394,6 +394,7 @@ const messages = {
       navigation: 'Navegación',
       actions: 'Acciones',
       settings: 'Configuración',
+      accessibility: 'Accesibilidad',
       tip: 'Consejo',
       tipText: 'Presiona Alt + ? en cualquier momento para ver esta ayuda',
       close: 'Cerrar',
@@ -409,11 +410,18 @@ const messages = {
         settings: 'Configuración',
         theme: 'Cambiar Tema',
         language: 'Cambiar Idioma',
-        help: 'Mostrar Ayuda'
+        help: 'Mostrar Ayuda',
+        toggleTTS: 'Activar/Desactivar Lector de Voz',
+        readPage: 'Leer Página Completa',
+        readSelection: 'Leer Texto Seleccionado',
+        stopReading: 'Detener Lectura',
+        zoomIn: 'Aumentar Zoom',
+        zoomOut: 'Disminuir Zoom',
+        resetZoom: 'Restablecer Zoom'
       }
     },
     footer: {
-      title: 'DevConnect Platform',
+      title: 'ProjectHub Platform',
       description: 'La plataforma líder para desarrolladores que buscan colaborar, compartir proyectos y construir el futuro de la tecnología juntos.',
       support: {
         title: 'Soporte',
@@ -421,7 +429,7 @@ const messages = {
         contact: 'Contacto',
         liveChat: 'Chat en vivo',
         reportIssue: 'Reportar problema',
-        email: 'support@devconnect.com'
+        email: 'support@projectHub.com'
       },
       legal: {
         title: 'Legal',
@@ -431,7 +439,7 @@ const messages = {
         conduct: 'Código de Conducta',
         licenses: 'Licencias'
       },
-      copyright: '© {year} DevConnect Platform. Todos los derechos reservados.',
+      copyright: '© {year} ProjectHub Platform. Todos los derechos reservados.',
       madeWith: 'Hecho con ❤️ para la comunidad de desarrolladores'
     },
     termsModal: {
@@ -546,7 +554,12 @@ const messages = {
       speed: 'Velocidad',
       pitch: 'Tono',
       volume: 'Volumen',
-      notSupported: 'Tu navegador no soporta síntesis de voz'
+      notSupported: 'Tu navegador no soporta síntesis de voz',
+      zoom: 'Zoom',
+      zoomIn: 'Aumentar Zoom',
+      zoomOut: 'Disminuir Zoom',
+      resetZoom: 'Restablecer Zoom',
+      currentZoom: 'Zoom actual'
     },
     news: {
       title: 'Noticias y Novedades',
@@ -959,6 +972,7 @@ const messages = {
       navigation: 'Navigation',
       actions: 'Actions',
       settings: 'Settings',
+      accessibility: 'Accessibility',
       tip: 'Tip',
       tipText: 'Press Alt + ? anytime to see this help',
       close: 'Close',
@@ -974,7 +988,14 @@ const messages = {
         settings: 'Settings',
         theme: 'Toggle Theme',
         language: 'Toggle Language',
-        help: 'Show Help'
+        help: 'Show Help',
+        toggleTTS: 'Toggle Text-to-Speech',
+        readPage: 'Read Full Page',
+        readSelection: 'Read Selected Text',
+        stopReading: 'Stop Reading',
+        zoomIn: 'Zoom In',
+        zoomOut: 'Zoom Out',
+        resetZoom: 'Reset Zoom'
       }
     },
     footer: {
@@ -1111,7 +1132,12 @@ const messages = {
       speed: 'Speed',
       pitch: 'Pitch',
       volume: 'Volume',
-      notSupported: 'Your browser does not support speech synthesis'
+      notSupported: 'Your browser does not support speech synthesis',
+      zoom: 'Zoom',
+      zoomIn: 'Zoom In',
+      zoomOut: 'Zoom Out',
+      resetZoom: 'Reset Zoom',
+      currentZoom: 'Current zoom'
     },
     news: {
       title: 'News & Updates',

@@ -11,6 +11,7 @@ export const useUIStore = defineStore('ui', () => {
   const highContrast = ref<boolean>(localStorage.getItem('highContrast') === 'true')
   const textToSpeechEnabled = ref<boolean>(localStorage.getItem('ttsEnabled') === 'true')
   const showKeyboardShortcutsHelp = ref(false)
+  const zoomLevel = ref<number>(parseFloat(localStorage.getItem('zoomLevel') || '100'))
 
   // Theme management
   const setTheme = (newTheme: Theme) => {
@@ -95,8 +96,33 @@ export const useUIStore = defineStore('ui', () => {
     setLanguage(newLang)
   }
 
-  // Initialize theme on store creation
+  // Zoom management
+  const setZoom = (level: number) => {
+    const clampedLevel = Math.max(50, Math.min(200, level))
+    zoomLevel.value = clampedLevel
+    localStorage.setItem('zoomLevel', clampedLevel.toString())
+    applyZoom()
+  }
+
+  const increaseZoom = () => {
+    setZoom(zoomLevel.value + 10)
+  }
+
+  const decreaseZoom = () => {
+    setZoom(zoomLevel.value - 10)
+  }
+
+  const resetZoom = () => {
+    setZoom(100)
+  }
+
+  const applyZoom = () => {
+    document.documentElement.style.fontSize = `${zoomLevel.value}%`
+  }
+
+  // Initialize theme and zoom on store creation
   applyTheme()
+  applyZoom()
 
   // Listen for system theme changes
   if (theme.value === 'auto') {
@@ -110,6 +136,7 @@ export const useUIStore = defineStore('ui', () => {
     highContrast,
     textToSpeechEnabled,
     showKeyboardShortcutsHelp,
+    zoomLevel,
     setTheme,
     setLanguage,
     toggleSidebar,
@@ -121,6 +148,10 @@ export const useUIStore = defineStore('ui', () => {
     setTextToSpeech,
     toggleKeyboardShortcutsHelp,
     toggleTheme,
-    toggleLanguage
+    toggleLanguage,
+    setZoom,
+    increaseZoom,
+    decreaseZoom,
+    resetZoom
   }
 })

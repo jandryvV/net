@@ -2,11 +2,13 @@ import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useUIStore } from '@/stores/ui'
+import { useTextToSpeech } from './useTextToSpeech'
 
 export function useKeyboardShortcuts() {
   const router = useRouter()
   const authStore = useAuthStore()
   const uiStore = useUIStore()
+  const { speak, stop, toggleEnabled, readSelection } = useTextToSpeech()
 
   const handleKeyDown = async (event: KeyboardEvent) => {
     // Solo procesar si se presiona Alt + otra tecla
@@ -86,6 +88,45 @@ export function useKeyboardShortcuts() {
         // Alt + ?: Mostrar ayuda de atajos (abrir modal)
         uiStore.showKeyboardShortcutsHelp = true
         break
+
+      case 'v':
+        // Alt + V: Activar/Desactivar lector de voz
+        toggleEnabled()
+        break
+
+      case 'q':
+        // Alt + Q: Leer página completa
+        const mainContent = document.querySelector('main') || document.body
+        const text = mainContent.textContent || ''
+        speak(text)
+        break
+
+      case 'w':
+        // Alt + W: Leer texto seleccionado
+        readSelection()
+        break
+
+      case 'e':
+        // Alt + E: Detener lectura
+        stop()
+        break
+
+      case '+':
+      case '=':
+        // Alt + +: Aumentar zoom
+        uiStore.increaseZoom()
+        break
+
+      case '-':
+      case '_':
+        // Alt + -: Disminuir zoom
+        uiStore.decreaseZoom()
+        break
+
+      case '0':
+        // Alt + 0: Restablecer zoom
+        uiStore.resetZoom()
+        break
     }
   }
 
@@ -112,7 +153,14 @@ export function useKeyboardShortcuts() {
       { key: 'Alt + X', description: 'Cerrar Sesión', requiresAuth: true },
       { key: 'Alt + T', description: 'Cambiar Tema', requiresAuth: false },
       { key: 'Alt + I', description: 'Cambiar Idioma', requiresAuth: false },
-      { key: 'Alt + ?', description: 'Mostrar Ayuda', requiresAuth: false }
+      { key: 'Alt + ?', description: 'Mostrar Ayuda', requiresAuth: false },
+      { key: 'Alt + V', description: 'Activar/Desactivar lector de voz', requiresAuth: false },
+      { key: 'Alt + Q', description: 'Leer página completa', requiresAuth: false },
+      { key: 'Alt + W', description: 'Leer texto seleccionado', requiresAuth: false },
+      { key: 'Alt + E', description: 'Detener lectura', requiresAuth: false },
+      { key: 'Alt + +', description: 'Aumentar zoom', requiresAuth: false },
+      { key: 'Alt + -', description: 'Disminuir zoom', requiresAuth: false },
+      { key: 'Alt + 0', description: 'Restablecer zoom', requiresAuth: false }
     ]
   }
 }
