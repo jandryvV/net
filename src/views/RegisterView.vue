@@ -8,7 +8,7 @@
 
     <div class="relative w-full max-w-5xl">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        
+
         <!-- Panel izquierdo - Información -->
         <div class="hidden lg:block space-y-8 p-8">
           <div class="space-y-4">
@@ -22,7 +22,7 @@
                 ProjectHub
               </h1>
             </div>
-            
+
             <h2 class="text-3xl font-bold text-base-content">
               {{ t('auth.register.title') }}
             </h2>
@@ -215,7 +215,7 @@
                     class="checkbox checkbox-primary"
                     required
                   />
-                  <span class="label-text text-sm">
+                  <span class="label-text text-sm flex flex-col">
                     {{ t('auth.register.acceptTerms') }}
                     <a @click="showTerms = true" class="link link-primary font-semibold cursor-pointer">{{ t('auth.register.termsOfUse') }}</a>
                     {{ t('auth.register.and') }}
@@ -366,13 +366,13 @@ const successMessage = ref('')
 const formProgress = computed(() => {
   let progress = 0
   const totalSteps = 5
-  
+
   if (fullName.value.trim().length > 0) progress += 20
   if (email.value.trim().length > 0 && email.value.includes('@')) progress += 20
   if (password.value.length >= 6) progress += 20
   if (confirmPassword.value.length >= 6 && password.value === confirmPassword.value) progress += 20
   if (acceptTerms.value) progress += 20
-  
+
   return progress
 })
 

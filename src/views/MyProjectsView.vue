@@ -22,6 +22,28 @@
         </div>
       </div>
 
+      <!-- Tabs para Mis Proyectos y Proyectos del Equipo -->
+      <div class="tabs tabs-boxed bg-base-100 shadow-lg mb-8 p-2 rounded-2xl">
+        <a
+          class="tab tab-lg"
+          :class="{ 'tab-active': activeTab === 'my' }"
+          @click="activeTab = 'my'"
+        >
+          <FolderIcon class="h-5 w-5 mr-2" />
+          {{ t('myProjects.tabs.myProjects') }}
+          <span class="badge badge-sm ml-2">{{ userProjects.length }}</span>
+        </a>
+        <a
+          class="tab tab-lg"
+          :class="{ 'tab-active': activeTab === 'team' }"
+          @click="activeTab = 'team'"
+        >
+          <UsersIcon class="h-5 w-5 mr-2" />
+          {{ t('myProjects.tabs.teamProjects') }}
+          <span class="badge badge-sm ml-2">{{ teamProjects.length }}</span>
+        </a>
+      </div>
+
       <!-- Stats Cards mejoradas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all">
@@ -186,25 +208,25 @@
                   <li>
                     <a @click="viewProjectDetails(project)" class="flex items-center gap-2">
                       <EyeIcon class="h-4 w-4" />
-                      Ver Detalles
+                      {{ t('myProjects.card.viewDetails') }}
                     </a>
                   </li>
-                  <li>
+                  <li v-if="activeTab === 'my'">
                     <a @click="editProject(project)" class="flex items-center gap-2">
                       <PencilIcon class="h-4 w-4" />
-                      Editar
+                      {{ t('myProjects.card.edit') }}
                     </a>
                   </li>
                   <li>
                     <a @click="shareProject(project)" class="flex items-center gap-2">
                       <ShareIcon class="h-4 w-4" />
-                      Compartir
+                      {{ t('myProjects.card.share') }}
                     </a>
                   </li>
-                  <li>
+                  <li v-if="activeTab === 'my'">
                     <a @click="deleteProjectConfirm(project)" class="flex items-center gap-2 text-error">
                       <TrashIcon class="h-4 w-4" />
-                      Eliminar
+                      {{ t('myProjects.card.delete') }}
                     </a>
                   </li>
                 </ul>
@@ -256,7 +278,7 @@
                 @click.stop="viewProjectDetails(project)"
               >
                 <EyeIcon class="h-4 w-4" />
-                Ver Detalles
+                {{ t('myProjects.card.viewDetails') }}
               </button>
             </div>
           </div>
@@ -274,21 +296,20 @@
     <!-- Delete Confirmation Modal -->
     <div v-if="projectToDelete" class="modal modal-open">
       <div class="modal-box">
-        <h3 class="font-bold text-lg">Confirmar Eliminación</h3>
+        <h3 class="font-bold text-lg">{{ t('myProjects.deleteConfirm.title') }}</h3>
         <p class="py-4">
-          ¿Estás seguro de que quieres eliminar el proyecto "{{ projectToDelete.title }}"?
-          Esta acción no se puede deshacer.
+          {{ t('myProjects.deleteConfirm.message', { title: projectToDelete.title }) }}
         </p>
         <div class="modal-action">
           <button class="btn btn-ghost" @click="projectToDelete = null">
-            Cancelar
+            {{ t('myProjects.deleteConfirm.cancel') }}
           </button>
           <button
             class="btn btn-error"
             :class="{ 'loading': deleting }"
             @click="handleDeleteProject"
           >
-            {{ deleting ? 'Eliminando...' : 'Eliminar' }}
+            {{ deleting ? t('myProjects.deleteConfirm.deleting') : t('myProjects.deleteConfirm.confirm') }}
           </button>
         </div>
       </div>
@@ -297,7 +318,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -322,7 +343,8 @@ import {
   RocketLaunchIcon,
   DocumentIcon,
   ExclamationCircleIcon,
-  FunnelIcon
+  FunnelIcon,
+  UsersIcon
 } from '@/icons'
 
 const router = useRouter()
@@ -334,12 +356,15 @@ const { profile } = storeToRefs(authStore)
 const { loading } = storeToRefs(projectsStore)
 
 const userProjects = ref<Project[]>([])
+const teamProjects = ref<Project[]>([])
+const activeTab = ref<'my' | 'team'>('my')
 const showCreateModal = ref(false)
 const statusFilter = ref('')
 const sortBy = ref('created_at')
 const searchQuery = ref('')
 const projectToDelete = ref<Project | null>(null)
 const deleting = ref(false)
+let refreshInterval: number | null = null
 
 const completedCount = computed(() =>
   userProjects.value.filter(p => p.status === 'completed').length
@@ -353,8 +378,12 @@ const totalLikes = computed(() =>
   userProjects.value.reduce((sum, p) => sum + (p.likes_count || 0), 0)
 )
 
+const currentProjects = computed(() => {
+  return activeTab.value === 'my' ? userProjects.value : teamProjects.value
+})
+
 const filteredProjects = computed(() => {
-  let filtered = userProjects.value
+  let filtered = currentProjects.value
 
   // Filter by status
   if (statusFilter.value) {
@@ -394,8 +423,16 @@ const fetchUserProjects = async () => {
   if (!profile.value) return
 
   try {
+    // Refrescar todos los proyectos para obtener contadores actualizados
+    await projectsStore.fetchProjects()
     const projects = await projectsStore.fetchUserProjects(profile.value.id)
     userProjects.value = projects
+
+    // Cargar proyectos donde el usuario es miembro del equipo
+    const allProjects = projectsStore.projects
+    teamProjects.value = allProjects.filter(p =>
+      p.team_members?.includes(profile.value!.id) && p.created_by !== profile.value!.id
+    )
   } catch (error) {
     console.error('Error fetching user projects:', error)
   }
@@ -418,11 +455,11 @@ const formatDate = (dateString: string): string => {
   const diffTime = Math.abs(now.getTime() - date.getTime())
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-  if (diffDays === 1) return 'Ayer'
-  if (diffDays < 7) return `${diffDays}d`
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)}sem`
-  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mes`
-  return `${Math.floor(diffDays / 365)}año`
+  if (diffDays === 1) return t('myProjects.card.ago.yesterday')
+  if (diffDays < 7) return t('myProjects.card.ago.days', { count: diffDays })
+  if (diffDays < 30) return t('myProjects.card.ago.weeks', { count: Math.floor(diffDays / 7) })
+  if (diffDays < 365) return t('myProjects.card.ago.months', { count: Math.floor(diffDays / 30) })
+  return t('myProjects.card.ago.years', { count: Math.floor(diffDays / 365) })
 }
 
 // Get status icon component
@@ -500,6 +537,18 @@ const getStatusText = (status: string) => {
 
 onMounted(() => {
   fetchUserProjects()
+
+  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados
+  refreshInterval = setInterval(() => {
+    fetchUserProjects()
+  }, 30000)
+})
+
+onBeforeUnmount(() => {
+  // Limpiar el intervalo cuando el componente se desmonta
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
 })
 </script>
 

@@ -281,7 +281,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
@@ -320,6 +320,7 @@ const updating = ref(false)
 const error = ref('')
 const avatarError = ref(false)
 const userProjects = ref<Project[]>([])
+let refreshInterval: number | null = null
 
 const editForm = ref({
   full_name: '',
@@ -373,6 +374,8 @@ const loadUserProjects = async () => {
   if (!profile.value) return
 
   try {
+    // Refrescar proyectos completos con contadores actualizados
+    await projectsStore.fetchProjects()
     const projects = await projectsStore.fetchUserProjects(profile.value.id)
     userProjects.value = projects
   } catch (error) {
@@ -415,6 +418,18 @@ const initEditForm = () => {
 onMounted(async () => {
   await loadUserProjects()
   initEditForm()
+
+  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados
+  refreshInterval = setInterval(() => {
+    loadUserProjects()
+  }, 30000)
+})
+
+onBeforeUnmount(() => {
+  // Limpiar el intervalo cuando el componente se desmonta
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
 })
 
 // Watch for profile changes to update edit form

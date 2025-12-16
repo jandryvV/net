@@ -10,8 +10,10 @@ import ProfileView from '@/views/ProfileView.vue'
 import MyProjectsView from '@/views/MyProjectsView.vue'
 import ProjectDetailView from '@/views/ProjectDetailView.vue'
 import ProjectEditView from '@/views/ProjectEditView.vue'
+import ProjectTasksView from '@/views/ProjectTasksView.vue'
 import SettingsView from '@/views/SettingsView.vue'
 import NewsView from '@/views/NewsView.vue'
+import NotificationsView from '@/views/NotificationsView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 
 const router = createRouter({
@@ -75,9 +77,21 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/projects/:id/tasks',
+      name: 'project-tasks',
+      component: ProjectTasksView,
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: SettingsView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: NotificationsView,
       meta: { requiresAuth: true }
     },
     {

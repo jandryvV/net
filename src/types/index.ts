@@ -45,8 +45,33 @@ export interface Like {
 export interface Notification {
   id: string
   user_id: string
-  type: 'like' | 'comment' | 'project_invite' | 'project_update'
+  type: 'like' | 'comment' | 'project_invite' | 'project_update' | 'invite_accepted' | 'invite_rejected'
   message: string
   read: boolean
   created_at: string
+  project_id?: string
+  from_user_id?: string
+  from_user?: User
+  project?: Project
+  metadata?: {
+    invite_id?: string
+    project_title?: string
+    from_user_name?: string
+    [key: string]: any
+  }
+}
+
+export interface Task {
+  id: string
+  project_id: string
+  title: string
+  description?: string
+  status: 'todo' | 'in_progress' | 'done'
+  priority: 'low' | 'medium' | 'high'
+  assigned_to?: string
+  due_date?: string
+  created_at: string
+  updated_at: string
+  created_by: string
+  assignee?: User
 }

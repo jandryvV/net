@@ -15,13 +15,13 @@
             @click="$router.back()"
           >
             <ArrowLeftIcon class="h-5 w-5" />
-            Volver
+            {{ t('projectEdit.back') }}
           </button>
           <div class="breadcrumbs text-sm">
             <ul>
-              <li><router-link to="/">Inicio</router-link></li>
+              <li><router-link to="/">{{ t('projectEdit.breadcrumb.home') }}</router-link></li>
               <li><router-link :to="`/projects/${project?.id}`">{{ project?.title || 'Proyecto' }}</router-link></li>
-              <li>Editar</li>
+              <li>{{ t('projectEdit.breadcrumb.edit') }}</li>
             </ul>
           </div>
         </div>
@@ -35,8 +35,8 @@
               <PencilIcon class="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 class="text-2xl font-bold">Editar Proyecto</h1>
-              <p class="text-base-content/60">Actualiza la información de tu proyecto</p>
+              <h1 class="text-2xl font-bold">{{ t('projectEdit.title') }}</h1>
+              <p class="text-base-content/60">{{ t('projectEdit.subtitle') }}</p>
             </div>
           </div>
 
@@ -52,13 +52,13 @@
               <label class="label">
                 <span class="label-text font-semibold text-base-content flex items-center gap-2">
                   <DocumentIcon class="h-4 w-4" />
-                  Título del proyecto *
+                  {{ t('projectEdit.form.titleLabel') }} *
                 </span>
               </label>
               <input
                 v-model="editForm.title"
                 type="text"
-                placeholder="Nombre de tu proyecto"
+                :placeholder="t('projectEdit.form.titlePlaceholder')"
                 class="input input-bordered input-lg w-full focus:input-primary"
                 required
               />
@@ -70,14 +70,14 @@
                 <label class="label">
                   <span class="label-text font-semibold text-base-content flex items-center gap-2">
                     <ClockIcon class="h-4 w-4" />
-                    Estado del proyecto
+                    {{ t('projectEdit.form.statusLabel') }}
                   </span>
                 </label>
                 <select v-model="editForm.status" class="select select-bordered select-lg w-full focus:select-primary">
-                  <option value="planning">Planificando</option>
-                  <option value="in_progress">En Progreso</option>
-                  <option value="completed">Completado</option>
-                  <option value="on_hold">En Pausa</option>
+                  <option value="planning">{{ t('projectEdit.form.statusPlanning') }}</option>
+                  <option value="in_progress">{{ t('projectEdit.form.statusInProgress') }}</option>
+                  <option value="completed">{{ t('projectEdit.form.statusCompleted') }}</option>
+                  <option value="on_hold">{{ t('projectEdit.form.statusOnHold') }}</option>
                 </select>
               </div>
 
@@ -86,13 +86,13 @@
                 <label class="label">
                   <span class="label-text font-semibold text-base-content flex items-center gap-2">
                     <PhotoIcon class="h-4 w-4" />
-                    Imagen del proyecto
+                    {{ t('projectEdit.form.imageLabel') }}
                   </span>
                 </label>
                 <input
                   v-model="editForm.image_url"
                   type="url"
-                  placeholder="https://ejemplo.com/imagen.jpg"
+                  :placeholder="t('projectEdit.form.imagePlaceholder')"
                   class="input input-bordered input-lg w-full focus:input-primary"
                 />
               </div>
@@ -101,7 +101,7 @@
             <!-- Vista previa de imagen -->
             <div v-if="editForm.image_url" class="form-control">
               <div class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-base-300">
-                <p class="text-sm font-medium text-base-content/60 mb-2">Vista previa:</p>
+                <p class="text-sm font-medium text-base-content/60 mb-2">{{ t('projectEdit.form.imagePreview') }}</p>
                 <img
                   :src="editForm.image_url"
                   alt="Vista previa"
@@ -116,17 +116,17 @@
               <label class="label">
                 <span class="label-text font-semibold text-base-content flex items-center gap-2">
                   <ChatBubbleLeftIcon class="h-4 w-4" />
-                  Descripción *
+                  {{ t('projectEdit.form.descriptionLabel') }} *
                 </span>
               </label>
               <textarea
                 v-model="editForm.description"
-                placeholder="Describe tu proyecto, objetivos, tecnologías..."
+                :placeholder="t('projectEdit.form.descriptionPlaceholder')"
                 class="textarea textarea-bordered textarea-lg h-32 w-full focus:textarea-primary resize-none"
                 required
               ></textarea>
               <label class="label">
-                <span class="label-text-alt text-base-content/40">{{ editForm.description.length }}/500 caracteres</span>
+                <span class="label-text-alt text-base-content/40">{{ t('projectEdit.form.charactersCount', { count: editForm.description.length }) }}</span>
               </label>
             </div>
 
@@ -136,17 +136,17 @@
                 <label class="label">
                   <span class="label-text font-semibold text-base-content flex items-center gap-2">
                     <TagIcon class="h-4 w-4" />
-                    Tecnologías y etiquetas
+                    {{ t('projectEdit.form.tagsLabel') }}
                   </span>
                 </label>
                 <input
                   v-model="editForm.tags"
                   type="text"
-                  placeholder="React, Node.js, TypeScript..."
+                  :placeholder="t('projectEdit.form.tagsPlaceholder')"
                   class="input input-bordered input-lg w-full focus:input-primary"
                 />
                 <label class="label">
-                  <span class="label-text-alt text-base-content/40">Separadas por comas</span>
+                  <span class="label-text-alt text-base-content/40">{{ t('projectEdit.form.tagsSeparator') }}</span>
                 </label>
               </div>
 
@@ -155,17 +155,17 @@
                 <label class="label">
                   <span class="label-text font-semibold text-base-content flex items-center gap-2">
                     <UsersIcon class="h-4 w-4" />
-                    Colaboradores
+                    {{ t('projectEdit.form.teamLabel') }}
                   </span>
                 </label>
                 <input
                   v-model="editForm.team_members"
                   type="text"
-                  placeholder="juan@email.com, maria@email.com..."
+                  :placeholder="t('projectEdit.form.teamPlaceholder')"
                   class="input input-bordered input-lg w-full focus:input-primary"
                 />
                 <label class="label">
-                  <span class="label-text-alt text-base-content/40">Emails separados por comas</span>
+                  <span class="label-text-alt text-base-content/40">{{ t('projectEdit.form.teamHelper') }}</span>
                 </label>
               </div>
             </div>
@@ -178,7 +178,7 @@
                 @click="showDeleteModal = true"
               >
                 <TrashIcon class="h-5 w-5" />
-                Eliminar Proyecto
+                {{ t('projectEdit.actions.deleteProject') }}
               </button>
 
               <div class="flex gap-3">
@@ -188,7 +188,7 @@
                   @click="$router.back()"
                 >
                   <XMarkIcon class="h-5 w-5" />
-                  Cancelar
+                  {{ t('projectEdit.actions.cancel') }}
                 </button>
                 <button
                   type="submit"
@@ -197,7 +197,7 @@
                 >
                   <span v-if="isLoading" class="loading loading-spinner loading-sm"></span>
                   <CheckIcon v-else class="h-5 w-5" />
-                  Guardar Cambios
+                  {{ t('projectEdit.actions.save') }}
                 </button>
               </div>
             </div>
@@ -209,16 +209,16 @@
     <!-- Modal de Confirmación de Eliminación -->
     <div v-if="showDeleteModal" class="modal modal-open">
       <div class="modal-box">
-        <h3 class="font-bold text-lg mb-4">¿Eliminar proyecto?</h3>
+        <h3 class="font-bold text-lg mb-4">{{ t('projectEdit.deleteModal.title') }}</h3>
         <p class="text-base-content/70 mb-6">
-          Esta acción no se puede deshacer. El proyecto y todos sus comentarios se eliminarán permanentemente.
+          {{ t('projectEdit.deleteModal.message') }}
         </p>
         <div class="modal-action">
           <button
             class="btn btn-ghost"
             @click="showDeleteModal = false"
           >
-            Cancelar
+            {{ t('projectEdit.deleteModal.cancel') }}
           </button>
           <button
             class="btn btn-error"
@@ -226,7 +226,7 @@
             @click="deleteProject"
           >
             <span v-if="isDeleting" class="loading loading-spinner loading-sm"></span>
-            Eliminar
+            {{ t('projectEdit.deleteModal.confirm') }}
           </button>
         </div>
       </div>
@@ -240,6 +240,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
+import { useTranslation } from '@/composables/useTranslation'
+import { supabase } from '@/lib/supabase'
 import FormProgress from '@/components/ui/FormProgress.vue'
 import type { Project } from '@/types'
 import {
@@ -262,6 +264,7 @@ const router = useRouter()
 
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
+const { t } = useTranslation()
 
 const { profile } = storeToRefs(authStore)
 const { projects } = storeToRefs(projectsStore)
@@ -273,6 +276,7 @@ const loading = ref(true)
 const isLoading = ref(false)
 const isDeleting = ref(false)
 const showDeleteModal = ref(false)
+const teamMemberEmails = ref<string[]>([])
 
 // Computed
 const projectId = computed(() => route.params.id as string)
@@ -295,35 +299,35 @@ const editForm = ref({
 // Edit Form Progress
 const editFormProgress = computed(() => {
   let progress = 0
-  
+
   // Título (obligatorio) - 40%
   if (editForm.value.title.trim().length > 0) progress += 40
-  
+
   // Descripción (obligatoria) - 40%
   if (editForm.value.description.trim().length > 0) progress += 40
-  
+
   // Campos opcionales - 20%
   let optionalFields = 0
   if (editForm.value.image_url.trim().length > 0) optionalFields += 1
   if (editForm.value.tags.trim().length > 0) optionalFields += 1
   if (editForm.value.team_members.trim().length > 0) optionalFields += 1
   progress += (optionalFields / 3) * 20
-  
+
   return progress
 })
 
 const editFormProgressLabel = computed(() => {
   if (editFormProgress.value >= 80) {
-    return '¡Listo para actualizar!'
+    return t('projectEdit.progress.readyToUpdate')
   } else if (editFormProgress.value >= 50) {
-    return 'Casi listo...'
+    return t('projectEdit.progress.almostReady')
   } else {
-    return 'Completa la información'
+    return t('projectEdit.progress.completeInfo')
   }
 })
 
 // Methods
-const initForm = () => {
+const initForm = async () => {
   if (project.value) {
     editForm.value = {
       title: project.value.title,
@@ -333,6 +337,28 @@ const initForm = () => {
       tags: project.value.tags?.join(', ') || '',
       team_members: project.value.team_members?.join(', ') || ''
     }
+
+    // Cargar emails de los colaboradores
+    if (project.value.team_members && project.value.team_members.length > 0) {
+      await loadTeamMemberEmails(project.value.team_members)
+      editForm.value.team_members = teamMemberEmails.value.join(', ')
+    }
+  }
+}
+
+const loadTeamMemberEmails = async (memberIds: string[]) => {
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('email')
+      .in('id', memberIds)
+
+    if (error) throw error
+
+    teamMemberEmails.value = data?.map(profile => profile.email).filter(Boolean) || []
+  } catch (error) {
+    console.error('Error loading team member emails:', error)
+    teamMemberEmails.value = []
   }
 }
 
@@ -415,7 +441,7 @@ onMounted(async () => {
     }
 
     // Inicializar el formulario con los datos del proyecto
-    initForm()
+    await initForm()
   } catch (error) {
     console.error('Error loading project:', error)
     router.push('/')

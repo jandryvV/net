@@ -98,10 +98,13 @@
       </div>
 
       <!-- Keyboard Shortcuts Help Button -->
-      <button @click="toggleKeyboardShortcutsHelp" class="btn btn-ghost btn-circle btn-sm hidden sm:flex"
+      <!-- <button @click="toggleKeyboardShortcutsHelp" class="btn btn-ghost btn-circle btn-sm hidden sm:flex"
         :title="$t('keyboardShortcuts.title')">
         <CommandLineIcon class="h-4 w-4" />
-      </button>
+      </button> -->
+
+      <!-- Notifications (only for authenticated users) -->
+      <NotificationDropdown v-if="profile" />
 
       <!-- Accessibility Menu - Hidden on very small screens -->
       <div class="dropdown dropdown-end hidden sm:block">
@@ -207,7 +210,7 @@
           <li>
             <router-link to="/settings">
               <Cog6ToothIcon class="h-4 w-4" />
-              Configuración
+              {{ $t('nav.settings') }}
             </router-link>
           </li>
           <!-- Mobile-only options -->
@@ -372,6 +375,7 @@ import { useTranslation } from '@/composables/useTranslation'
 import { useTextToSpeech } from '@/composables/useTextToSpeech'
 import { useAuthStore } from '@/stores/auth'
 import { useUIStore } from '@/stores/ui'
+import NotificationDropdown from './NotificationDropdown.vue'
 import {
   RocketLaunchIcon,
   HomeIcon,

@@ -18,18 +18,27 @@
                 v-model="searchQuery"
                 type="text"
                 :placeholder="t('home.search.placeholder')"
-                class="input input-lg w-full pl-12 pr-20 bg-base-100 text-base-content border-0 shadow-lg"
+                class="input input-lg w-full pl-12 pr-32 bg-base-100 text-base-content border-0 shadow-lg"
                 @keyup.enter="performSearch"
               />
               <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-base-content/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
-              <button
-                @click="performSearch"
-                class="btn btn-primary btn-sm absolute right-2 top-1/2 transform -translate-y-1/2"
-              >
-                {{ t('home.search.button') }}
-              </button>
+              <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-2">
+                <button
+                  @click="showAdvancedFilters = true"
+                  class="btn btn-sm btn-ghost gap-2"
+                  :title="t('home.search.advancedFilter')"
+                >
+                  <FunnelIcon class="h-5 w-5" />
+                </button>
+                <button
+                  @click="performSearch"
+                  class="btn btn-primary btn-sm"
+                >
+                  {{ t('home.search.button') }}
+                </button>
+              </div>
             </div>
 
             <!-- Sugerencias de búsqueda -->
@@ -851,11 +860,156 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal de Filtros Avanzados -->
+    <div v-if="showAdvancedFilters" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div class="bg-base-100 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- Header del Modal -->
+        <div class="bg-gradient-to-r from-primary to-secondary text-primary-content p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold flex items-center gap-2">
+                <FunnelIcon class="h-6 w-6" />
+                {{ t('home.search.filters.title') }}
+              </h2>
+              <p class="text-sm opacity-90 mt-1">{{ t('home.search.filters.subtitle') }}</p>
+            </div>
+            <button
+              @click="showAdvancedFilters = false"
+              class="btn btn-ghost btn-sm btn-circle text-primary-content hover:bg-primary-content/20"
+            >
+              <XMarkIcon class="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Contenido del Modal -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+          <!-- Estado del proyecto -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-base">{{ t('home.search.filters.status.label') }}</span>
+            </label>
+            <select v-model="advancedFilters.status" class="select select-bordered w-full">
+              <option value="">{{ t('home.search.filters.status.all') }}</option>
+              <option value="planning">{{ t('home.search.filters.status.planning') }}</option>
+              <option value="in_progress">{{ t('home.search.filters.status.inProgress') }}</option>
+              <option value="completed">{{ t('home.search.filters.status.completed') }}</option>
+              <option value="on_hold">{{ t('home.search.filters.status.onHold') }}</option>
+            </select>
+          </div>
+
+          <!-- Tecnologías -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-base">{{ t('home.search.filters.tags.label') }}</span>
+            </label>
+            <input
+              v-model="advancedFilters.tags"
+              type="text"
+              :placeholder="t('home.search.filters.tags.placeholder')"
+              class="input input-bordered w-full"
+            />
+          </div>
+
+          <!-- Ordenar por -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-base">{{ t('home.search.filters.sortBy.label') }}</span>
+            </label>
+            <select v-model="advancedFilters.sortBy" class="select select-bordered w-full">
+              <option value="newest">{{ t('home.search.filters.sortBy.newest') }}</option>
+              <option value="oldest">{{ t('home.search.filters.sortBy.oldest') }}</option>
+              <option value="mostLiked">{{ t('home.search.filters.sortBy.mostLiked') }}</option>
+              <option value="mostCommented">{{ t('home.search.filters.sortBy.mostCommented') }}</option>
+              <option value="alphabetical">{{ t('home.search.filters.sortBy.alphabetical') }}</option>
+              <option value="reverseAlphabetical">{{ t('home.search.filters.sortBy.reverseAlphabetical') }}</option>
+            </select>
+          </div>
+
+          <!-- Fecha de creación -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-base">{{ t('home.search.filters.dateRange.label') }}</span>
+            </label>
+            <select v-model="advancedFilters.dateRange" class="select select-bordered w-full">
+              <option value="">{{ t('home.search.filters.dateRange.anytime') }}</option>
+              <option value="lastWeek">{{ t('home.search.filters.dateRange.lastWeek') }}</option>
+              <option value="lastMonth">{{ t('home.search.filters.dateRange.lastMonth') }}</option>
+              <option value="last3Months">{{ t('home.search.filters.dateRange.last3Months') }}</option>
+              <option value="lastYear">{{ t('home.search.filters.dateRange.lastYear') }}</option>
+            </select>
+          </div>
+
+          <!-- Filtros numéricos -->
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Mínimo de likes -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">{{ t('home.search.filters.minLikes.label') }}</span>
+              </label>
+              <input
+                v-model.number="advancedFilters.minLikes"
+                type="number"
+                min="0"
+                :placeholder="t('home.search.filters.minLikes.placeholder')"
+                class="input input-bordered w-full"
+              />
+            </div>
+
+            <!-- Mínimo de comentarios -->
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text font-semibold">{{ t('home.search.filters.minComments.label') }}</span>
+              </label>
+              <input
+                v-model.number="advancedFilters.minComments"
+                type="number"
+                min="0"
+                :placeholder="t('home.search.filters.minComments.placeholder')"
+                class="input input-bordered w-full"
+              />
+            </div>
+          </div>
+
+          <!-- Creador del proyecto -->
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-semibold text-base">{{ t('home.search.filters.creator.label') }}</span>
+            </label>
+            <input
+              v-model="advancedFilters.creator"
+              type="text"
+              :placeholder="t('home.search.filters.creator.placeholder')"
+              class="input input-bordered w-full"
+            />
+          </div>
+        </div>
+
+        <!-- Footer del Modal -->
+        <div class="border-t border-base-300 p-6 bg-base-200">
+          <div class="flex gap-3">
+            <button
+              @click="clearAdvancedFilters"
+              class="btn btn-ghost flex-1"
+            >
+              {{ t('home.search.filters.actions.clear') }}
+            </button>
+            <button
+              @click="applyAdvancedFilters"
+              class="btn btn-primary flex-1"
+            >
+              {{ t('home.search.filters.actions.apply') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useProjectsStore } from '@/stores/projects'
@@ -875,7 +1029,8 @@ import {
   DocumentIcon,
   PhotoIcon,
   TagIcon,
-  XMarkIcon
+  XMarkIcon,
+  FunnelIcon
 } from '@/icons'
 
 const authStore = useAuthStore()
@@ -889,6 +1044,19 @@ const { projects, loading } = storeToRefs(projectsStore)
 // Estados para búsqueda
 const searchQuery = ref('')
 const searchResults = ref<{ projects: Project[], users: any[] }>({ projects: [], users: [] })
+
+// Estado del modal de filtros avanzados
+const showAdvancedFilters = ref(false)
+const advancedFilters = ref({
+  status: '',
+  tags: '',
+  sortBy: 'newest',
+  dateRange: '',
+  minLikes: null as number | null,
+  minComments: null as number | null,
+  creator: ''
+})
+const appliedFilters = ref({ ...advancedFilters.value })
 
 // Computed para el usuario actual
 const user = computed(() => profile.value)
@@ -904,6 +1072,7 @@ const newProjectImageUrl = ref('')
 const newProjectTags = ref('')
 const newProjectTeamMembers = ref('')
 const isLoading = ref(false)
+let refreshInterval: number | null = null
 
 // Filtros para el feed - computed para reactividad con traducciones
 const feedFilters = computed(() => [
@@ -977,9 +1146,10 @@ const userSuggestions = computed(() =>
 const filteredProjects = computed(() => {
   let filtered = [...projects.value]
 
+  // Aplicar filtro básico del feed
   switch (activeFilter.value) {
     case 'recientes':
-      filtered = filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      // Se ordenará después
       break
     case 'planificando':
       filtered = filtered.filter(p => p.status === 'planning' || p.status === 'Planificando')
@@ -990,9 +1160,93 @@ const filteredProjects = computed(() => {
     case 'completados':
       filtered = filtered.filter(p => p.status === 'Completado' || p.status === 'completed')
       break
+  }
+
+  // Aplicar filtros avanzados
+  if (appliedFilters.value.status) {
+    filtered = filtered.filter(p =>
+      p.status === appliedFilters.value.status ||
+      (appliedFilters.value.status === 'planning' && p.status === 'Planificando') ||
+      (appliedFilters.value.status === 'in_progress' && p.status === 'En Progreso') ||
+      (appliedFilters.value.status === 'completed' && p.status === 'Completado') ||
+      (appliedFilters.value.status === 'on_hold' && p.status === 'En Pausa')
+    )
+  }
+
+  // Filtrar por tecnologías/tags
+  if (appliedFilters.value.tags) {
+    const searchTags = appliedFilters.value.tags.toLowerCase().split(',').map(t => t.trim())
+    filtered = filtered.filter(p =>
+      p.tags && p.tags.some(tag =>
+        searchTags.some(searchTag => tag.toLowerCase().includes(searchTag))
+      )
+    )
+  }
+
+  // Filtrar por fecha de creación
+  if (appliedFilters.value.dateRange) {
+    const now = new Date()
+    const cutoffDate = new Date()
+
+    switch (appliedFilters.value.dateRange) {
+      case 'lastWeek':
+        cutoffDate.setDate(now.getDate() - 7)
+        break
+      case 'lastMonth':
+        cutoffDate.setMonth(now.getMonth() - 1)
+        break
+      case 'last3Months':
+        cutoffDate.setMonth(now.getMonth() - 3)
+        break
+      case 'lastYear':
+        cutoffDate.setFullYear(now.getFullYear() - 1)
+        break
+    }
+
+    filtered = filtered.filter(p => new Date(p.created_at) >= cutoffDate)
+  }
+
+  // Filtrar por mínimo de likes
+  if (appliedFilters.value.minLikes !== null && appliedFilters.value.minLikes > 0) {
+    filtered = filtered.filter(p => (p.likes_count || 0) >= appliedFilters.value.minLikes!)
+  }
+
+  // Filtrar por mínimo de comentarios
+  if (appliedFilters.value.minComments !== null && appliedFilters.value.minComments > 0) {
+    filtered = filtered.filter(p => (p.comments_count || 0) >= appliedFilters.value.minComments!)
+  }
+
+  // Filtrar por creador
+  if (appliedFilters.value.creator) {
+    const searchCreator = appliedFilters.value.creator.toLowerCase()
+    filtered = filtered.filter(p =>
+      (p.creator?.full_name?.toLowerCase().includes(searchCreator)) ||
+      (p.creator?.email?.toLowerCase().includes(searchCreator))
+    )
+  }
+
+  // Ordenar proyectos según filtro avanzado
+  switch (appliedFilters.value.sortBy) {
+    case 'newest':
+      filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      break
+    case 'oldest':
+      filtered.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      break
+    case 'mostLiked':
+      filtered.sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0))
+      break
+    case 'mostCommented':
+      filtered.sort((a, b) => (b.comments_count || 0) - (a.comments_count || 0))
+      break
+    case 'alphabetical':
+      filtered.sort((a, b) => a.title.localeCompare(b.title))
+      break
+    case 'reverseAlphabetical':
+      filtered.sort((a, b) => b.title.localeCompare(a.title))
+      break
     default:
-      // 'todos' - no filtering, just sort by created date
-      filtered = filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
   }
 
   return filtered
@@ -1001,25 +1255,25 @@ const filteredProjects = computed(() => {
 // Create Project Form Progress
 const createProjectProgress = computed(() => {
   let progress = 0
-  
+
   // Título (obligatorio) - 40%
   if (newProjectTitle.value.trim().length > 0) progress += 40
-  
+
   // Descripción (obligatoria) - 40%
   if (newProjectDescription.value.trim().length > 0) progress += 40
-  
+
   // Campos opcionales - 20%
   let optionalFields = 0
   if (newProjectImageUrl.value.trim().length > 0) optionalFields += 1
   if (newProjectTags.value.trim().length > 0) optionalFields += 1
   if (newProjectTeamMembers.value.trim().length > 0) optionalFields += 1
   progress += (optionalFields / 3) * 20
-  
+
   return progress
 })
 
 const createProjectCurrentStep = computed(() => {
-  if (newProjectDescription.value.trim().length > 0 && 
+  if (newProjectDescription.value.trim().length > 0 &&
       (newProjectTags.value || newProjectImageUrl.value || newProjectTeamMembers.value)) return 3
   if (newProjectDescription.value.trim().length > 0) return 2
   if (newProjectTitle.value.trim().length > 0) return 1
@@ -1227,8 +1481,40 @@ const selectUser = (user: any) => {
   searchQuery.value = ''
 }
 
+// Métodos para filtros avanzados
+const applyAdvancedFilters = () => {
+  appliedFilters.value = { ...advancedFilters.value }
+  showAdvancedFilters.value = false
+}
+
+const clearAdvancedFilters = () => {
+  advancedFilters.value = {
+    status: '',
+    tags: '',
+    sortBy: 'newest',
+    dateRange: '',
+    minLikes: null,
+    minComments: null,
+    creator: ''
+  }
+  appliedFilters.value = { ...advancedFilters.value }
+  showAdvancedFilters.value = false
+}
+
 onMounted(() => {
   projectsStore.fetchProjects()
+
+  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados
+  refreshInterval = setInterval(() => {
+    projectsStore.fetchProjects()
+  }, 30000)
+})
+
+onBeforeUnmount(() => {
+  // Limpiar el intervalo cuando el componente se desmonta
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
 })
 </script>
 

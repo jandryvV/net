@@ -179,9 +179,27 @@ const messages = {
         subtitleFiltered: 'Prueba con otro filtro',
         action: 'Crear Mi Primer Proyecto'
       },
+      tabs: {
+        myProjects: 'Mis Proyectos',
+        teamProjects: 'Proyectos del Equipo'
+      },
+      card: {
+        viewDetails: 'Ver Detalles',
+        edit: 'Editar',
+        share: 'Compartir',
+        delete: 'Eliminar',
+        ago: {
+          yesterday: 'Ayer',
+          days: '{count}d',
+          weeks: '{count}sem',
+          months: '{count}mes',
+          years: '{count}año'
+        }
+      },
       deleteConfirm: {
         title: 'Confirmar Eliminación',
         message: '¿Estás seguro de que quieres eliminar el proyecto "{title}"? Esta acción no se puede deshacer.',
+        cancel: 'Cancelar',
         confirm: 'Eliminar',
         deleting: 'Eliminando...'
       }
@@ -301,10 +319,63 @@ const messages = {
       welcome: '¡Bienvenido',
       welcomeMessage: 'Descubre proyectos increíbles y conecta con desarrolladores talentosos',
       search: {
-        placeholder: 'Buscar proyectos, usuarios, tecnologías...',
+        placeholder: 'Buscar proyectos',
         button: 'Buscar',
         projects: 'Proyectos',
-        users: 'Usuarios'
+        users: 'Usuarios',
+        advancedFilter: 'Filtro avanzado',
+        filters: {
+          title: 'Filtros Avanzados',
+          subtitle: 'Refina tu búsqueda de proyectos',
+          status: {
+            label: 'Estado del proyecto',
+            all: 'Todos los estados',
+            planning: 'Planificando',
+            inProgress: 'En Progreso',
+            completed: 'Completado',
+            onHold: 'En Pausa'
+          },
+          tags: {
+            label: 'Tecnologías',
+            placeholder: 'Buscar por tecnología (React, Node.js...)'
+          },
+          dateRange: {
+            label: 'Fecha de creación',
+            from: 'Desde',
+            to: 'Hasta',
+            anytime: 'Cualquier fecha',
+            lastWeek: 'Última semana',
+            lastMonth: 'Último mes',
+            last3Months: 'Últimos 3 meses',
+            lastYear: 'Último año'
+          },
+          sortBy: {
+            label: 'Ordenar por',
+            newest: 'Más recientes',
+            oldest: 'Más antiguos',
+            mostLiked: 'Más likes',
+            mostCommented: 'Más comentados',
+            alphabetical: 'A-Z',
+            reverseAlphabetical: 'Z-A'
+          },
+          creator: {
+            label: 'Creador',
+            placeholder: 'Buscar por nombre de usuario...'
+          },
+          minLikes: {
+            label: 'Mínimo de likes',
+            placeholder: 'Ej: 10'
+          },
+          minComments: {
+            label: 'Mínimo de comentarios',
+            placeholder: 'Ej: 5'
+          },
+          actions: {
+            apply: 'Aplicar Filtros',
+            clear: 'Limpiar',
+            close: 'Cerrar'
+          }
+        }
       },
       createProject: {
         title: '¿Qué proyecto estás construyendo?',
@@ -355,6 +426,62 @@ const messages = {
       empty: {
         title: 'No hay proyectos aún',
         subtitle: '¡Sé el primero en compartir un proyecto!'
+      }
+    },
+    tasks: {
+      title: 'Tareas del Proyecto',
+      addTask: 'Agregar Tarea',
+      editTask: 'Editar Tarea',
+      deleteTask: 'Eliminar Tarea',
+      noTasks: 'No hay tareas aún',
+      createFirst: 'Crea la primera tarea para este proyecto',
+      back: 'Volver',
+      backHome: 'Volver al inicio',
+      projectNotFound: 'Proyecto no encontrado',
+      projectNotFoundDesc: 'El proyecto que buscas no existe o ha sido eliminado',
+      taskManagement: 'Gestión de tareas',
+      progress: {
+        title: 'Progreso del Proyecto',
+        completed: 'Completadas',
+        total: 'Tareas Totales',
+        of: 'de'
+      },
+      status: {
+        todo: 'Por Hacer',
+        inProgress: 'En Progreso',
+        done: 'Completadas'
+      },
+      form: {
+        title: 'Título de la tarea',
+        titlePlaceholder: 'Ej: Implementar autenticación',
+        description: 'Descripción',
+        descriptionPlaceholder: 'Describe la tarea en detalle...',
+        status: 'Estado',
+        priority: 'Prioridad',
+        priorityLow: 'Baja',
+        priorityMedium: 'Media',
+        priorityHigh: 'Alta',
+        assignedTo: 'Asignado a',
+        assignedToPlaceholder: 'Buscar por email o nombre...',
+        dueDate: 'Fecha límite',
+        dueDatePlaceholder: 'Selecciona una fecha',
+        creating: 'Creando...',
+        updating: 'Actualizando...',
+        create: 'Crear Tarea',
+        update: 'Actualizar Tarea',
+        save: 'Guardar Tarea',
+        cancel: 'Cancelar'
+      },
+      deleteConfirm: {
+        title: 'Eliminar Tarea',
+        message: '¿Estás seguro de que quieres eliminar esta tarea?',
+        confirm: 'Eliminar',
+        cancel: 'Cancelar'
+      },
+      priority: {
+        low: 'Baja',
+        medium: 'Media',
+        high: 'Alta'
       }
     },
     common: {
@@ -577,6 +704,136 @@ const messages = {
       postedOn: 'Publicado el',
       noNews: 'No hay noticias disponibles',
       comingSoon: 'Próximamente más actualizaciones'
+    },
+    notifications: {
+      title: 'Notificaciones',
+      empty: 'No tienes notificaciones',
+      markAllRead: 'Marcar todo como leído',
+      accept: 'Aceptar',
+      reject: 'Rechazar',
+      viewProject: 'Ver proyecto',
+      viewAll: 'Ver todas'
+    },
+    projects: {
+      inviteCollaborator: 'Invitar Colaborador',
+      searchUser: 'Buscar usuario',
+      searchUserPlaceholder: 'Busca por nombre...',
+      noUsersFound: 'No se encontraron usuarios',
+      searching: 'Buscando...',
+      inviteMessage: 'Mensaje (opcional)',
+      inviteMessagePlaceholder: 'Escribe un mensaje personalizado para la invitación...',
+      optional: 'Opcional',
+      sendInvite: 'Enviar Invitación',
+      sending: 'Enviando...',
+      collaborate: 'Colaborar'
+    },
+    projectEdit: {
+      back: 'Volver',
+      breadcrumb: {
+        home: 'Inicio',
+        edit: 'Editar'
+      },
+      title: 'Editar Proyecto',
+      subtitle: 'Actualiza la información de tu proyecto',
+      progress: {
+        readyToUpdate: '¡Listo para actualizar!',
+        almostReady: 'Casi listo...',
+        completeInfo: 'Completa la información'
+      },
+      form: {
+        titleLabel: 'Título del proyecto',
+        titlePlaceholder: 'Nombre de tu proyecto',
+        statusLabel: 'Estado del proyecto',
+        statusPlanning: 'Planificando',
+        statusInProgress: 'En Progreso',
+        statusCompleted: 'Completado',
+        statusOnHold: 'En Pausa',
+        imageLabel: 'Imagen del proyecto',
+        imagePlaceholder: 'https://ejemplo.com/imagen.jpg',
+        imagePreview: 'Vista previa:',
+        descriptionLabel: 'Descripción',
+        descriptionPlaceholder: 'Describe tu proyecto, objetivos, tecnologías...',
+        charactersCount: '{count}/500 caracteres',
+        tagsLabel: 'Tecnologías y etiquetas',
+        tagsPlaceholder: 'React, Node.js, TypeScript...',
+        tagsSeparator: 'Separadas por comas',
+        teamLabel: 'Colaboradores',
+        teamPlaceholder: 'juan@email.com, maria@email.com...',
+        teamHelper: 'Emails separados por comas'
+      },
+      actions: {
+        deleteProject: 'Eliminar Proyecto',
+        cancel: 'Cancelar',
+        save: 'Guardar Cambios'
+      },
+      deleteModal: {
+        title: '¿Eliminar proyecto?',
+        message: 'Esta acción no se puede deshacer. El proyecto y todos sus comentarios se eliminarán permanentemente.',
+        cancel: 'Cancelar',
+        confirm: 'Eliminar'
+      }
+    },
+    projectDetail: {
+      back: 'Volver',
+      breadcrumb: {
+        home: 'Inicio'
+      },
+      notFound: {
+        title: 'Proyecto no encontrado',
+        message: 'El proyecto que buscas no existe o ha sido eliminado.',
+        backHome: 'Volver al inicio'
+      },
+      status: {
+        planning: 'Planificando',
+        inProgress: 'En Progreso',
+        completed: 'Completado',
+        onHold: 'En Pausa'
+      },
+      sections: {
+        technologies: 'Tecnologías',
+        likes: 'Likes',
+        comments: 'Comentarios',
+        edit: 'Editar',
+        collaborate: 'Colaborar'
+      },
+      comments: {
+        title: 'Comentarios',
+        placeholder: 'Escribe un comentario...',
+        submit: 'Comentar',
+        empty: 'No hay comentarios aún. ¡Sé el primero en comentar!',
+        edit: 'Editar',
+        delete: 'Eliminar',
+        save: 'Guardar',
+        cancel: 'Cancelar',
+        deleteModal: {
+          title: '¿Eliminar comentario?',
+          message: 'Esta acción no se puede deshacer. El comentario se eliminará permanentemente.',
+          cancel: 'Cancelar',
+          confirm: 'Eliminar'
+        }
+      },
+      tasks: {
+        title: 'Tareas del Proyecto',
+        description: 'Gestiona las tareas con el tablero Kanban',
+        stats: {
+          total: 'Total de tareas',
+          completed: 'Completadas',
+          inProgress: 'En progreso'
+        }
+      },
+      sidebar: {
+        details: 'Detalles del proyecto',
+        created: 'Creado:',
+        updated: 'Última actualización:',
+        team: 'Equipo',
+        history: 'Historial de cambios',
+        historyEmpty: 'No hay historial disponible.',
+        historyCreated: 'Creado',
+        historyCreatedBy: 'Creado por',
+        historyUpdated: 'Actualizado',
+        moreProjects: 'Más proyectos',
+        noRelated: 'No hay proyectos relacionados'
+      }
     }
   },
   en: {
@@ -757,9 +1014,27 @@ const messages = {
         subtitleFiltered: 'Try another filter',
         action: 'Create My First Project'
       },
+      tabs: {
+        myProjects: 'My Projects',
+        teamProjects: 'Team Projects'
+      },
+      card: {
+        viewDetails: 'View Details',
+        edit: 'Edit',
+        share: 'Share',
+        delete: 'Delete',
+        ago: {
+          yesterday: 'Yesterday',
+          days: '{count}d',
+          weeks: '{count}w',
+          months: '{count}mo',
+          years: '{count}y'
+        }
+      },
       deleteConfirm: {
         title: 'Confirm Deletion',
         message: 'Are you sure you want to delete the project "{title}"? This action cannot be undone.',
+        cancel: 'Cancel',
         confirm: 'Delete',
         deleting: 'Deleting...'
       }
@@ -882,7 +1157,108 @@ const messages = {
         placeholder: 'Search projects, users, technologies...',
         button: 'Search',
         projects: 'Projects',
-        users: 'Users'
+        users: 'Users',
+        advancedFilter: 'Advanced filter',
+        filters: {
+          title: 'Advanced Filters',
+          subtitle: 'Refine your project search',
+          status: {
+            label: 'Project status',
+            all: 'All statuses',
+            planning: 'Planning',
+            inProgress: 'In Progress',
+            completed: 'Completed',
+            onHold: 'On Hold'
+          },
+          tags: {
+            label: 'Technologies',
+            placeholder: 'Search by technology (React, Node.js...)'
+          },
+          dateRange: {
+            label: 'Creation date',
+            from: 'From',
+            to: 'To',
+            anytime: 'Anytime',
+            lastWeek: 'Last week',
+            lastMonth: 'Last month',
+            last3Months: 'Last 3 months',
+            lastYear: 'Last year'
+          },
+          sortBy: {
+            label: 'Sort by',
+            newest: 'Newest',
+            oldest: 'Oldest',
+            mostLiked: 'Most liked',
+            mostCommented: 'Most commented',
+            alphabetical: 'A-Z',
+            reverseAlphabetical: 'Z-A'
+          },
+          creator: {
+            label: 'Creator',
+            placeholder: 'Search by username...'
+          },
+          minLikes: {
+            label: 'Minimum likes',
+            placeholder: 'E.g: 10'
+          },
+          minComments: {
+            label: 'Minimum comments',
+            placeholder: 'E.g: 5'
+          },
+          actions: {
+            apply: 'Apply Filters',
+            clear: 'Clear',
+            close: 'Close'
+          }
+        },
+        tasks: {
+          title: 'Tasks',
+          addTask: 'Add Task',
+          editTask: 'Edit Task',
+          deleteTask: 'Delete Task',
+          noTasks: 'No tasks yet',
+          createFirst: 'Create the first task to start organizing your project',
+          back: 'Back',
+          backHome: 'Back to home',
+          projectNotFound: 'Project not found',
+          projectNotFoundDesc: 'The project you are looking for does not exist or has been deleted',
+          taskManagement: 'Task management',
+          progress: {
+            title: 'Project Progress',
+            completed: 'Completed',
+            total: 'Total Tasks',
+            of: 'of'
+          },
+          status: {
+            todo: 'To Do',
+            inProgress: 'In Progress',
+            done: 'Done'
+          },
+          form: {
+            title: 'Task title',
+            titlePlaceholder: 'Enter task name...',
+            description: 'Description',
+            descriptionPlaceholder: 'Describe the task...',
+            status: 'Status',
+            priority: 'Priority',
+            assignedTo: 'Assigned to',
+            assignedToPlaceholder: 'Search by email or name...',
+            dueDate: 'Due date',
+            save: 'Save Task',
+            cancel: 'Cancel'
+          },
+          priority: {
+            low: 'Low',
+            medium: 'Medium',
+            high: 'High'
+          },
+          deleteConfirm: {
+            title: 'Delete task',
+            message: 'Are you sure you want to delete this task? This action cannot be undone.',
+            confirm: 'Delete',
+            cancel: 'Cancel'
+          }
+        }
       },
       createProject: {
         title: 'What project are you building?',
@@ -933,6 +1309,62 @@ const messages = {
       empty: {
         title: 'No projects yet',
         subtitle: 'Be the first to share a project!'
+      }
+    },
+    tasks: {
+      title: 'Project Tasks',
+      addTask: 'Add Task',
+      editTask: 'Edit Task',
+      deleteTask: 'Delete Task',
+      noTasks: 'No tasks yet',
+      createFirst: 'Create the first task for this project',
+      back: 'Back',
+      backHome: 'Back to home',
+      projectNotFound: 'Project not found',
+      projectNotFoundDesc: 'The project you are looking for does not exist or has been deleted',
+      taskManagement: 'Task management',
+      progress: {
+        title: 'Project Progress',
+        completed: 'Completed',
+        total: 'Total Tasks',
+        of: 'of'
+      },
+      status: {
+        todo: 'To Do',
+        inProgress: 'In Progress',
+        done: 'Done'
+      },
+      form: {
+        title: 'Task title',
+        titlePlaceholder: 'E.g: Implement authentication',
+        description: 'Description',
+        descriptionPlaceholder: 'Describe the task in detail...',
+        status: 'Status',
+        priority: 'Priority',
+        priorityLow: 'Low',
+        priorityMedium: 'Medium',
+        priorityHigh: 'High',
+        assignedTo: 'Assigned to',
+        assignedToPlaceholder: 'Search by email or name...',
+        dueDate: 'Due date',
+        dueDatePlaceholder: 'Select a date',
+        creating: 'Creating...',
+        updating: 'Updating...',
+        create: 'Create Task',
+        update: 'Update Task',
+        save: 'Save Task',
+        cancel: 'Cancel'
+      },
+      deleteConfirm: {
+        title: 'Delete Task',
+        message: 'Are you sure you want to delete this task?',
+        confirm: 'Delete',
+        cancel: 'Cancel'
+      },
+      priority: {
+        low: 'Low',
+        medium: 'Medium',
+        high: 'High'
       }
     },
     common: {
@@ -1155,6 +1587,136 @@ const messages = {
       postedOn: 'Posted on',
       noNews: 'No news available',
       comingSoon: 'More updates coming soon'
+    },
+    notifications: {
+      title: 'Notifications',
+      empty: 'You have no notifications',
+      markAllRead: 'Mark all as read',
+      accept: 'Accept',
+      reject: 'Reject',
+      viewProject: 'View project',
+      viewAll: 'View all'
+    },
+    projects: {
+      inviteCollaborator: 'Invite Collaborator',
+      searchUser: 'Search user',
+      searchUserPlaceholder: 'Search by name...',
+      noUsersFound: 'No users found',
+      searching: 'Searching...',
+      inviteMessage: 'Message (optional)',
+      inviteMessagePlaceholder: 'Write a personalized message for the invitation...',
+      optional: 'Optional',
+      sendInvite: 'Send Invitation',
+      sending: 'Sending...',
+      collaborate: 'Collaborate'
+    },
+    projectEdit: {
+      back: 'Back',
+      breadcrumb: {
+        home: 'Home',
+        edit: 'Edit'
+      },
+      title: 'Edit Project',
+      subtitle: 'Update your project information',
+      progress: {
+        readyToUpdate: 'Ready to update!',
+        almostReady: 'Almost ready...',
+        completeInfo: 'Complete the information'
+      },
+      form: {
+        titleLabel: 'Project title',
+        titlePlaceholder: 'Your project name',
+        statusLabel: 'Project status',
+        statusPlanning: 'Planning',
+        statusInProgress: 'In Progress',
+        statusCompleted: 'Completed',
+        statusOnHold: 'On Hold',
+        imageLabel: 'Project image',
+        imagePlaceholder: 'https://example.com/image.jpg',
+        imagePreview: 'Preview:',
+        descriptionLabel: 'Description',
+        descriptionPlaceholder: 'Describe your project, goals, technologies...',
+        charactersCount: '{count}/500 characters',
+        tagsLabel: 'Technologies and tags',
+        tagsPlaceholder: 'React, Node.js, TypeScript...',
+        tagsSeparator: 'Comma separated',
+        teamLabel: 'Collaborators',
+        teamPlaceholder: 'john@email.com, maria@email.com...',
+        teamHelper: 'Comma separated emails'
+      },
+      actions: {
+        deleteProject: 'Delete Project',
+        cancel: 'Cancel',
+        save: 'Save Changes'
+      },
+      deleteModal: {
+        title: 'Delete project?',
+        message: 'This action cannot be undone. The project and all its comments will be permanently deleted.',
+        cancel: 'Cancel',
+        confirm: 'Delete'
+      }
+    },
+    projectDetail: {
+      back: 'Back',
+      breadcrumb: {
+        home: 'Home'
+      },
+      notFound: {
+        title: 'Project not found',
+        message: 'The project you are looking for does not exist or has been deleted.',
+        backHome: 'Back to home'
+      },
+      status: {
+        planning: 'Planning',
+        inProgress: 'In Progress',
+        completed: 'Completed',
+        onHold: 'On Hold'
+      },
+      sections: {
+        technologies: 'Technologies',
+        likes: 'Likes',
+        comments: 'Comments',
+        edit: 'Edit',
+        collaborate: 'Collaborate'
+      },
+      comments: {
+        title: 'Comments',
+        placeholder: 'Write a comment...',
+        submit: 'Comment',
+        empty: 'No comments yet. Be the first to comment!',
+        edit: 'Edit',
+        delete: 'Delete',
+        save: 'Save',
+        cancel: 'Cancel',
+        deleteModal: {
+          title: 'Delete comment?',
+          message: 'This action cannot be undone. The comment will be permanently deleted.',
+          cancel: 'Cancel',
+          confirm: 'Delete'
+        }
+      },
+      tasks: {
+        title: 'Project Tasks',
+        description: 'Manage tasks with Kanban board',
+        stats: {
+          total: 'Total tasks',
+          completed: 'Completed',
+          inProgress: 'In progress'
+        }
+      },
+      sidebar: {
+        details: 'Project details',
+        created: 'Created:',
+        updated: 'Last update:',
+        team: 'Team',
+        history: 'Change history',
+        historyEmpty: 'No history available.',
+        historyCreated: 'Created',
+        historyCreatedBy: 'Created by',
+        historyUpdated: 'Updated',
+        moreProjects: 'More projects',
+        noRelated: 'No related projects'
+      }
     }
   }
 }
