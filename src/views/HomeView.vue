@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-base-200">
     <!-- Bienvenida personalizada -->
-    <div class="bg-gradient-to-r from-primary to-secondary text-primary-content">
+    <div class="hero-background from-primary to-secondary text-primary-content">
       <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="text-center">
           <h1 class="text-4xl font-bold mb-2">
@@ -18,13 +18,22 @@
                 v-model="searchQuery"
                 type="text"
                 :placeholder="t('home.search.placeholder')"
-                class="input input-lg w-full pl-12 pr-32 bg-base-100 text-base-content border-0 shadow-lg"
-                @keyup.enter="performSearch"
+                class="input input-lg w-full pl-12 pr-16 bg-base-100 text-base-content border-0 shadow-lg"
               />
-              <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-base-content/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              <svg
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-base-content/40"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
               </svg>
-              <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-2">
+              <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
                 <button
                   @click="showAdvancedFilters = true"
                   class="btn btn-sm btn-ghost gap-2"
@@ -32,46 +41,6 @@
                 >
                   <FunnelIcon class="h-5 w-5" />
                 </button>
-                <button
-                  @click="performSearch"
-                  class="btn btn-primary btn-sm"
-                >
-                  {{ t('home.search.button') }}
-                </button>
-              </div>
-            </div>
-
-            <!-- Sugerencias de búsqueda -->
-            <div v-if="searchSuggestions.length > 0 && searchQuery" class="mt-2">
-              <div class="bg-base-100 rounded-lg shadow-lg p-4 text-left">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div v-if="projectSuggestions.length > 0">
-                    <h4 class="font-semibold text-sm text-base-content/70 mb-2">{{ t('home.search.projects') }}</h4>
-                    <div class="space-y-1">
-                      <button
-                        v-for="project in projectSuggestions.slice(0, 3)"
-                        :key="project.id"
-                        @click="selectProject(project)"
-                        class="block w-full text-left hover:bg-base-200 p-2 rounded text-sm"
-                      >
-                        {{ project.title }}
-                      </button>
-                    </div>
-                  </div>
-                  <div v-if="userSuggestions.length > 0">
-                    <h4 class="font-semibold text-sm text-base-content/70 mb-2">{{ t('home.search.users') }}</h4>
-                    <div class="space-y-1">
-                      <button
-                        v-for="suggUser in userSuggestions.slice(0, 3)"
-                        :key="suggUser.id"
-                        @click="selectUser(suggUser)"
-                        class="block w-full text-left hover:bg-base-200 p-2 rounded text-sm"
-                      >
-                        {{ suggUser.full_name }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -82,7 +51,6 @@
     <!-- Grid Layout - 3 columnas -->
     <div class="max-w-7xl mx-auto px-4 py-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
         <!-- Sidebar Izquierdo - Perfil y Navegación -->
         <div class="lg:col-span-3 space-y-6">
           <!-- Perfil del Usuario -->
@@ -90,9 +58,14 @@
             <div class="card-body p-6">
               <div class="flex flex-col items-center text-center">
                 <div class="avatar mb-4">
-                  <div class="w-20 h-20 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-base-100">
+                  <div
+                    class="w-20 h-20 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-base-100"
+                  >
                     <img
-                      :src="user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=random`"
+                      :src="
+                        user.avatar_url ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=random`
+                      "
                       :alt="user.full_name"
                     />
                   </div>
@@ -104,7 +77,9 @@
                 <div class="grid grid-cols-2 gap-4 w-full text-center">
                   <div>
                     <div class="text-lg font-bold text-primary">{{ myProjects.length }}</div>
-                    <div class="text-xs text-base-content/60">{{ t('profile.stats.projects') }}</div>
+                    <div class="text-xs text-base-content/60">
+                      {{ t('profile.stats.projects') }}
+                    </div>
                   </div>
                   <div>
                     <div class="text-lg font-bold text-warning">{{ totalLikes }}</div>
@@ -114,8 +89,6 @@
               </div>
             </div>
           </div>
-
-
         </div>
 
         <!-- Contenido Principal - Feed -->
@@ -127,7 +100,10 @@
                 <div class="avatar">
                   <div class="w-12 h-12 rounded-full">
                     <img
-                      :src="user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=random`"
+                      :src="
+                        user.avatar_url ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=random`
+                      "
                       :alt="user.full_name"
                     />
                   </div>
@@ -145,14 +121,20 @@
 
               <!-- Formulario de Crear Proyecto Mejorado -->
               <div v-if="showCreateForm" class="pt-6 border-t border-base-300">
-                <div class="bg-linear-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 border border-primary/20">
+                <div
+                  class="bg-linear-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 border border-primary/20"
+                >
                   <div class="flex items-center gap-3 mb-6">
                     <div class="bg-primary/10 p-3 rounded-full">
                       <RocketLaunchIcon class="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 class="text-xl font-bold text-base-content">{{ t('home.createProject.formTitle') }}</h3>
-                      <p class="text-sm text-base-content/60">{{ t('home.createProject.formSubtitle') }}</p>
+                      <h3 class="text-xl font-bold text-base-content">
+                        {{ t('home.createProject.formTitle') }}
+                      </h3>
+                      <p class="text-sm text-base-content/60">
+                        {{ t('home.createProject.formSubtitle') }}
+                      </p>
                     </div>
                   </div>
 
@@ -170,7 +152,9 @@
                     <!-- Título -->
                     <div class="form-control">
                       <label class="label">
-                        <span class="label-text font-semibold text-base-content flex items-center gap-2">
+                        <span
+                          class="label-text font-semibold text-base-content flex items-center gap-2"
+                        >
                           <DocumentIcon class="h-4 w-4" />
                           {{ t('home.createProject.titleLabel') }} *
                         </span>
@@ -187,12 +171,17 @@
                       <!-- Estado -->
                       <div class="form-control">
                         <label class="label">
-                          <span class="label-text font-semibold text-base-content flex items-center gap-2">
+                          <span
+                            class="label-text font-semibold text-base-content flex items-center gap-2"
+                          >
                             <ClockIcon class="h-4 w-4" />
                             {{ t('home.createProject.statusLabel') }}
                           </span>
                         </label>
-                        <select v-model="newProjectStatus" class="select select-bordered select-lg w-full focus:select-primary">
+                        <select
+                          v-model="newProjectStatus"
+                          class="select select-bordered select-lg w-full focus:select-primary"
+                        >
                           <option value="planning">{{ t('project.status.planning') }}</option>
                           <option value="in_progress">{{ t('project.status.in_progress') }}</option>
                           <option value="completed">{{ t('project.status.completed') }}</option>
@@ -203,7 +192,9 @@
                       <!-- URL de imagen -->
                       <div class="form-control">
                         <label class="label">
-                          <span class="label-text font-semibold text-base-content flex items-center gap-2">
+                          <span
+                            class="label-text font-semibold text-base-content flex items-center gap-2"
+                          >
                             <PhotoIcon class="h-4 w-4" />
                             {{ t('home.createProject.imageLabel') }}
                           </span>
@@ -219,8 +210,12 @@
 
                     <!-- Vista previa de imagen -->
                     <div v-if="newProjectImageUrl" class="form-control">
-                      <div class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-base-300">
-                        <p class="text-sm font-medium text-base-content/60 mb-2">{{ t('home.createProject.imagePreview') }}</p>
+                      <div
+                        class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-base-300"
+                      >
+                        <p class="text-sm font-medium text-base-content/60 mb-2">
+                          {{ t('home.createProject.imagePreview') }}
+                        </p>
                         <img
                           :src="newProjectImageUrl"
                           alt="Vista previa"
@@ -233,7 +228,9 @@
                     <!-- Descripción -->
                     <div class="form-control">
                       <label class="label">
-                        <span class="label-text font-semibold text-base-content flex items-center gap-2">
+                        <span
+                          class="label-text font-semibold text-base-content flex items-center gap-2"
+                        >
                           <ChatBubbleLeftIcon class="h-4 w-4" />
                           {{ t('home.createProject.descriptionLabel') }} *
                         </span>
@@ -244,67 +241,75 @@
                         class="textarea textarea-bordered textarea-lg h-32 w-full focus:textarea-primary resize-none"
                       ></textarea>
                       <label class="label">
-                        <span class="label-text-alt text-base-content/40">{{ t('home.createProject.charactersCount', { count: newProjectDescription.length }) }}</span>
+                        <span class="label-text-alt text-base-content/40">{{
+                          t('home.createProject.charactersCount', {
+                            count: newProjectDescription.length,
+                          })
+                        }}</span>
                       </label>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <!-- Etiquetas -->
-                      <div class="form-control">
-                        <label class="label">
-                          <span class="label-text font-semibold text-base-content flex items-center gap-2">
-                            <TagIcon class="h-4 w-4" />
-                            {{ t('home.createProject.tagsLabel') }}
-                          </span>
-                        </label>
-                        <input
-                          v-model="newProjectTags"
-                          type="text"
-                          :placeholder="t('home.createProject.tagsPlaceholder')"
-                          class="input input-bordered input-lg w-full focus:input-primary"
-                        />
-                        <label class="label">
-                          <span class="label-text-alt text-base-content/40">{{ t('home.createProject.tagsSeparator') }}</span>
-                        </label>
-                      </div>
-
-                      <!-- Miembros del equipo -->
-                      <div class="form-control">
-                        <label class="label">
-                          <span class="label-text font-semibold text-base-content flex items-center gap-2">
-                            <UsersIcon class="h-4 w-4" />
-                            {{ t('home.createProject.teamLabel') }}
-                          </span>
-                        </label>
-                        <input
-                          v-model="newProjectTeamMembers"
-                          type="text"
-                          :placeholder="t('home.createProject.teamPlaceholder')"
-                          class="input input-bordered input-lg w-full focus:input-primary"
-                        />
-                        <label class="label">
-                          <span class="label-text-alt text-base-content/40">{{ t('home.createProject.teamHelper') }}</span>
-                        </label>
+                    <!-- Etiquetas -->
+                    <div class="form-control">
+                      <label class="label">
+                        <span
+                          class="label-text font-semibold text-base-content flex items-center gap-2"
+                        >
+                          <TagIcon class="h-4 w-4" />
+                          {{ t('home.createProject.tagsLabel') }}
+                        </span>
+                      </label>
+                      <input
+                        v-model="currentTagInput"
+                        type="text"
+                        placeholder="Escribe una etiqueta y presiona Enter"
+                        class="input input-bordered input-lg w-full focus:input-primary"
+                        @keydown.enter.prevent="addTag"
+                      />
+                      <label class="label">
+                        <span class="label-text-alt text-base-content/40">
+                          Presiona Enter para agregar cada etiqueta
+                        </span>
+                      </label>
+                      <!-- Tags visuales -->
+                      <div v-if="newProjectTags.length > 0" class="flex flex-wrap gap-2 mt-2">
+                        <div
+                          v-for="(tag, index) in newProjectTags"
+                          :key="index"
+                          class="badge badge-primary badge-lg gap-2"
+                        >
+                          {{ tag }}
+                          <button
+                            @click="removeTag(index)"
+                            class="btn btn-ghost btn-xs btn-circle"
+                            type="button"
+                          >
+                            <XMarkIcon class="h-3 w-3" />
+                          </button>
+                        </div>
                       </div>
                     </div>
 
                     <!-- Botones de acción -->
                     <div class="flex gap-3 justify-end pt-4 border-t border-base-300/50">
-                      <button
-                        class="btn btn-ghost btn-lg"
-                        @click="resetCreateForm"
-                      >
+                      <button class="btn btn-ghost btn-lg" @click="resetCreateForm">
                         <XMarkIcon class="h-5 w-5" />
                         {{ t('home.createProject.cancel') }}
                       </button>
                       <button
                         class="btn btn-primary btn-lg"
-                        :disabled="!newProjectTitle.trim() || !newProjectDescription.trim() || isLoading"
+                        :disabled="
+                          !newProjectTitle.trim() || !newProjectDescription.trim() || isLoading
+                        "
                         @click="createProject"
                       >
                         <span v-if="isLoading" class="loading loading-spinner loading-sm"></span>
                         <RocketLaunchIcon v-else class="h-5 w-5" />
-                        {{ isLoading ? t('home.createProject.creating') : t('home.createProject.create') }}
+                        {{
+                          isLoading
+                            ? t('home.createProject.creating')
+                            : t('home.createProject.create')
+                        }}
                       </button>
                     </div>
                   </div>
@@ -339,8 +344,15 @@
             <div class="card bg-base-100 shadow-lg border border-base-300">
               <div class="card-body p-12">
                 <FolderIcon class="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <h3 class="text-xl font-semibold mb-2">{{ t('common.noProjects') }}</h3>
-                <p class="text-base-content/70">{{ t('common.beFirst') }}</p>
+                <h3 class="text-xl font-semibold mb-2">{{ noProjectsMessage.title }}</h3>
+                <p class="text-base-content/70">{{ noProjectsMessage.subtitle }}</p>
+                <button
+                  v-if="searchQuery || appliedFilters.status || appliedFilters.tags"
+                  @click="clearAllFilters"
+                  class="btn btn-primary btn-sm mt-4"
+                >
+                  {{ t('home.feed.clearFilters') }}
+                </button>
               </div>
             </div>
           </div>
@@ -364,7 +376,9 @@
                   </div>
                   <div class="flex-1">
                     <h4 class="font-semibold">{{ getProjectCreatorName(project) }}</h4>
-                    <p class="text-sm text-base-content/60">{{ formatTimeAgo(project.created_at) }}</p>
+                    <p class="text-sm text-base-content/60">
+                      {{ formatTimeAgo(project.created_at) }}
+                    </p>
                   </div>
                   <div class="badge" :class="getStatusColor(project.status)">
                     {{ getProjectStatusText(project.status) }}
@@ -411,7 +425,11 @@
                     >
                       <HeartIcon
                         class="h-5 w-5 transition-all duration-300"
-                        :class="isProjectLikedByUser(project) ? 'fill-red-500 text-red-500' : 'hover:text-red-400'"
+                        :class="
+                          isProjectLikedByUser(project)
+                            ? 'fill-red-500 text-red-500'
+                            : 'hover:text-red-400'
+                        "
                       />
                       <span class="font-medium">{{ project.likes_count || 0 }}</span>
                     </button>
@@ -428,12 +446,11 @@
                   <div class="flex items-center gap-2">
                     <div v-if="project.team_members?.length" class="flex items-center gap-1">
                       <UsersIcon class="h-4 w-4 text-base-content/60" />
-                      <span class="text-sm text-base-content/60">{{ project.team_members.length }}</span>
+                      <span class="text-sm text-base-content/60">{{
+                        project.team_members.length
+                      }}</span>
                     </div>
-                    <button
-                      class="btn btn-primary btn-sm"
-                      @click="viewProject(project)"
-                    >
+                    <button class="btn btn-primary btn-sm" @click="viewProject(project)">
                       {{ t('common.viewProject') }}
                     </button>
                   </div>
@@ -445,427 +462,113 @@
 
         <!-- Sidebar Derecho - Contenido Adicional -->
         <div class="lg:col-span-3 space-y-6">
-          <!-- Proyectos Recientes -->
+          <!-- TOP 5 Proyectos Más Populares -->
           <div class="card bg-base-100 shadow-lg border border-base-300">
             <div class="card-body p-6">
               <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
-                <ClockIcon class="h-5 w-5 text-info" />
+                <StarIcon class="h-5 w-5 text-warning" />
                 {{ t('home.trending.title') }}
               </h3>
-              <div v-if="recentProjects.length > 0" class="space-y-3">
+              <div v-if="topLikedProjects.length > 0" class="space-y-3">
                 <div
-                  v-for="project in recentProjects"
+                  v-for="(project, index) in topLikedProjects"
                   :key="project.id"
-                  class="flex items-center gap-3 p-3 hover:bg-base-200 rounded-lg transition-colors cursor-pointer"
+                  class="flex items-center gap-3 p-3 hover:bg-base-200 rounded-lg transition-all cursor-pointer group"
+                  :class="{
+                    'bg-linear-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/20':
+                      index === 0,
+                    'bg-linear-to-r from-slate-400/10 to-gray-500/10 border border-slate-400/20':
+                      index === 1,
+                    'bg-linear-to-r from-orange-700/10 to-amber-700/10 border border-orange-700/20':
+                      index === 2,
+                  }"
                   @click="viewProject(project)"
                 >
-                  <div class="avatar">
-                    <div class="w-8 h-8 rounded-full">
-                      <img
-                        :src="getProjectCreatorAvatar(project)"
-                        :alt="getProjectCreatorName(project)"
-                      />
+                  <!-- Ranking Badge -->
+                  <div class="shrink-0">
+                    <div
+                      class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
+                      :class="{
+                        'bg-linear-to-br from-yellow-400 to-yellow-600 text-yellow-900 shadow-lg shadow-yellow-500/50':
+                          index === 0,
+                        'bg-linear-to-br from-slate-300 to-slate-500 text-slate-900 shadow-lg shadow-slate-500/50':
+                          index === 1,
+                        'bg-linear-to-br from-orange-600 to-orange-800 text-orange-100 shadow-lg shadow-orange-700/50':
+                          index === 2,
+                        'bg-linear-to-br from-primary/20 to-primary/40 text-primary': index >= 3,
+                      }"
+                    >
+                      {{ index + 1 }}
                     </div>
                   </div>
+                  <!-- Project Info -->
                   <div class="flex-1 min-w-0">
-                    <p class="font-medium text-sm truncate">{{ project.title }}</p>
+                    <p
+                      class="font-semibold text-sm truncate group-hover:text-primary transition-colors"
+                      :class="{
+                        'text-yellow-700 dark:text-yellow-400': index === 0,
+                        'text-slate-700 dark:text-slate-300': index === 1,
+                        'text-orange-700 dark:text-orange-400': index === 2,
+                      }"
+                    >
+                      {{ project.title }}
+                    </p>
                     <p class="text-xs text-base-content/60">{{ getProjectCreatorName(project) }}</p>
-                    <p class="text-xs text-base-content/40">{{ formatTimeAgo(project.created_at) }}</p>
+                    <div class="flex items-center gap-2 mt-1">
+                      <div class="flex items-center gap-1">
+                        <HeartIcon class="h-3 w-3 text-error" />
+                        <span class="text-xs font-medium">{{ project.likes_count || 0 }}</span>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <ChatBubbleLeftIcon class="h-3 w-3 text-info" />
+                        <span class="text-xs font-medium">{{ project.comments_count || 0 }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Medal Icon for Top 3 -->
+                  <div v-if="index < 3" class="shrink-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      :class="{
+                        'text-yellow-500': index === 0,
+                        'text-slate-400': index === 1,
+                        'text-orange-600': index === 2,
+                      }"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.166 2.621v.858c-1.035.148-2.059.33-3.071.543a.75.75 0 0 0-.584.859 6.753 6.753 0 0 0 6.138 5.6 6.73 6.73 0 0 0 2.743 1.346A6.707 6.707 0 0 1 9.279 15H8.54c-1.036 0-1.875.84-1.875 1.875V19.5h-.75a2.25 2.25 0 0 0-2.25 2.25c0 .414.336.75.75.75h15a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-2.25-2.25h-.75v-2.625c0-1.036-.84-1.875-1.875-1.875h-.739a6.706 6.706 0 0 1-1.112-3.173 6.73 6.73 0 0 0 2.743-1.347 6.753 6.753 0 0 0 6.139-5.6.75.75 0 0 0-.585-.858 47.077 47.077 0 0 0-3.07-.543V2.62a.75.75 0 0 0-.658-.744 49.22 49.22 0 0 0-6.093-.377c-2.063 0-4.096.128-6.093.377a.75.75 0 0 0-.657.744Zm0 2.629c0 1.196.312 2.32.857 3.294A5.266 5.266 0 0 1 3.16 5.337a45.6 45.6 0 0 1 2.006-.343v.256Zm13.5 0v-.256c.674.1 1.343.214 2.006.343a5.265 5.265 0 0 1-2.863 3.207 6.72 6.72 0 0 0 .857-3.294Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>
               <div v-else class="text-center text-base-content/60 py-4">
-                <ClockIcon class="h-8 w-8 mx-auto mb-2 opacity-50" />
-                <p class="text-sm">{{ t('common.noRecentProjects') }}</p>
+                <StarIcon class="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p class="text-sm">{{ t('home.trending.noProjects') }}</p>
               </div>
             </div>
           </div>
-
-
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Pie de página -->
-    <footer class="bg-base-100 border-t border-base-300 mt-12">
-      <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-
-          <!-- Información institucional -->
-          <div class="col-span-1 md:col-span-2">
-            <h3 class="text-xl font-bold text-base-content mb-4">{{ t('footer.title') }}</h3>
-            <p class="text-base-content/70 mb-4">
-              {{ t('footer.description') }}
-            </p>
-            <div class="flex space-x-4">
-              <a href="#" class="text-base-content/60 hover:text-primary">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                </svg>
-              </a>
-              <a href="#" class="text-base-content/60 hover:text-primary">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
-                </svg>
-              </a>
-              <a href="#" class="text-base-content/60 hover:text-primary">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Soporte/Contacto -->
-          <div>
-            <h4 class="text-lg font-semibold text-base-content mb-4">{{ t('footer.support.title') }}</h4>
-            <ul class="space-y-2 text-base-content/70">
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.helpCenter') }}</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.contact') }}</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.liveChat') }}</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.support.reportIssue') }}</a>
-              </li>
-              <li>
-                <a href="mailto:support@devconnect.com" class="hover:text-primary transition-colors">
-                  {{ t('footer.support.email') }}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Políticas/Términos -->
-          <div>
-            <h4 class="text-lg font-semibold text-base-content mb-4">{{ t('footer.legal.title') }}</h4>
-            <ul class="space-y-2 text-base-content/70">
-              <li>
-                <button @click="showTermsModal = true" class="hover:text-primary transition-colors">{{ t('footer.legal.terms') }}</button>
-              </li>
-              <li>
-                <button @click="showPrivacyModal = true" class="hover:text-primary transition-colors">{{ t('footer.legal.privacy') }}</button>
-              </li>
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.legal.cookies') }}</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.legal.conduct') }}</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-primary transition-colors">{{ t('footer.legal.licenses') }}</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="border-t border-base-300 mt-8 pt-8 text-center">
-          <p class="text-base-content/60">
-            {{ t('footer.copyright', { year: new Date().getFullYear() }) }}
-          </p>
-          <p class="text-base-content/50 text-sm mt-2">
-            {{ t('footer.madeWith') }}
-          </p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Modal de Términos de Uso -->
-    <div v-if="showTermsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div class="bg-base-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <!-- Header del Modal -->
-        <div class="bg-gradient-to-r from-primary to-secondary text-primary-content p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-2xl font-bold">{{ t('termsModal.title') }}</h2>
-              <p class="text-sm opacity-90 mt-1">{{ t('termsModal.lastUpdated') }}</p>
-            </div>
-            <button
-              @click="showTermsModal = false"
-              class="btn btn-ghost btn-sm btn-circle text-primary-content hover:bg-primary-content/20"
-            >
-              <XMarkIcon class="h-6 w-6" />
-            </button>
-          </div>
-        </div>
-
-        <!-- Contenido del Modal -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-6">
-          <!-- Sección 1: Aceptación -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <DocumentIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.acceptance.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.acceptance.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 2: Cuenta de Usuario -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <UsersIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.userAccount.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.userAccount.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 3: Contenido -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <PhotoIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.content.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.content.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 4: Código de Conducta -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <StarIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.conduct.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.conduct.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 5: Propiedad Intelectual -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <DocumentIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.intellectual.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.intellectual.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 6: Terminación -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <XMarkIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.termination.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.termination.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 7: Modificaciones -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <ClockIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.changes.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.changes.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 8: Contacto -->
-          <div class="space-y-3 bg-base-200 p-4 rounded-lg">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <ChatBubbleLeftIcon class="h-5 w-5 text-primary" />
-              {{ t('termsModal.sections.contact.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('termsModal.sections.contact.content') }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Footer del Modal -->
-        <div class="border-t border-base-300 p-6 bg-base-200">
-          <button
-            @click="showTermsModal = false"
-            class="btn btn-primary w-full"
-          >
-            {{ t('common.close') }}
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- Modal de Política de Privacidad -->
-    <div v-if="showPrivacyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div class="bg-base-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <!-- Header del Modal -->
-        <div class="bg-gradient-to-r from-primary to-secondary text-primary-content p-6">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-2xl font-bold">{{ t('privacyModal.title') }}</h2>
-              <p class="text-sm opacity-90 mt-1">{{ t('privacyModal.lastUpdated') }}</p>
-            </div>
-            <button
-              @click="showPrivacyModal = false"
-              class="btn btn-ghost btn-sm btn-circle text-primary-content hover:bg-primary-content/20"
-            >
-              <XMarkIcon class="h-6 w-6" />
-            </button>
-          </div>
-        </div>
-
-        <!-- Contenido del Modal -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-6">
-          <!-- Sección 1: Introducción -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <DocumentIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.intro.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.intro.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 2: Información que Recopilamos -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <FolderIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.collection.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.collection.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 3: Uso de la Información -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <StarIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.usage.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.usage.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 4: Compartir Información -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <UsersIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.sharing.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.sharing.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 5: Seguridad -->
-          <div class="space-y-3 bg-success/10 p-4 rounded-lg border border-success/20">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <svg class="h-5 w-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-              </svg>
-              {{ t('privacyModal.sections.security.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.security.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 6: Cookies -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-              </svg>
-              {{ t('privacyModal.sections.cookies.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.cookies.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 7: Sus Derechos -->
-          <div class="space-y-3 bg-info/10 p-4 rounded-lg border border-info/20">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <svg class="h-5 w-5 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              {{ t('privacyModal.sections.rights.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.rights.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 8: Privacidad de Menores -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <UsersIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.children.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.children.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 9: Transferencias Internacionales -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              {{ t('privacyModal.sections.international.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.international.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 10: Cambios -->
-          <div class="space-y-3">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <ClockIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.changes.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.changes.content') }}
-            </p>
-          </div>
-
-          <!-- Sección 11: Contacto -->
-          <div class="space-y-3 bg-base-200 p-4 rounded-lg">
-            <h3 class="text-lg font-bold text-base-content flex items-center gap-2">
-              <ChatBubbleLeftIcon class="h-5 w-5 text-primary" />
-              {{ t('privacyModal.sections.contact.title') }}
-            </h3>
-            <p class="text-base-content/80 leading-relaxed">
-              {{ t('privacyModal.sections.contact.content') }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Footer del Modal -->
-        <div class="border-t border-base-300 p-6 bg-base-200">
-          <button
-            @click="showPrivacyModal = false"
-            class="btn btn-primary w-full"
-          >
-            {{ t('common.close') }}
-          </button>
-        </div>
-      </div>
-    </div>
+    <AppFooter />
 
     <!-- Modal de Filtros Avanzados -->
-    <div v-if="showAdvancedFilters" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div class="bg-base-100 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+    <div
+      v-if="showAdvancedFilters"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+    >
+      <div
+        class="bg-base-100 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+      >
         <!-- Header del Modal -->
-        <div class="bg-gradient-to-r from-primary to-secondary text-primary-content p-6">
+        <div class="bg-linear-to-r from-primary to-secondary text-primary-content p-6">
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-2xl font-bold flex items-center gap-2">
@@ -888,7 +591,9 @@
           <!-- Estado del proyecto -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">{{ t('home.search.filters.status.label') }}</span>
+              <span class="label-text font-semibold text-base">{{
+                t('home.search.filters.status.label')
+              }}</span>
             </label>
             <select v-model="advancedFilters.status" class="select select-bordered w-full">
               <option value="">{{ t('home.search.filters.status.all') }}</option>
@@ -902,7 +607,9 @@
           <!-- Tecnologías -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">{{ t('home.search.filters.tags.label') }}</span>
+              <span class="label-text font-semibold text-base">{{
+                t('home.search.filters.tags.label')
+              }}</span>
             </label>
             <input
               v-model="advancedFilters.tags"
@@ -915,28 +622,40 @@
           <!-- Ordenar por -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">{{ t('home.search.filters.sortBy.label') }}</span>
+              <span class="label-text font-semibold text-base">{{
+                t('home.search.filters.sortBy.label')
+              }}</span>
             </label>
             <select v-model="advancedFilters.sortBy" class="select select-bordered w-full">
               <option value="newest">{{ t('home.search.filters.sortBy.newest') }}</option>
               <option value="oldest">{{ t('home.search.filters.sortBy.oldest') }}</option>
               <option value="mostLiked">{{ t('home.search.filters.sortBy.mostLiked') }}</option>
-              <option value="mostCommented">{{ t('home.search.filters.sortBy.mostCommented') }}</option>
-              <option value="alphabetical">{{ t('home.search.filters.sortBy.alphabetical') }}</option>
-              <option value="reverseAlphabetical">{{ t('home.search.filters.sortBy.reverseAlphabetical') }}</option>
+              <option value="mostCommented">
+                {{ t('home.search.filters.sortBy.mostCommented') }}
+              </option>
+              <option value="alphabetical">
+                {{ t('home.search.filters.sortBy.alphabetical') }}
+              </option>
+              <option value="reverseAlphabetical">
+                {{ t('home.search.filters.sortBy.reverseAlphabetical') }}
+              </option>
             </select>
           </div>
 
           <!-- Fecha de creación -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">{{ t('home.search.filters.dateRange.label') }}</span>
+              <span class="label-text font-semibold text-base">{{
+                t('home.search.filters.dateRange.label')
+              }}</span>
             </label>
             <select v-model="advancedFilters.dateRange" class="select select-bordered w-full">
               <option value="">{{ t('home.search.filters.dateRange.anytime') }}</option>
               <option value="lastWeek">{{ t('home.search.filters.dateRange.lastWeek') }}</option>
               <option value="lastMonth">{{ t('home.search.filters.dateRange.lastMonth') }}</option>
-              <option value="last3Months">{{ t('home.search.filters.dateRange.last3Months') }}</option>
+              <option value="last3Months">
+                {{ t('home.search.filters.dateRange.last3Months') }}
+              </option>
               <option value="lastYear">{{ t('home.search.filters.dateRange.lastYear') }}</option>
             </select>
           </div>
@@ -946,7 +665,9 @@
             <!-- Mínimo de likes -->
             <div class="form-control">
               <label class="label">
-                <span class="label-text font-semibold">{{ t('home.search.filters.minLikes.label') }}</span>
+                <span class="label-text font-semibold">{{
+                  t('home.search.filters.minLikes.label')
+                }}</span>
               </label>
               <input
                 v-model.number="advancedFilters.minLikes"
@@ -960,7 +681,9 @@
             <!-- Mínimo de comentarios -->
             <div class="form-control">
               <label class="label">
-                <span class="label-text font-semibold">{{ t('home.search.filters.minComments.label') }}</span>
+                <span class="label-text font-semibold">{{
+                  t('home.search.filters.minComments.label')
+                }}</span>
               </label>
               <input
                 v-model.number="advancedFilters.minComments"
@@ -975,7 +698,9 @@
           <!-- Creador del proyecto -->
           <div class="form-control">
             <label class="label">
-              <span class="label-text font-semibold text-base">{{ t('home.search.filters.creator.label') }}</span>
+              <span class="label-text font-semibold text-base">{{
+                t('home.search.filters.creator.label')
+              }}</span>
             </label>
             <input
               v-model="advancedFilters.creator"
@@ -989,21 +714,41 @@
         <!-- Footer del Modal -->
         <div class="border-t border-base-300 p-6 bg-base-200">
           <div class="flex gap-3">
-            <button
-              @click="clearAdvancedFilters"
-              class="btn btn-ghost flex-1"
-            >
+            <button @click="clearAdvancedFilters" class="btn btn-ghost flex-1">
               {{ t('home.search.filters.actions.clear') }}
             </button>
-            <button
-              @click="applyAdvancedFilters"
-              class="btn btn-primary flex-1"
-            >
+            <button @click="applyAdvancedFilters" class="btn btn-primary flex-1">
               {{ t('home.search.filters.actions.apply') }}
             </button>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Alertas flotantes en esquina inferior derecha -->
+    <div class="fixed bottom-6 right-6 z-50 space-y-3 max-w-md">
+      <!-- Alerta de éxito -->
+      <Transition name="slide-fade">
+        <div v-if="showSuccessAlert" role="alert" class="alert alert-success shadow-2xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="h-6 w-6 shrink-0 stroke-current"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>{{ successAlertMessage }}</span>
+          <button @click="showSuccessAlert = false" class="btn btn-ghost btn-sm btn-circle">
+            <XMarkIcon class="h-4 w-4" />
+          </button>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -1030,8 +775,10 @@ import {
   PhotoIcon,
   TagIcon,
   XMarkIcon,
-  FunnelIcon
+  FunnelIcon,
 } from '@/icons'
+import type AppFooterVue from '@/components/AppFooter.vue'
+import AppFooter from '@/components/AppFooter.vue'
 
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
@@ -1043,7 +790,10 @@ const { projects, loading } = storeToRefs(projectsStore)
 
 // Estados para búsqueda
 const searchQuery = ref('')
-const searchResults = ref<{ projects: Project[], users: any[] }>({ projects: [], users: [] })
+
+// Estados para alertas de notificación
+const showSuccessAlert = ref(false)
+const successAlertMessage = ref('')
 
 // Estado del modal de filtros avanzados
 const showAdvancedFilters = ref(false)
@@ -1054,12 +804,50 @@ const advancedFilters = ref({
   dateRange: '',
   minLikes: null as number | null,
   minComments: null as number | null,
-  creator: ''
+  creator: '',
 })
 const appliedFilters = ref({ ...advancedFilters.value })
 
 // Computed para el usuario actual
 const user = computed(() => profile.value)
+
+// Computed para mensaje dinámico cuando no hay proyectos
+const noProjectsMessage = computed(() => {
+  if (searchQuery.value.trim()) {
+    return {
+      title: t('home.feed.noResults.search.title', { query: searchQuery.value }),
+      subtitle: t('home.feed.noResults.search.subtitle'),
+    }
+  }
+
+  if (activeFilter.value !== 'todos') {
+    const filterName = feedFilters.value.find((f) => f.key === activeFilter.value)?.label || ''
+    return {
+      title: t('home.feed.noResults.filter.title', { filter: filterName }),
+      subtitle: t('home.feed.noResults.filter.subtitle'),
+    }
+  }
+
+  // Si hay filtros avanzados aplicados
+  if (
+    appliedFilters.value.status ||
+    appliedFilters.value.tags ||
+    appliedFilters.value.dateRange ||
+    appliedFilters.value.minLikes ||
+    appliedFilters.value.minComments ||
+    appliedFilters.value.creator
+  ) {
+    return {
+      title: t('home.feed.noResults.advancedFilters.title'),
+      subtitle: t('home.feed.noResults.advancedFilters.subtitle'),
+    }
+  }
+
+  return {
+    title: t('common.noProjects'),
+    subtitle: t('common.beFirst'),
+  }
+})
 
 const activeFilter = ref('todos')
 const showCreateForm = ref(false)
@@ -1069,8 +857,8 @@ const newProjectTitle = ref('')
 const newProjectDescription = ref('')
 const newProjectStatus = ref<'planning' | 'in_progress' | 'completed' | 'on_hold'>('planning')
 const newProjectImageUrl = ref('')
-const newProjectTags = ref('')
-const newProjectTeamMembers = ref('')
+const newProjectTags = ref<string[]>([])
+const currentTagInput = ref('')
 const isLoading = ref(false)
 let refreshInterval: number | null = null
 
@@ -1080,7 +868,7 @@ const feedFilters = computed(() => [
   { key: 'recientes', label: t('home.feed.recent') },
   { key: 'planificando', label: t('home.feed.planning') },
   { key: 'en-progreso', label: t('home.feed.inProgress') },
-  { key: 'completados', label: t('home.feed.completed') }
+  { key: 'completados', label: t('home.feed.completed') },
 ])
 
 // Computed properties
@@ -1092,59 +880,41 @@ const myProjects = computed(() => {
 const myProjectsCount = computed(() => myProjects.value.length)
 
 const totalLikes = computed(() => {
-  return myProjects.value.reduce((total: number, project: Project) => total + (project.likes_count || 0), 0)
+  return myProjects.value.reduce(
+    (total: number, project: Project) => total + (project.likes_count || 0),
+    0,
+  )
 })
 
 const myInProgressProjects = computed(() => {
   if (!profile.value) return []
   return projects.value
-    .filter((p: Project) => p.creator?.id === profile.value?.id && (p.status === 'in_progress' || p.status === 'En Progreso'))
+    .filter(
+      (p: Project) =>
+        p.creator?.id === profile.value?.id &&
+        (p.status === 'in_progress' || p.status === 'En Progreso'),
+    )
     .slice(0, 3)
 })
 
-const recentProjects = computed(() => {
-  return [...projects.value]
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(0, 5)
+const topLikedProjects = computed(() => {
+  return [...projects.value].sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0)).slice(0, 5)
 })
-
-// Computed properties para búsqueda
-const searchSuggestions = computed(() => {
-  if (!searchQuery.value || searchQuery.value.length < 2) return []
-
-  const query = searchQuery.value.toLowerCase()
-  const projectMatches = projects.value.filter(p =>
-    p.title.toLowerCase().includes(query) ||
-    p.description.toLowerCase().includes(query) ||
-    (p.tags && p.tags.some((tag: string) => tag.toLowerCase().includes(query)))
-  ).slice(0, 5)
-
-  // Simular usuarios para el ejemplo
-  const allUsers = [
-    { id: 1, full_name: 'Ana García', email: 'ana@example.com' },
-    { id: 2, full_name: 'Carlos Mendoza', email: 'carlos@example.com' },
-    { id: 3, full_name: 'María López', email: 'maria@example.com' },
-    { id: 4, full_name: 'Juan Pérez', email: 'juan@example.com' }
-  ]
-
-  const userMatches = allUsers.filter(u =>
-    u.full_name.toLowerCase().includes(query) ||
-    u.email.toLowerCase().includes(query)
-  ).slice(0, 5)
-
-  return [...projectMatches, ...userMatches]
-})
-
-const projectSuggestions = computed(() =>
-  searchSuggestions.value.filter(item => 'title' in item)
-)
-
-const userSuggestions = computed(() =>
-  searchSuggestions.value.filter(item => 'full_name' in item)
-)
 
 const filteredProjects = computed(() => {
   let filtered = [...projects.value]
+
+  // Aplicar búsqueda por query
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(
+      (p) =>
+        p.title.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        (p.tags && p.tags.some((tag: string) => tag.toLowerCase().includes(query))) ||
+        (p.creator?.full_name && p.creator.full_name.toLowerCase().includes(query)),
+    )
+  }
 
   // Aplicar filtro básico del feed
   switch (activeFilter.value) {
@@ -1152,34 +922,38 @@ const filteredProjects = computed(() => {
       // Se ordenará después
       break
     case 'planificando':
-      filtered = filtered.filter(p => p.status === 'planning' || p.status === 'Planificando')
+      filtered = filtered.filter((p) => p.status === 'planning' || p.status === 'Planificando')
       break
     case 'en-progreso':
-      filtered = filtered.filter(p => p.status === 'En Progreso' || p.status === 'in_progress')
+      filtered = filtered.filter((p) => p.status === 'En Progreso' || p.status === 'in_progress')
       break
     case 'completados':
-      filtered = filtered.filter(p => p.status === 'Completado' || p.status === 'completed')
+      filtered = filtered.filter((p) => p.status === 'Completado' || p.status === 'completed')
       break
   }
 
   // Aplicar filtros avanzados
   if (appliedFilters.value.status) {
-    filtered = filtered.filter(p =>
-      p.status === appliedFilters.value.status ||
-      (appliedFilters.value.status === 'planning' && p.status === 'Planificando') ||
-      (appliedFilters.value.status === 'in_progress' && p.status === 'En Progreso') ||
-      (appliedFilters.value.status === 'completed' && p.status === 'Completado') ||
-      (appliedFilters.value.status === 'on_hold' && p.status === 'En Pausa')
+    filtered = filtered.filter(
+      (p) =>
+        p.status === appliedFilters.value.status ||
+        (appliedFilters.value.status === 'planning' && p.status === 'Planificando') ||
+        (appliedFilters.value.status === 'in_progress' && p.status === 'En Progreso') ||
+        (appliedFilters.value.status === 'completed' && p.status === 'Completado') ||
+        (appliedFilters.value.status === 'on_hold' && p.status === 'En Pausa'),
     )
   }
 
   // Filtrar por tecnologías/tags
   if (appliedFilters.value.tags) {
-    const searchTags = appliedFilters.value.tags.toLowerCase().split(',').map(t => t.trim())
-    filtered = filtered.filter(p =>
-      p.tags && p.tags.some(tag =>
-        searchTags.some(searchTag => tag.toLowerCase().includes(searchTag))
-      )
+    const searchTags = appliedFilters.value.tags
+      .toLowerCase()
+      .split(',')
+      .map((t) => t.trim())
+    filtered = filtered.filter(
+      (p) =>
+        p.tags &&
+        p.tags.some((tag) => searchTags.some((searchTag) => tag.toLowerCase().includes(searchTag))),
     )
   }
 
@@ -1203,25 +977,26 @@ const filteredProjects = computed(() => {
         break
     }
 
-    filtered = filtered.filter(p => new Date(p.created_at) >= cutoffDate)
+    filtered = filtered.filter((p) => new Date(p.created_at) >= cutoffDate)
   }
 
   // Filtrar por mínimo de likes
   if (appliedFilters.value.minLikes !== null && appliedFilters.value.minLikes > 0) {
-    filtered = filtered.filter(p => (p.likes_count || 0) >= appliedFilters.value.minLikes!)
+    filtered = filtered.filter((p) => (p.likes_count || 0) >= appliedFilters.value.minLikes!)
   }
 
   // Filtrar por mínimo de comentarios
   if (appliedFilters.value.minComments !== null && appliedFilters.value.minComments > 0) {
-    filtered = filtered.filter(p => (p.comments_count || 0) >= appliedFilters.value.minComments!)
+    filtered = filtered.filter((p) => (p.comments_count || 0) >= appliedFilters.value.minComments!)
   }
 
   // Filtrar por creador
   if (appliedFilters.value.creator) {
     const searchCreator = appliedFilters.value.creator.toLowerCase()
-    filtered = filtered.filter(p =>
-      (p.creator?.full_name?.toLowerCase().includes(searchCreator)) ||
-      (p.creator?.email?.toLowerCase().includes(searchCreator))
+    filtered = filtered.filter(
+      (p) =>
+        p.creator?.full_name?.toLowerCase().includes(searchCreator) ||
+        p.creator?.email?.toLowerCase().includes(searchCreator),
     )
   }
 
@@ -1265,16 +1040,18 @@ const createProjectProgress = computed(() => {
   // Campos opcionales - 20%
   let optionalFields = 0
   if (newProjectImageUrl.value.trim().length > 0) optionalFields += 1
-  if (newProjectTags.value.trim().length > 0) optionalFields += 1
-  if (newProjectTeamMembers.value.trim().length > 0) optionalFields += 1
-  progress += (optionalFields / 3) * 20
+  if (newProjectTags.value.length > 0) optionalFields += 1
+  progress += (optionalFields / 2) * 20
 
   return progress
 })
 
 const createProjectCurrentStep = computed(() => {
-  if (newProjectDescription.value.trim().length > 0 &&
-      (newProjectTags.value || newProjectImageUrl.value || newProjectTeamMembers.value)) return 3
+  if (
+    newProjectDescription.value.trim().length > 0 &&
+    (newProjectTags.value.length > 0 || newProjectImageUrl.value)
+  )
+    return 3
   if (newProjectDescription.value.trim().length > 0) return 2
   if (newProjectTitle.value.trim().length > 0) return 1
   return 1
@@ -1282,9 +1059,7 @@ const createProjectCurrentStep = computed(() => {
 
 const createProjectStepLabels = computed(() => {
   const isSpanish = locale.value === 'es'
-  return isSpanish
-    ? ['Básico', 'Detalles', 'Extra']
-    : ['Basic', 'Details', 'Extra']
+  return isSpanish ? ['Básico', 'Detalles', 'Extra'] : ['Basic', 'Details', 'Extra']
 })
 
 const createProjectProgressLabel = computed(() => {
@@ -1303,36 +1078,34 @@ const setActiveFilter = (filterKey: string) => {
   activeFilter.value = filterKey
 }
 
-
-
 const viewProject = (project: Project) => {
   router.push(`/projects/${project.id}`)
 }
 
 const getProjectStatusText = (status: string): string => {
   const statusMap: Record<string, string> = {
-    'planning': t('project.status.planning'),
-    'Planificando': t('project.status.planning'),
-    'in_progress': t('project.status.in_progress'),
+    planning: t('project.status.planning'),
+    Planificando: t('project.status.planning'),
+    in_progress: t('project.status.in_progress'),
     'En Progreso': t('project.status.in_progress'),
-    'completed': t('project.status.completed'),
-    'Completado': t('project.status.completed'),
-    'on_hold': t('project.status.on_hold'),
-    'En Pausa': t('project.status.on_hold')
+    completed: t('project.status.completed'),
+    Completado: t('project.status.completed'),
+    on_hold: t('project.status.on_hold'),
+    'En Pausa': t('project.status.on_hold'),
   }
   return statusMap[status] || status
 }
 
 const getStatusColor = (status: string): string => {
   const colorMap: Record<string, string> = {
-    'planning': 'badge-info',
-    'in_progress': 'badge-warning',
-    'completed': 'badge-success',
-    'on_hold': 'badge-ghost',
-    'Planificando': 'badge-info',
+    planning: 'badge-info',
+    in_progress: 'badge-warning',
+    completed: 'badge-success',
+    on_hold: 'badge-ghost',
+    Planificando: 'badge-info',
     'En Progreso': 'badge-warning',
-    'Completado': 'badge-success',
-    'En Pausa': 'badge-ghost'
+    Completado: 'badge-success',
+    'En Pausa': 'badge-ghost',
   }
   return colorMap[status] || 'badge-ghost'
 }
@@ -1390,9 +1163,31 @@ const resetCreateForm = () => {
   newProjectDescription.value = ''
   newProjectStatus.value = 'planning'
   newProjectImageUrl.value = ''
-  newProjectTags.value = ''
-  newProjectTeamMembers.value = ''
+  newProjectTags.value = []
+  currentTagInput.value = ''
   showCreateForm.value = false
+}
+
+// Métodos para manejar etiquetas
+const addTag = () => {
+  const tag = currentTagInput.value.trim()
+  if (tag && !newProjectTags.value.includes(tag)) {
+    newProjectTags.value.push(tag)
+    currentTagInput.value = ''
+  }
+}
+
+const removeTag = (index: number) => {
+  newProjectTags.value.splice(index, 1)
+}
+
+// Método para mostrar alerta de éxito
+const showSuccessNotification = (message: string) => {
+  successAlertMessage.value = message
+  showSuccessAlert.value = true
+  setTimeout(() => {
+    showSuccessAlert.value = false
+  }, 5000)
 }
 
 // Método para crear proyecto
@@ -1401,29 +1196,22 @@ const createProject = async () => {
 
   isLoading.value = true
   try {
-    // Procesar tags
-    const tags = newProjectTags.value
-      ? newProjectTags.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
-      : []
-
-    // Procesar miembros del equipo
-    const teamMembers = newProjectTeamMembers.value
-      ? newProjectTeamMembers.value.split(',').map(email => email.trim()).filter(email => email.length > 0)
-      : []
-
     await projectsStore.createProject({
       title: newProjectTitle.value,
       description: newProjectDescription.value,
       status: newProjectStatus.value,
       image_url: newProjectImageUrl.value || undefined,
-      tags,
-      team_members: teamMembers,
-      created_by: user.value.id
+      tags: newProjectTags.value,
+      team_members: [],
+      created_by: user.value.id,
     })
 
     resetCreateForm()
     // Refrescar proyectos
     await projectsStore.fetchProjects()
+
+    // Mostrar alerta de éxito
+    showSuccessNotification(t('home.createProject.successMessage'))
   } catch (error) {
     console.error('Error creating project:', error)
   } finally {
@@ -1451,34 +1239,20 @@ const openComments = (project: Project) => {
   router.push(`/projects/${project.id}#comments`)
 }
 
-// Métodos de búsqueda
-const performSearch = () => {
-  if (!searchQuery.value.trim()) return
-
-  // Aquí podrías hacer una búsqueda más avanzada o redirigir a una página de resultados
-  console.log('Buscando:', searchQuery.value)
-
-  // Por ahora, simplemente filtrar los proyectos existentes
-  const query = searchQuery.value.toLowerCase()
-  const results = projects.value.filter(p =>
-    p.title.toLowerCase().includes(query) ||
-    p.description.toLowerCase().includes(query) ||
-    (p.tags && p.tags.some((tag: string) => tag.toLowerCase().includes(query)))
-  )
-
-  // Podrías mostrar los resultados en un modal o redirigir a una página de búsqueda
-  alert(`Se encontraron ${results.length} proyectos que coinciden con "${searchQuery.value}"`)
-}
-
-const selectProject = (project: Project) => {
-  router.push(`/projects/${project.id}`)
+// Método para limpiar todos los filtros
+const clearAllFilters = () => {
   searchQuery.value = ''
-}
-
-const selectUser = (user: any) => {
-  // Redirigir al perfil del usuario (cuando esté implementado)
-  console.log('Ver perfil de:', user.full_name)
-  searchQuery.value = ''
+  activeFilter.value = 'todos'
+  advancedFilters.value = {
+    status: '',
+    tags: '',
+    sortBy: 'newest',
+    dateRange: '',
+    minLikes: null,
+    minComments: null,
+    creator: '',
+  }
+  appliedFilters.value = { ...advancedFilters.value }
 }
 
 // Métodos para filtros avanzados
@@ -1495,7 +1269,7 @@ const clearAdvancedFilters = () => {
     dateRange: '',
     minLikes: null,
     minComments: null,
-    creator: ''
+    creator: '',
   }
   appliedFilters.value = { ...advancedFilters.value }
   showAdvancedFilters.value = false
@@ -1525,5 +1299,45 @@ onBeforeUnmount(() => {
   line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.hero-background {
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner1.jpg');
+  background-repeat: no-repeat;
+}
+
+/* Animaciones para alertas */
+.slide-fade-enter-active {
+  animation: slide-fade-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.slide-fade-leave-active {
+  animation: slide-fade-out 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes slide-fade-in {
+  0% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-fade-out {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
 }
 </style>

@@ -1,14 +1,10 @@
 <template>
-  <div 
+  <div
     class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow"
     @contextmenu.prevent="handleContextMenu"
   >
     <figure v-if="project.image_url" class="aspect-video">
-      <img
-        :src="project.image_url"
-        :alt="project.title"
-        class="w-full h-full object-cover"
-      />
+      <img :src="project.image_url" :alt="project.title" class="w-full h-full object-cover" />
     </figure>
 
     <div class="card-body">
@@ -29,16 +25,13 @@
           </div>
         </div>
 
-        <button 
-          @click="handleMenuClick"
-          class="btn btn-ghost btn-sm btn-circle"
-        >
+        <button @click="handleMenuClick" class="btn btn-ghost btn-sm btn-circle">
           <EllipsisVerticalIcon class="w-5 h-5" />
         </button>
       </div>
 
-    <!-- Context Menu -->
-    <ContextMenu ref="contextMenuRef" :items="contextMenuItems" />
+      <!-- Context Menu -->
+      <ContextMenu ref="contextMenuRef" :items="contextMenuItems" />
 
       <!-- Project Content -->
       <h2 class="card-title text-lg mb-2">{{ project.title }}</h2>
@@ -100,25 +93,29 @@
             @click="$emit('like', project.id)"
           >
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+              <path
+                fill-rule="evenodd"
+                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                clip-rule="evenodd"
+              ></path>
             </svg>
             {{ project.likes_count || 0 }}
           </button>
 
-          <button
-            class="btn btn-ghost btn-sm gap-2"
-            @click="$emit('comment', project.id)"
-          >
+          <button class="btn btn-ghost btn-sm gap-2" @click="$emit('comment', project.id)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              ></path>
             </svg>
             {{ project.comments_count || 0 }}
           </button>
         </div>
 
-        <button class="btn btn-primary btn-sm">
-          Ver Proyecto
-        </button>
+        <button class="btn btn-primary btn-sm">Ver Proyecto</button>
       </div>
     </div>
   </div>
@@ -139,7 +136,7 @@ import {
   ShareIcon,
   EyeIcon,
   BookmarkIcon,
-  FlagIcon
+  FlagIcon,
 } from '@/icons'
 
 interface Props {
@@ -172,18 +169,18 @@ const contextMenuItems = computed(() => {
     {
       label: t('common.view') || 'Ver Proyecto',
       icon: EyeIcon,
-      action: () => handleViewProject()
+      action: () => handleViewProject(),
     },
     {
       label: 'Guardar',
       icon: BookmarkIcon,
-      action: () => emit('save', props.project.id)
+      action: () => emit('save', props.project.id),
     },
     {
       label: t('common.share') || 'Compartir',
       icon: ShareIcon,
-      action: () => handleShare()
-    }
+      action: () => handleShare(),
+    },
   ]
 
   if (isOwner.value) {
@@ -192,14 +189,14 @@ const contextMenuItems = computed(() => {
       {
         label: t('common.edit') || 'Editar',
         icon: PencilIcon,
-        action: () => emit('edit', props.project.id)
+        action: () => emit('edit', props.project.id),
       },
       {
         label: t('common.delete') || 'Eliminar',
         icon: TrashIcon,
         danger: true,
-        action: () => emit('delete', props.project.id)
-      }
+        action: () => emit('delete', props.project.id),
+      },
     )
   } else {
     items.push({ divider: true } as any)
@@ -207,7 +204,7 @@ const contextMenuItems = computed(() => {
       label: 'Reportar',
       icon: FlagIcon,
       warning: true,
-      action: () => emit('report', props.project.id)
+      action: () => emit('report', props.project.id),
     })
   }
 
@@ -235,7 +232,7 @@ const handleShare = () => {
     navigator.share({
       title: props.project.title,
       text: props.project.description,
-      url: url
+      url: url,
     })
   } else {
     navigator.clipboard.writeText(url)
@@ -267,21 +264,21 @@ const getStatusClass = (status: string) => {
     planning: 'badge-warning',
     in_progress: 'badge-info',
     completed: 'badge-success',
-    on_hold: 'badge-error'
+    on_hold: 'badge-error',
   }
   return classes[status as keyof typeof classes] || 'badge-neutral'
 }
 
 const getStatusText = (status: string) => {
   const statusMap: Record<string, string> = {
-    'planning': t('project.status.planning'),
-    'Planificando': t('project.status.planning'),
-    'in_progress': t('project.status.in_progress'),
+    planning: t('project.status.planning'),
+    Planificando: t('project.status.planning'),
+    in_progress: t('project.status.in_progress'),
     'En Progreso': t('project.status.in_progress'),
-    'completed': t('project.status.completed'),
-    'Completado': t('project.status.completed'),
-    'on_hold': t('project.status.on_hold'),
-    'En Pausa': t('project.status.on_hold')
+    completed: t('project.status.completed'),
+    Completado: t('project.status.completed'),
+    on_hold: t('project.status.on_hold'),
+    'En Pausa': t('project.status.on_hold'),
   }
   return statusMap[status] || status
 }

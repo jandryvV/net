@@ -63,7 +63,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',
-  variant: 'default'
+  variant: 'default',
 })
 
 const emit = defineEmits<{
@@ -77,12 +77,12 @@ const selectClasses = computed(() => {
   const sizeClasses = {
     sm: 'select-sm',
     md: 'select-md',
-    lg: 'select-lg'
+    lg: 'select-lg',
   }
   const variantClasses = {
     default: 'select-bordered',
     bordered: 'select-bordered border-2',
-    ghost: 'select-ghost'
+    ghost: 'select-ghost',
   }
 
   let classes = `${baseClasses} ${sizeClasses[props.size]} ${variantClasses[props.variant]}`
@@ -119,7 +119,7 @@ const handleChange = (event: Event) => {
   let value: string | number = target.value
 
   // Try to convert to number if the original value was a number
-  const originalOption = props.options.find(opt => getOptionValue(opt) == value)
+  const originalOption = props.options.find((opt) => getOptionValue(opt) == value)
   if (originalOption && typeof getOptionValue(originalOption) === 'number') {
     value = Number(value)
   }

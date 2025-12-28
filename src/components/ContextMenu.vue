@@ -8,14 +8,8 @@
         :style="menuStyle"
         @click="closeMenu"
       >
-        <div
-          v-for="(item, index) in items"
-          :key="index"
-        >
-          <div
-            v-if="item.divider"
-            class="divider my-1"
-          ></div>
+        <div v-for="(item, index) in items" :key="index">
+          <div v-if="item.divider" class="divider my-1"></div>
           <button
             v-else
             @click="handleItemClick(item)"
@@ -24,19 +18,12 @@
             :class="{
               'text-error hover:bg-error/10': item.danger,
               'text-warning': item.warning,
-              'text-success': item.success
+              'text-success': item.success,
             }"
           >
-            <component
-              v-if="item.icon"
-              :is="item.icon"
-              class="w-4 h-4"
-            />
+            <component v-if="item.icon" :is="item.icon" class="w-4 h-4" />
             <span class="text-sm">{{ item.label }}</span>
-            <span
-              v-if="item.shortcut"
-              class="ml-auto text-xs opacity-60"
-            >
+            <span v-if="item.shortcut" class="ml-auto text-xs opacity-60">
               {{ item.shortcut }}
             </span>
           </button>
@@ -73,7 +60,7 @@ const menuRef = ref<HTMLElement | null>(null)
 
 const menuStyle = computed(() => ({
   left: `${position.value.x}px`,
-  top: `${position.value.y}px`
+  top: `${position.value.y}px`,
 }))
 
 const show = (x: number, y: number) => {
@@ -134,14 +121,16 @@ onUnmounted(() => {
 
 defineExpose({
   show,
-  closeMenu
+  closeMenu,
 })
 </script>
 
 <style scoped>
 .context-menu-enter-active,
 .context-menu-leave-active {
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
 }
 
 .context-menu-enter-from,

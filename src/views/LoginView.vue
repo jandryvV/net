@@ -1,9 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gradient-to from-primary/5 to-secondary/5 flex items-center justify-center p-4">
+  <div
+    class="min-h-screen bg-gradient-to from-primary/5 to-secondary/5 flex items-center justify-center p-4"
+  >
     <div class="card w-full max-w-md bg-base-100 shadow-2xl border border-base-300">
       <div class="card-body p-8">
         <div class="text-center mb-8">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4"
+          >
             <ArrowRightOnRectangleIcon class="h-8 w-8 text-primary" />
           </div>
           <h2 class="text-2xl font-bold text-base-content">{{ $t('auth.login.title') }}</h2>
@@ -11,10 +15,7 @@
         </div>
 
         <!-- Progress Bar -->
-        <FormProgress
-          :progress="formProgress"
-          :label="progressLabel"
-        />
+        <FormProgress :progress="formProgress" :label="progressLabel" />
 
         <form @submit.prevent="handleLogin" class="space-y-6">
           <BaseInput
@@ -43,10 +44,18 @@
 
           <div class="flex items-center justify-between">
             <label class="label cursor-pointer">
-              <input v-model="rememberMe" type="checkbox" class="checkbox checkbox-primary checkbox-sm" />
+              <input
+                v-model="rememberMe"
+                type="checkbox"
+                class="checkbox checkbox-primary checkbox-sm"
+              />
               <span class="label-text ml-2">Recordarme</span>
             </label>
-            <a @click="showForgotPassword = true" class="link link-primary text-sm cursor-pointer">{{ $t('auth.login.forgotPassword') }}</a>
+            <a
+              @click="showForgotPassword = true"
+              class="link link-primary text-sm cursor-pointer"
+              >{{ $t('auth.login.forgotPassword') }}</a
+            >
           </div>
 
           <BaseButton
@@ -56,9 +65,15 @@
             variant="primary"
             size="lg"
             block
-            :label="isLocked 
-              ? (locale === 'es' ? `Bloqueado (${formatTime(remainingTime)})` : `Locked (${formatTime(remainingTime)})`)
-              : (loading ? $t('auth.login.loading') : $t('auth.login.submit'))"
+            :label="
+              isLocked
+                ? locale === 'es'
+                  ? `Bloqueado (${formatTime(remainingTime)})`
+                  : `Locked (${formatTime(remainingTime)})`
+                : loading
+                  ? $t('auth.login.loading')
+                  : $t('auth.login.submit')
+            "
           />
         </form>
 
@@ -79,31 +94,58 @@
         </div>
 
         <!-- Advertencia de intentos restantes -->
-        <div v-if="!isLocked && loginAttempts.count > 0 && loginAttempts.count < MAX_ATTEMPTS" class="alert alert-warning mt-4">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        <div
+          v-if="!isLocked && loginAttempts.count > 0 && loginAttempts.count < MAX_ATTEMPTS"
+          class="alert alert-warning mt-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="stroke-current shrink-0 w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
           <span>
-            {{ locale === 'es' 
-              ? `Atención: Te quedan ${MAX_ATTEMPTS - loginAttempts.count} intentos antes del bloqueo.`
-              : `Warning: ${MAX_ATTEMPTS - loginAttempts.count} attempts remaining before lockout.`
+            {{
+              locale === 'es'
+                ? `Atención: Te quedan ${MAX_ATTEMPTS - loginAttempts.count} intentos antes del bloqueo.`
+                : `Warning: ${MAX_ATTEMPTS - loginAttempts.count} attempts remaining before lockout.`
             }}
           </span>
         </div>
 
         <!-- Alerta de cuenta bloqueada -->
         <div v-if="isLocked" class="alert alert-error mt-4">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="stroke-current shrink-0 w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
           </svg>
           <div>
             <div class="font-bold">
-              {{ locale === 'es' ? 'Cuenta temporalmente bloqueada' : 'Account temporarily locked' }}
+              {{
+                locale === 'es' ? 'Cuenta temporalmente bloqueada' : 'Account temporarily locked'
+              }}
             </div>
             <div class="text-sm">
-              {{ locale === 'es' 
-                ? `Por seguridad, debes esperar ${formatTime(remainingTime)} antes de intentar nuevamente.`
-                : `For security, you must wait ${formatTime(remainingTime)} before trying again.`
+              {{
+                locale === 'es'
+                  ? `Por seguridad, debes esperar ${formatTime(remainingTime)} antes de intentar nuevamente.`
+                  : `For security, you must wait ${formatTime(remainingTime)} before trying again.`
               }}
             </div>
           </div>
@@ -126,9 +168,10 @@
         </h3>
         <div class="space-y-4">
           <p class="text-sm text-base-content/70">
-            {{ locale === 'es' 
-              ? 'Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.'
-              : 'Enter your email and we will send you a link to reset your password.'
+            {{
+              locale === 'es'
+                ? 'Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.'
+                : 'Enter your email and we will send you a link to reset your password.'
             }}
           </p>
           <div class="form-control">
@@ -148,8 +191,18 @@
             <span>{{ resetError }}</span>
           </div>
           <div v-if="resetSuccess" class="alert alert-success">
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <span>{{ resetSuccess }}</span>
           </div>
@@ -161,12 +214,17 @@
           <button
             @click="handleForgotPassword"
             class="btn btn-primary"
-            :class="{ 'loading': resetLoading }"
+            :class="{ loading: resetLoading }"
             :disabled="resetLoading || !resetEmail"
           >
-            {{ resetLoading 
-              ? (locale === 'es' ? 'Enviando...' : 'Sending...') 
-              : (locale === 'es' ? 'Enviar enlace' : 'Send link')
+            {{
+              resetLoading
+                ? locale === 'es'
+                  ? 'Enviando...'
+                  : 'Sending...'
+                : locale === 'es'
+                  ? 'Enviar enlace'
+                  : 'Send link'
             }}
           </button>
         </div>
@@ -189,7 +247,7 @@ import {
   ArrowRightOnRectangleIcon,
   AtSymbolIcon,
   LockClosedIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
 } from '@/icons'
 
 const router = useRouter()
@@ -198,7 +256,7 @@ const authStore = useAuthStore()
 
 const form = reactive({
   email: '',
-  password: ''
+  password: '',
 })
 
 const rememberMe = ref(false)
@@ -206,12 +264,12 @@ const rememberMe = ref(false)
 const rules = {
   email: [
     validationRules.required(t('auth.validation.required')),
-    validationRules.email(t('auth.validation.email'))
+    validationRules.email(t('auth.validation.email')),
   ],
   password: [
     validationRules.required(t('auth.validation.required')),
-    validationRules.minLength(6, t('auth.validation.minLength', { min: 6 }))
-  ]
+    validationRules.minLength(6, t('auth.validation.minLength', { min: 6 })),
+  ],
 }
 
 const { errors, isValid, validate, validateAll, clearErrors } = useFormValidation(rules)
@@ -266,11 +324,11 @@ function saveLoginAttempts(attempts: LoginAttempts) {
 
 function checkIfLocked() {
   const attempts = getLoginAttempts()
-  
+
   if (attempts.lockedUntil && Date.now() < attempts.lockedUntil) {
     isLocked.value = true
     remainingTime.value = Math.ceil((attempts.lockedUntil - Date.now()) / 1000)
-    
+
     // Actualizar contador cada segundo
     const interval = setInterval(() => {
       const remaining = Math.ceil((attempts.lockedUntil! - Date.now()) / 1000)
@@ -283,10 +341,10 @@ function checkIfLocked() {
         remainingTime.value = remaining
       }
     }, 1000)
-    
+
     return true
   }
-  
+
   isLocked.value = false
   return false
 }
@@ -294,21 +352,21 @@ function checkIfLocked() {
 function recordFailedAttempt() {
   const attempts = getLoginAttempts()
   const newCount = attempts.count + 1
-  
+
   if (newCount >= MAX_ATTEMPTS) {
     // Bloquear usuario
     const lockedUntil = Date.now() + LOCKOUT_DURATION
     saveLoginAttempts({
       count: newCount,
       lockedUntil,
-      lastAttempt: Date.now()
+      lastAttempt: Date.now(),
     })
     checkIfLocked()
   } else {
     saveLoginAttempts({
       count: newCount,
       lockedUntil: null,
-      lastAttempt: Date.now()
+      lastAttempt: Date.now(),
     })
   }
 }
@@ -348,10 +406,10 @@ loadSavedCredentials()
 const formProgress = computed(() => {
   let progress = 0
   const totalFields = 2
-  
+
   if (form.email && !errors.value.email) progress += 50
   if (form.password && !errors.value.password) progress += 50
-  
+
   return progress
 })
 const handleLogin = async () => {
@@ -360,9 +418,10 @@ const handleLogin = async () => {
 
   // Verificar si está bloqueado
   if (checkIfLocked()) {
-    generalError.value = locale.value === 'es' 
-      ? `Demasiados intentos fallidos. Cuenta bloqueada por ${formatTime(remainingTime.value)}.`
-      : `Too many failed attempts. Account locked for ${formatTime(remainingTime.value)}.`
+    generalError.value =
+      locale.value === 'es'
+        ? `Demasiados intentos fallidos. Cuenta bloqueada por ${formatTime(remainingTime.value)}.`
+        : `Too many failed attempts. Account locked for ${formatTime(remainingTime.value)}.`
     return
   }
 
@@ -378,35 +437,40 @@ const handleLogin = async () => {
     if (loginError) {
       // Registrar intento fallido
       recordFailedAttempt()
-      
+
       const locale = useI18n().locale.value
       const attemptsLeft = MAX_ATTEMPTS - loginAttempts.value.count
-      
+
       if (attemptsLeft > 0) {
-        generalError.value = locale === 'es'
-          ? `${t('auth.validation.invalidCredentials')}. Te quedan ${attemptsLeft} intentos.`
-          : `${t('auth.validation.invalidCredentials')}. ${attemptsLeft} attempts remaining.`
+        generalError.value =
+          locale === 'es'
+            ? `${t('auth.validation.invalidCredentials')}. Te quedan ${attemptsLeft} intentos.`
+            : `${t('auth.validation.invalidCredentials')}. ${attemptsLeft} attempts remaining.`
       } else {
-        generalError.value = locale === 'es'
-          ? `Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos.`
-          : `Too many failed attempts. Account locked for 15 minutes.`
+        generalError.value =
+          locale === 'es'
+            ? `Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos.`
+            : `Too many failed attempts. Account locked for 15 minutes.`
         checkIfLocked()
       }
     } else {
       // Login exitoso - resetear intentos
       resetAttempts()
-      
+
       // Guardar credenciales si está marcado recordarme
       if (rememberMe.value) {
-        localStorage.setItem('saved_credentials', JSON.stringify({
-          email: form.email,
-          rememberMeEnabled: true
-        }))
+        localStorage.setItem(
+          'saved_credentials',
+          JSON.stringify({
+            email: form.email,
+            rememberMeEnabled: true,
+          }),
+        )
       } else {
         // Limpiar credenciales guardadas si se desactiva
         localStorage.removeItem('saved_credentials')
       }
-      
+
       // Mostrar mensaje de éxito
       showSuccess('Inicio de sesión exitoso')
 
@@ -425,12 +489,14 @@ const handleLogin = async () => {
 }
 const handleForgotPassword = async () => {
   if (!resetEmail.value) {
-    resetError.value = locale.value === 'es' ? 'Por favor ingresa tu email' : 'Please enter your email'
+    resetError.value =
+      locale.value === 'es' ? 'Por favor ingresa tu email' : 'Please enter your email'
     return
   }
 
   if (!/\S+@\S+\.\S+/.test(resetEmail.value)) {
-    resetError.value = locale.value === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email'
+    resetError.value =
+      locale.value === 'es' ? 'Por favor ingresa un email válido' : 'Please enter a valid email'
     return
   }
 
@@ -444,14 +510,16 @@ const handleForgotPassword = async () => {
 
     if (result && result.error) {
       console.error('Reset password error details:', result.error)
-      resetError.value = locale.value === 'es' 
-        ? `Error al enviar el enlace: ${result.error.message || 'Intenta nuevamente'}`
-        : `Error sending link: ${result.error.message || 'Please try again'}`
+      resetError.value =
+        locale.value === 'es'
+          ? `Error al enviar el enlace: ${result.error.message || 'Intenta nuevamente'}`
+          : `Error sending link: ${result.error.message || 'Please try again'}`
     } else {
-      resetSuccess.value = locale.value === 'es'
-        ? '¡Enlace enviado! Revisa tu email (también en spam)'
-        : 'Link sent! Check your email (also spam folder)'
-      
+      resetSuccess.value =
+        locale.value === 'es'
+          ? '¡Enlace enviado! Revisa tu email (también en spam)'
+          : 'Link sent! Check your email (also spam folder)'
+
       // Limpiar el email y cerrar modal después de 3 segundos
       setTimeout(() => {
         closeForgotPasswordModal()
@@ -459,9 +527,10 @@ const handleForgotPassword = async () => {
     }
   } catch (error: any) {
     console.error('Unexpected error:', error)
-    resetError.value = locale.value === 'es'
-      ? `Error inesperado: ${error.message || 'Intenta nuevamente'}`
-      : `Unexpected error: ${error.message || 'Please try again'}`
+    resetError.value =
+      locale.value === 'es'
+        ? `Error inesperado: ${error.message || 'Intenta nuevamente'}`
+        : `Unexpected error: ${error.message || 'Please try again'}`
   } finally {
     resetLoading.value = false
   }

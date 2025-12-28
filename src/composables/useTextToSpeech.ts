@@ -23,7 +23,7 @@ export function useTextToSpeech() {
     const lang = locale.value === 'es' ? 'es' : 'en'
 
     // Try to find a voice matching the current language
-    let voice = voices.find(v => v.lang.startsWith(lang))
+    let voice = voices.find((v) => v.lang.startsWith(lang))
 
     // Fallback to default voice
     if (!voice && voices.length > 0) {
@@ -155,6 +155,6 @@ export function useTextToSpeech() {
     setVolume,
     readElement,
     readSelection,
-    getVoices
+    getVoices,
   }
 }

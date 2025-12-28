@@ -15,12 +15,19 @@ export interface Project {
   created_by: string
   created_at: string
   updated_at: string
-  status: 'planning' | 'in_progress' | 'completed' | 'on_hold' | 'En Progreso' | 'Completado' | 'Planificando' | 'En Pausa'
+  status:
+    | 'planning'
+    | 'in_progress'
+    | 'completed'
+    | 'on_hold'
+    | 'En Progreso'
+    | 'Completado'
+    | 'Planificando'
+    | 'En Pausa'
   tags: string[]
   team_members: string[]
   likes_count: number
   comments_count: number
-  // Propiedades adicionales para la UI
   likes?: number
   creator?: User
   liked_by_user?: boolean
@@ -45,7 +52,13 @@ export interface Like {
 export interface Notification {
   id: string
   user_id: string
-  type: 'like' | 'comment' | 'project_invite' | 'project_update' | 'invite_accepted' | 'invite_rejected'
+  type:
+    | 'like'
+    | 'comment'
+    | 'project_invite'
+    | 'project_update'
+    | 'invite_accepted'
+    | 'invite_rejected'
   message: string
   read: boolean
   created_at: string

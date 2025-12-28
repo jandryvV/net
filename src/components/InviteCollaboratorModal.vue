@@ -18,7 +18,10 @@
           />
 
           <!-- Search Results Dropdown -->
-          <div v-if="searchResults.length > 0" class="mt-2 max-h-48 overflow-y-auto border border-base-300 rounded-lg bg-base-100 shadow-lg">
+          <div
+            v-if="searchResults.length > 0"
+            class="mt-2 max-h-48 overflow-y-auto border border-base-300 rounded-lg bg-base-100 shadow-lg"
+          >
             <button
               v-for="user in searchResults"
               :key="user.id"
@@ -29,7 +32,10 @@
               <div class="avatar">
                 <div class="w-10 h-10 rounded-full">
                   <img
-                    :src="user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=random`"
+                    :src="
+                      user.avatar_url ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=random`
+                    "
                     :alt="user.full_name"
                   />
                 </div>
@@ -42,7 +48,10 @@
           </div>
 
           <!-- No results message -->
-          <div v-if="searchQuery && !searching && searchResults.length === 0" class="mt-2 p-3 text-sm text-base-content/60 text-center border border-base-300 rounded-lg">
+          <div
+            v-if="searchQuery && !searching && searchResults.length === 0"
+            class="mt-2 p-3 text-sm text-base-content/60 text-center border border-base-300 rounded-lg"
+          >
             {{ t('projects.noUsersFound') }}
           </div>
 
@@ -60,7 +69,10 @@
               <div class="avatar">
                 <div class="w-12 h-12 rounded-full">
                   <img
-                    :src="selectedUser.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.full_name)}&background=random`"
+                    :src="
+                      selectedUser.avatar_url ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.full_name)}&background=random`
+                    "
                     :alt="selectedUser.full_name"
                   />
                 </div>
@@ -70,12 +82,15 @@
                 <p class="text-sm text-base-content/60">{{ selectedUser.email }}</p>
               </div>
             </div>
-            <button
-              type="button"
-              @click="clearSelection"
-              class="btn btn-ghost btn-circle btn-sm"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <button type="button" @click="clearSelection" class="btn btn-ghost btn-circle btn-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -100,11 +115,7 @@
           <button type="button" @click="closeModal" class="btn">
             {{ t('common.cancel') }}
           </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            :disabled="!selectedUser || sending"
-          >
+          <button type="submit" class="btn btn-primary" :disabled="!selectedUser || sending">
             <span v-if="sending" class="loading loading-spinner loading-sm"></span>
             {{ sending ? t('projects.sending') : t('projects.sendInvite') }}
           </button>
@@ -220,7 +231,7 @@ const handleInvite = async () => {
       selectedUser.value.id,
       props.projectId,
       props.projectTitle,
-      message.value || ''
+      message.value || '',
     )
 
     alert('✅ ¡Invitación enviada con éxito!')
@@ -247,6 +258,6 @@ watch(searchQuery, (newValue) => {
 })
 
 defineExpose({
-  showModal
+  showModal,
 })
 </script>

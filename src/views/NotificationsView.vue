@@ -9,29 +9,17 @@
             {{ unreadCount > 0 ? `${unreadCount} sin leer` : 'Todas leídas' }}
           </p>
         </div>
-        <button
-          v-if="unreadCount > 0"
-          @click="markAllAsRead"
-          class="btn btn-ghost btn-sm"
-        >
+        <button v-if="unreadCount > 0" @click="markAllAsRead" class="btn btn-ghost btn-sm">
           {{ t('notifications.markAllRead') }}
         </button>
       </div>
 
       <!-- Filter Tabs -->
       <div class="tabs tabs-boxed mb-6">
-        <a
-          class="tab"
-          :class="{ 'tab-active': filter === 'all' }"
-          @click="filter = 'all'"
-        >
+        <a class="tab" :class="{ 'tab-active': filter === 'all' }" @click="filter = 'all'">
           Todas
         </a>
-        <a
-          class="tab"
-          :class="{ 'tab-active': filter === 'unread' }"
-          @click="filter = 'unread'"
-        >
+        <a class="tab" :class="{ 'tab-active': filter === 'unread' }" @click="filter = 'unread'">
           Sin leer ({{ unreadCount }})
         </a>
         <a
@@ -50,8 +38,19 @@
 
       <div v-else-if="filteredNotifications.length === 0" class="card bg-base-100 shadow-lg">
         <div class="card-body text-center py-12">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-4 opacity-50">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-16 h-16 mx-auto mb-4 opacity-50"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"
+            />
           </svg>
           <h3 class="text-xl font-semibold mb-2">{{ t('notifications.empty') }}</h3>
           <p class="text-base-content/60">No tienes notificaciones en este momento</p>
@@ -71,7 +70,10 @@
               <div class="avatar flex-shrink-0">
                 <div class="w-12 h-12 rounded-full">
                   <img
-                    :src="notification.from_user?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(notification.from_user?.full_name || 'Usuario')}&background=random`"
+                    :src="
+                      notification.from_user?.avatar_url ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(notification.from_user?.full_name || 'Usuario')}&background=random`
+                    "
                     :alt="notification.from_user?.full_name || 'Usuario'"
                   />
                 </div>
@@ -96,7 +98,10 @@
                 </div>
 
                 <!-- Actions for project invites -->
-                <div v-if="notification.type === 'project_invite' && !notification.read" class="flex gap-2 mt-4">
+                <div
+                  v-if="notification.type === 'project_invite' && !notification.read"
+                  class="flex gap-2 mt-4"
+                >
                   <button
                     @click="handleAcceptInvite(notification)"
                     class="btn btn-success btn-sm"
@@ -127,20 +132,32 @@
               <!-- Actions menu -->
               <div class="dropdown dropdown-end flex-shrink-0">
                 <label tabindex="0" class="btn btn-ghost btn-circle btn-sm">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-5 h-5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+                    />
                   </svg>
                 </label>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300 z-50">
+                <ul
+                  tabindex="0"
+                  class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300 z-50"
+                >
                   <li v-if="!notification.read">
                     <a @click="notificationsStore.markAsRead(notification.id)">
                       Marcar como leída
                     </a>
                   </li>
                   <li>
-                    <a @click="handleDelete(notification.id)" class="text-error">
-                      Eliminar
-                    </a>
+                    <a @click="handleDelete(notification.id)" class="text-error"> Eliminar </a>
                   </li>
                 </ul>
               </div>
@@ -168,8 +185,9 @@ const processingInvite = ref(false)
 
 const filteredNotifications = computed(() => {
   if (filter.value === 'all') return notifications.value
-  if (filter.value === 'unread') return notifications.value.filter(n => !n.read)
-  if (filter.value === 'project_invite') return notifications.value.filter(n => n.type === 'project_invite')
+  if (filter.value === 'unread') return notifications.value.filter((n) => !n.read)
+  if (filter.value === 'project_invite')
+    return notifications.value.filter((n) => n.type === 'project_invite')
   return notifications.value
 })
 
@@ -190,30 +208,30 @@ const formatTimeAgo = (dateString: string): string => {
   return date.toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'short',
-    year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+    year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
   })
 }
 
 const getTypeBadgeClass = (type: string): string => {
   const classes: Record<string, string> = {
-    'like': 'badge-error',
-    'comment': 'badge-info',
-    'project_invite': 'badge-warning',
-    'project_update': 'badge-primary',
-    'invite_accepted': 'badge-success',
-    'invite_rejected': 'badge-ghost'
+    like: 'badge-error',
+    comment: 'badge-info',
+    project_invite: 'badge-warning',
+    project_update: 'badge-primary',
+    invite_accepted: 'badge-success',
+    invite_rejected: 'badge-ghost',
   }
   return classes[type] || 'badge-ghost'
 }
 
 const getTypeLabel = (type: string): string => {
   const labels: Record<string, string> = {
-    'like': 'Like',
-    'comment': 'Comentario',
-    'project_invite': 'Invitación',
-    'project_update': 'Actualización',
-    'invite_accepted': 'Aceptada',
-    'invite_rejected': 'Rechazada'
+    like: 'Like',
+    comment: 'Comentario',
+    project_invite: 'Invitación',
+    project_update: 'Actualización',
+    invite_accepted: 'Aceptada',
+    invite_rejected: 'Rechazada',
   }
   return labels[type] || type
 }

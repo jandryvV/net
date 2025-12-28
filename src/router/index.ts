@@ -1,20 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { storeToRefs } from 'pinia'
-import HomeView from '@/views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
-import RegisterView from '@/views/RegisterView.vue'
-import ResetPasswordView from '@/views/ResetPasswordView.vue'
-import AboutView from '@/views/AboutView.vue'
-import ProfileView from '@/views/ProfileView.vue'
-import MyProjectsView from '@/views/MyProjectsView.vue'
-import ProjectDetailView from '@/views/ProjectDetailView.vue'
-import ProjectEditView from '@/views/ProjectEditView.vue'
-import ProjectTasksView from '@/views/ProjectTasksView.vue'
-import SettingsView from '@/views/SettingsView.vue'
-import NewsView from '@/views/NewsView.vue'
-import NotificationsView from '@/views/NotificationsView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,87 +7,86 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import('@/views/HomeView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView,
-      meta: { requiresGuest: true }
+      component: () => import('@/views/LoginView.vue'),
+      meta: { requiresGuest: true },
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterView,
-      meta: { requiresGuest: true }
+      component: () => import('@/views/RegisterView.vue'),
+      meta: { requiresGuest: true },
     },
     {
       path: '/reset-password',
       name: 'reset-password',
-      component: ResetPasswordView
-      // No requiere guest ni auth - permite acceso directo desde email
+      component: () => import('@/views/ResetPasswordView.vue'),
     },
     {
       path: '/news',
       name: 'news',
-      component: NewsView
+      component: () => import('@/views/NewsView.vue'),
     },
     {
       path: '/about',
       name: 'about',
-      component: AboutView
+      component: () => import('@/views/AboutView.vue'),
     },
     {
       path: '/profile',
       name: 'profile',
-      component: ProfileView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/ProfileView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/my-projects',
       name: 'my-projects',
-      component: MyProjectsView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/MyProjectsView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/projects/:id',
       name: 'project-detail',
-      component: ProjectDetailView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/ProjectDetailView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/projects/:id/edit',
       name: 'project-edit',
-      component: ProjectEditView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/ProjectEditView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/projects/:id/tasks',
       name: 'project-tasks',
-      component: ProjectTasksView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/ProjectTasksView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/settings',
       name: 'settings',
-      component: SettingsView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/SettingsView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/notifications',
       name: 'notifications',
-      component: NotificationsView,
-      meta: { requiresAuth: true }
+      component: () => import('@/views/NotificationsView.vue'),
+      meta: { requiresAuth: true },
     },
     {
       path: '/404',
       name: 'not-found',
-      component: NotFoundView
+      component: () => import('@/views/NotFoundView.vue'),
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/404'
-    }
+      redirect: '/404',
+    },
   ],
 })
 
@@ -118,22 +102,13 @@ router.beforeEach(async (to, from, next) => {
   // Wait a bit if still loading (max 3 seconds)
   let waitCount = 0
   while (authStore.loading && waitCount < 30) {
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100))
     waitCount++
   }
 
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const requiresGuest = to.matched.some(record => record.meta.requiresGuest)
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const requiresGuest = to.matched.some((record) => record.meta.requiresGuest)
   const isAuthenticated = !!authStore.user
-
-  // Debug log for development
-  console.log('🚦 Router Guard:', {
-    path: to.path,
-    requiresAuth,
-    requiresGuest,
-    isAuthenticated,
-    userEmail: authStore.user?.email || 'not logged in'
-  })
 
   // Handle different route types
   if (requiresAuth && !isAuthenticated) {
@@ -144,7 +119,6 @@ router.beforeEach(async (to, from, next) => {
     next('/login')
   } else if (requiresGuest && isAuthenticated) {
     // Guest-only route but user is authenticated
-    console.log('🚫 BLOCKED: Authenticated user trying to access guest-only page:', to.path, '-> redirecting to /')
     next('/')
   } else {
     // Normal navigation - clear stored redirect if not going to auth pages

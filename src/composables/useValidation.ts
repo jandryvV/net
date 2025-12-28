@@ -32,7 +32,7 @@ export function useFormValidation(rules: ValidationRules) {
   const validateAll = (formData: Record<string, any>): boolean => {
     let allValid = true
 
-    Object.keys(rules).forEach(field => {
+    Object.keys(rules).forEach((field) => {
       const fieldValid = validate(field, formData[field])
       if (!fieldValid) allValid = false
     })
@@ -60,7 +60,7 @@ export function useFormValidation(rules: ValidationRules) {
     validate,
     validateAll,
     clearErrors,
-    clearError
+    clearError,
   }
 }
 
@@ -71,7 +71,7 @@ export const validationRules = {
       if (typeof value === 'string') return value.trim().length > 0
       return value !== null && value !== undefined && value !== ''
     },
-    message
+    message,
   }),
 
   email: (message = 'Debe ser un email válido') => ({
@@ -79,21 +79,21 @@ export const validationRules = {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       return !value || emailRegex.test(value)
     },
-    message
+    message,
   }),
 
   minLength: (min: number, message?: string) => ({
     validator: (value: string) => {
       return !value || value.length >= min
     },
-    message: message || `Debe tener al menos ${min} caracteres`
+    message: message || `Debe tener al menos ${min} caracteres`,
   }),
 
   maxLength: (max: number, message?: string) => ({
     validator: (value: string) => {
       return !value || value.length <= max
     },
-    message: message || `No puede tener más de ${max} caracteres`
+    message: message || `No puede tener más de ${max} caracteres`,
   }),
 
   url: (message = 'Debe ser una URL válida') => ({
@@ -106,13 +106,13 @@ export const validationRules = {
         return false
       }
     },
-    message
+    message,
   }),
 
   match: (compareValue: any, message = 'Los valores no coinciden') => ({
     validator: (value: any) => {
       return value === compareValue
     },
-    message
-  })
+    message,
+  }),
 }

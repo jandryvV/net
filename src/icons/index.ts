@@ -1,4 +1,3 @@
-// Iconos de Heroicons para la aplicación
 export {
   RocketLaunchIcon,
   PlusIcon,
@@ -57,5 +56,5 @@ export {
   EllipsisVerticalIcon,
   BookmarkIcon,
   FlagIcon,
-  ClipboardDocumentIcon
+  ClipboardDocumentIcon,
 } from '@heroicons/vue/24/outline'

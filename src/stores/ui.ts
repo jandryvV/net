@@ -152,6 +152,6 @@ export const useUIStore = defineStore('ui', () => {
     setZoom,
     increaseZoom,
     decreaseZoom,
-    resetZoom
+    resetZoom,
   }
 })

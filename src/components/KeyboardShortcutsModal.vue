@@ -13,7 +13,9 @@
           :aria-label="t('keyboardShortcuts.title')"
         >
           <!-- Header -->
-          <div class="sticky top-0 bg-base-100 border-b border-base-300 p-6 flex items-center justify-between">
+          <div
+            class="sticky top-0 bg-base-100 border-b border-base-300 p-6 flex items-center justify-between"
+          >
             <div class="flex items-center gap-3">
               <CommandLineIcon class="w-8 h-8 text-primary" />
               <h2 class="text-2xl font-bold">{{ t('keyboardShortcuts.title') }}</h2>
@@ -141,7 +143,7 @@ import {
   BoltIcon,
   CogIcon,
   InformationCircleIcon,
-  SpeakerWaveIcon
+  SpeakerWaveIcon,
 } from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
@@ -153,25 +155,35 @@ const close = () => {
 }
 
 // Categorized shortcuts
-const navigationShortcuts = computed(() => [
-  { key: 'Alt + H', description: 'keyboardShortcuts.shortcuts.home', requiresAuth: false },
-  { key: 'Alt + A', description: 'keyboardShortcuts.shortcuts.about', requiresAuth: false },
-  { key: 'Alt + N', description: 'keyboardShortcuts.shortcuts.news', requiresAuth: false },
-  { key: 'Alt + P', description: 'keyboardShortcuts.shortcuts.projects', requiresAuth: true },
-  { key: 'Alt + L', description: 'keyboardShortcuts.shortcuts.loginProfile', requiresAuth: false }
-].filter(s => !s.requiresAuth || authStore.user))
+const navigationShortcuts = computed(() =>
+  [
+    { key: 'Alt + H', description: 'keyboardShortcuts.shortcuts.home', requiresAuth: false },
+    { key: 'Alt + A', description: 'keyboardShortcuts.shortcuts.about', requiresAuth: false },
+    { key: 'Alt + N', description: 'keyboardShortcuts.shortcuts.news', requiresAuth: false },
+    { key: 'Alt + P', description: 'keyboardShortcuts.shortcuts.projects', requiresAuth: true },
+    {
+      key: 'Alt + L',
+      description: 'keyboardShortcuts.shortcuts.loginProfile',
+      requiresAuth: false,
+    },
+  ].filter((s) => !s.requiresAuth || authStore.user),
+)
 
-const actionShortcuts = computed(() => [
-  { key: 'Alt + R', description: 'keyboardShortcuts.shortcuts.register', requiresAuth: false },
-  { key: 'Alt + X', description: 'keyboardShortcuts.shortcuts.logout', requiresAuth: true }
-].filter(s => !s.requiresAuth || authStore.user))
+const actionShortcuts = computed(() =>
+  [
+    { key: 'Alt + R', description: 'keyboardShortcuts.shortcuts.register', requiresAuth: false },
+    { key: 'Alt + X', description: 'keyboardShortcuts.shortcuts.logout', requiresAuth: true },
+  ].filter((s) => !s.requiresAuth || authStore.user),
+)
 
-const settingsShortcuts = computed(() => [
-  { key: 'Alt + S', description: 'keyboardShortcuts.shortcuts.settings', requiresAuth: true },
-  { key: 'Alt + T', description: 'keyboardShortcuts.shortcuts.theme', requiresAuth: false },
-  { key: 'Alt + I', description: 'keyboardShortcuts.shortcuts.language', requiresAuth: false },
-  { key: 'Alt + ?', description: 'keyboardShortcuts.shortcuts.help', requiresAuth: false }
-].filter(s => !s.requiresAuth || authStore.user))
+const settingsShortcuts = computed(() =>
+  [
+    { key: 'Alt + S', description: 'keyboardShortcuts.shortcuts.settings', requiresAuth: true },
+    { key: 'Alt + T', description: 'keyboardShortcuts.shortcuts.theme', requiresAuth: false },
+    { key: 'Alt + I', description: 'keyboardShortcuts.shortcuts.language', requiresAuth: false },
+    { key: 'Alt + ?', description: 'keyboardShortcuts.shortcuts.help', requiresAuth: false },
+  ].filter((s) => !s.requiresAuth || authStore.user),
+)
 
 const accessibilityShortcuts = computed(() => [
   { key: 'Alt + V', description: 'keyboardShortcuts.shortcuts.toggleTTS', requiresAuth: false },
@@ -180,7 +192,7 @@ const accessibilityShortcuts = computed(() => [
   { key: 'Alt + E', description: 'keyboardShortcuts.shortcuts.stopReading', requiresAuth: false },
   { key: 'Alt + +', description: 'keyboardShortcuts.shortcuts.zoomIn', requiresAuth: false },
   { key: 'Alt + -', description: 'keyboardShortcuts.shortcuts.zoomOut', requiresAuth: false },
-  { key: 'Alt + 0', description: 'keyboardShortcuts.shortcuts.resetZoom', requiresAuth: false }
+  { key: 'Alt + 0', description: 'keyboardShortcuts.shortcuts.resetZoom', requiresAuth: false },
 ])
 </script>
 

@@ -31,8 +31,12 @@
           </button>
           <div class="breadcrumbs text-sm">
             <ul>
-              <li><router-link to="/">{{ t('nav.home') }}</router-link></li>
-              <li><router-link :to="`/projects/${projectId}`">{{ project.title }}</router-link></li>
+              <li>
+                <router-link to="/">{{ t('nav.home') }}</router-link>
+              </li>
+              <li>
+                <router-link :to="`/projects/${projectId}`">{{ project.title }}</router-link>
+              </li>
               <li>{{ t('tasks.title') }}</li>
             </ul>
           </div>
@@ -69,7 +73,8 @@
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold text-lg">{{ t('tasks.progress.title') }}</h3>
               <span class="text-sm text-base-content/60">
-                {{ completedTasksCount }} {{ t('tasks.progress.of') }} {{ totalTasksCount }} {{ t('tasks.progress.completed') }}
+                {{ completedTasksCount }} {{ t('tasks.progress.of') }} {{ totalTasksCount }}
+                {{ t('tasks.progress.completed') }}
               </span>
             </div>
             <progress
@@ -133,7 +138,7 @@ const tasks = ref<Task[]>([])
 
 // Computed
 const projectId = computed(() => route.params.id as string)
-const project = computed(() => projects.value.find(p => p.id === projectId.value))
+const project = computed(() => projects.value.find((p) => p.id === projectId.value))
 
 const isProjectOwner = computed(() => {
   if (!user.value || !project.value) return false
@@ -146,8 +151,8 @@ const isTeamMember = computed(() => {
 })
 
 const totalTasksCount = computed(() => tasks.value.length)
-const completedTasksCount = computed(() =>
-  tasks.value.filter(task => task.status === 'done').length
+const completedTasksCount = computed(
+  () => tasks.value.filter((task) => task.status === 'done').length,
 )
 const progressPercentage = computed(() => {
   if (totalTasksCount.value === 0) return 0
@@ -182,10 +187,10 @@ const getProjectStatusText = (status: string): string => {
 
 const getStatusColor = (status: string): string => {
   const colorMap: Record<string, string> = {
-    'planning': 'badge-info',
-    'in_progress': 'badge-warning',
-    'completed': 'badge-success',
-    'on_hold': 'badge-ghost'
+    planning: 'badge-info',
+    in_progress: 'badge-warning',
+    completed: 'badge-success',
+    on_hold: 'badge-ghost',
   }
   return colorMap[status] || 'badge-ghost'
 }
@@ -195,7 +200,9 @@ const goBack = () => {
 }
 
 // Task management functions
-const handleCreateTask = async (taskData: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'created_by'>) => {
+const handleCreateTask = async (
+  taskData: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'created_by'>,
+) => {
   if (!isProjectOwner.value) {
     alert('❌ Solo el creador del proyecto puede crear tareas')
     return
@@ -213,7 +220,8 @@ const handleCreateTask = async (taskData: Omit<Task, 'id' | 'created_at' | 'upda
 
     let errorMessage = 'Error al crear la tarea'
     if (error.message?.includes('relation "tasks" does not exist')) {
-      errorMessage = '❌ La tabla "tasks" no existe en Supabase.\n\nPor favor ejecuta el script SQL en:\nscripts/tasks-table-setup.sql'
+      errorMessage =
+        '❌ La tabla "tasks" no existe en Supabase.\n\nPor favor ejecuta el script SQL en:\nscripts/tasks-table-setup.sql'
     } else if (error.message?.includes('not authenticated')) {
       errorMessage = '❌ Debes estar autenticado para crear tareas'
     } else if (error.code === '42501') {
@@ -229,7 +237,7 @@ const handleCreateTask = async (taskData: Omit<Task, 'id' | 'created_at' | 'upda
 const handleUpdateTask = async (taskId: string, updates: Partial<Task>) => {
   try {
     const updatedTask = await projectsStore.updateTask(taskId, updates)
-    const index = tasks.value.findIndex(t => t.id === taskId)
+    const index = tasks.value.findIndex((t) => t.id === taskId)
     if (index !== -1 && updatedTask) {
       tasks.value[index] = updatedTask
     }
@@ -241,7 +249,7 @@ const handleUpdateTask = async (taskId: string, updates: Partial<Task>) => {
 const handleDeleteTask = async (taskId: string) => {
   try {
     await projectsStore.deleteTask(taskId)
-    tasks.value = tasks.value.filter(t => t.id !== taskId)
+    tasks.value = tasks.value.filter((t) => t.id !== taskId)
   } catch (error) {
     console.error('Error deleting task:', error)
   }

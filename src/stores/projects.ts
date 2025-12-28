@@ -8,26 +8,30 @@ export const useProjectsStore = defineStore('projects', () => {
   const loading = ref(false)
   const currentProject = ref<Project | null>(null)
 
-    // Fetch all projects
+  // Fetch all projects
   const fetchProjects = async () => {
     loading.value = true
     try {
       const { data, error } = await supabase
         .from('projects')
-        .select(`
+        .select(
+          `
           *,
           creator:profiles!created_by (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .order('created_at', { ascending: false })
 
       if (error) throw error
 
       // Get current user
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
       if (data) {
         // For each project, get real counts from database
@@ -61,9 +65,9 @@ export const useProjectsStore = defineStore('projects', () => {
               ...project,
               likes_count: likesCount || 0,
               comments_count: commentsCount || 0,
-              liked_by_user: likedByUser
+              liked_by_user: likedByUser,
             }
-          })
+          }),
         )
         projects.value = projectsWithCounts
       } else {
@@ -107,9 +111,9 @@ export const useProjectsStore = defineStore('projects', () => {
             return {
               ...project,
               likes_count: likesCount || 0,
-              comments_count: commentsCount || 0
+              comments_count: commentsCount || 0,
             }
-          })
+          }),
         )
         return projectsWithCounts
       }
@@ -127,14 +131,16 @@ export const useProjectsStore = defineStore('projects', () => {
     try {
       const { data, error } = await supabase
         .from('projects')
-        .select(`
+        .select(
+          `
           *,
           creator:profiles!created_by (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .eq('id', projectId)
         .single()
 
@@ -154,7 +160,9 @@ export const useProjectsStore = defineStore('projects', () => {
           .eq('project_id', data.id)
 
         // Get current user
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
 
         // Check if current user has liked it
         let likedByUser = false
@@ -172,11 +180,11 @@ export const useProjectsStore = defineStore('projects', () => {
           ...data,
           likes_count: likesCount || 0,
           comments_count: commentsCount || 0,
-          liked_by_user: likedByUser
+          liked_by_user: likedByUser,
         }
 
         // Update in the projects array
-        const index = projects.value.findIndex(p => p.id === projectId)
+        const index = projects.value.findIndex((p) => p.id === projectId)
         if (index !== -1) {
           projects.value[index] = updatedProject
         }
@@ -192,14 +200,12 @@ export const useProjectsStore = defineStore('projects', () => {
   }
 
   // Create new project
-  const createProject = async (project: Omit<Project, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'comments_count'>) => {
+  const createProject = async (
+    project: Omit<Project, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'comments_count'>,
+  ) => {
     loading.value = true
     try {
-      const { data, error } = await supabase
-        .from('projects')
-        .insert([project])
-        .select()
-        .single()
+      const { data, error } = await supabase.from('projects').insert([project]).select().single()
 
       if (error) throw error
 
@@ -208,7 +214,7 @@ export const useProjectsStore = defineStore('projects', () => {
         ...data,
         likes_count: 0,
         comments_count: 0,
-        liked_by_user: false
+        liked_by_user: false,
       }
 
       projects.value.unshift(projectWithCounts)
@@ -234,7 +240,7 @@ export const useProjectsStore = defineStore('projects', () => {
 
       if (error) throw error
 
-      const index = projects.value.findIndex(p => p.id === id)
+      const index = projects.value.findIndex((p) => p.id === id)
       if (index !== -1) {
         projects.value[index] = data
       }
@@ -252,14 +258,11 @@ export const useProjectsStore = defineStore('projects', () => {
   const deleteProject = async (id: string) => {
     loading.value = true
     try {
-      const { error } = await supabase
-        .from('projects')
-        .delete()
-        .eq('id', id)
+      const { error } = await supabase.from('projects').delete().eq('id', id)
 
       if (error) throw error
 
-      projects.value = projects.value.filter(p => p.id !== id)
+      projects.value = projects.value.filter((p) => p.id !== id)
       return { error: null }
     } catch (error) {
       console.error('Error deleting project:', error)
@@ -313,14 +316,16 @@ export const useProjectsStore = defineStore('projects', () => {
     try {
       const { data, error } = await supabase
         .from('comments')
-        .select(`
+        .select(
+          `
           *,
           user:profiles!user_id (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .eq('project_id', projectId)
         .order('created_at', { ascending: false })
 
@@ -335,24 +340,30 @@ export const useProjectsStore = defineStore('projects', () => {
   // Add comment to project
   const addComment = async (projectId: string, content: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { data, error } = await supabase
         .from('comments')
-        .insert([{
-          project_id: projectId,
-          user_id: user.id,
-          content: content
-        }])
-        .select(`
+        .insert([
+          {
+            project_id: projectId,
+            user_id: user.id,
+            content: content,
+          },
+        ])
+        .select(
+          `
           *,
           user:profiles!user_id (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .single()
 
       if (error) throw error
@@ -370,7 +381,9 @@ export const useProjectsStore = defineStore('projects', () => {
   // Update comment
   const updateComment = async (commentId: string, content: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { data, error } = await supabase
@@ -378,14 +391,16 @@ export const useProjectsStore = defineStore('projects', () => {
         .update({ content })
         .eq('id', commentId)
         .eq('user_id', user.id) // Solo el creador puede actualizar
-        .select(`
+        .select(
+          `
           *,
           user:profiles!user_id (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .single()
 
       if (error) throw error
@@ -399,7 +414,9 @@ export const useProjectsStore = defineStore('projects', () => {
   // Delete comment
   const deleteComment = async (commentId: string, projectId: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       const { error } = await supabase
@@ -425,14 +442,16 @@ export const useProjectsStore = defineStore('projects', () => {
     try {
       const { data, error } = await supabase
         .from('tasks')
-        .select(`
+        .select(
+          `
           *,
           assignee:profiles!assigned_to (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .eq('project_id', projectId)
         .order('created_at', { ascending: false })
 
@@ -445,9 +464,13 @@ export const useProjectsStore = defineStore('projects', () => {
   }
 
   // Create task
-  const createTask = async (task: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'created_by'>) => {
+  const createTask = async (
+    task: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'created_by'>,
+  ) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
 
       // Limpiar datos: convertir strings vacíos a null
@@ -459,20 +482,22 @@ export const useProjectsStore = defineStore('projects', () => {
         priority: task.priority,
         assigned_to: task.assigned_to || null,
         due_date: task.due_date || null,
-        created_by: user.id
+        created_by: user.id,
       }
 
       const { data, error } = await supabase
         .from('tasks')
         .insert([cleanedTask])
-        .select(`
+        .select(
+          `
           *,
           assignee:profiles!assigned_to (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .single()
 
       if (error) {
@@ -494,17 +519,19 @@ export const useProjectsStore = defineStore('projects', () => {
         .from('tasks')
         .update({
           ...updates,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('id', taskId)
-        .select(`
+        .select(
+          `
           *,
           assignee:profiles!assigned_to (
             id,
             full_name,
             avatar_url
           )
-        `)
+        `,
+        )
         .single()
 
       if (error) throw error
@@ -518,10 +545,7 @@ export const useProjectsStore = defineStore('projects', () => {
   // Delete task
   const deleteTask = async (taskId: string) => {
     try {
-      const { error } = await supabase
-        .from('tasks')
-        .delete()
-        .eq('id', taskId)
+      const { error } = await supabase.from('tasks').delete().eq('id', taskId)
 
       if (error) throw error
     } catch (error) {
@@ -548,6 +572,6 @@ export const useProjectsStore = defineStore('projects', () => {
     fetchTasks,
     createTask,
     updateTask,
-    deleteTask
+    deleteTask,
   }
 })

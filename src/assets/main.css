@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
 /* Custom utilities */
@@ -38,7 +38,10 @@
 
 /* Smooth transitions */
 * {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 /* High Contrast Mode */
@@ -48,21 +51,21 @@
   --b2: 10% 0 0;
   --b3: 20% 0 0;
   --bc: 100% 0 0;
-  
+
   /* Make primary colors more vibrant */
   --p: 60% 0.3 250;
   --pc: 100% 0 0;
-  
+
   /* Stronger borders */
   --border-opacity: 1;
 }
 
-.high-contrast[data-theme="light"] {
+.high-contrast[data-theme='light'] {
   --b1: 100% 0 0;
   --b2: 95% 0 0;
   --b3: 90% 0 0;
   --bc: 0% 0 0;
-  
+
   --p: 45% 0.3 250;
   --pc: 100% 0 0;
 }
@@ -93,6 +96,7 @@
 }
 
 .high-contrast .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2) !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -4px rgba(0, 0, 0, 0.2) !important;
 }
-

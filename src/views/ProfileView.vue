@@ -13,9 +13,14 @@
         <div class="h-48 bg-linear-to-r from-primary to-secondary rounded-2xl shadow-xl"></div>
         <div class="absolute -bottom-16 left-8">
           <div class="avatar">
-            <div class="w-32 h-32 rounded-full ring ring-base-100 ring-offset-base-100 ring-offset-2 shadow-2xl">
+            <div
+              class="w-32 h-32 rounded-full ring ring-base-100 ring-offset-base-100 ring-offset-2 shadow-2xl"
+            >
               <img
-                :src="profile.avatar_url || 'https://via.placeholder.com/128?text=' + (profile.full_name?.charAt(0) || 'U')"
+                :src="
+                  profile.avatar_url ||
+                  'https://via.placeholder.com/128?text=' + (profile.full_name?.charAt(0) || 'U')
+                "
                 :alt="profile.full_name"
                 class="rounded-full"
               />
@@ -33,7 +38,9 @@
             <div class="card-body">
               <div class="flex justify-between items-start mb-4">
                 <div>
-                  <h1 class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  <h1
+                    class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
+                  >
                     {{ profile.full_name || 'Usuario' }}
                   </h1>
                   <div class="flex items-center gap-2 text-base-content/70 mb-3">
@@ -74,7 +81,10 @@
                 {{ t('profile.recentProjects') }}
               </h2>
               <div class="space-y-3">
-                <div v-if="recentProjects.length === 0" class="text-center py-8 text-base-content/60">
+                <div
+                  v-if="recentProjects.length === 0"
+                  class="text-center py-8 text-base-content/60"
+                >
                   <RocketLaunchIcon class="h-12 w-12 mx-auto mb-2 opacity-50" />
                   <p>{{ t('profile.noProjects') }}</p>
                   <p class="text-sm">{{ t('profile.createFirst') }}</p>
@@ -86,7 +96,12 @@
                 >
                   <div class="avatar placeholder">
                     <div class="w-10 h-10 rounded-lg bg-primary/20">
-                      <img v-if="project.image_url" :src="project.image_url" alt="" class="rounded-lg" />
+                      <img
+                        v-if="project.image_url"
+                        :src="project.image_url"
+                        alt=""
+                        class="rounded-lg"
+                      />
                       <RocketLaunchIcon v-else class="h-5 w-5 text-primary" />
                     </div>
                   </div>
@@ -113,23 +128,33 @@
         <div class="space-y-6">
           <!-- Stats Cards -->
           <div class="grid grid-cols-1 gap-4">
-            <div class="card bg-linear-to-br from-primary/20 to-primary/5 border border-primary/20 shadow-lg">
+            <div
+              class="card bg-linear-to-br from-primary/20 to-primary/5 border border-primary/20 shadow-lg"
+            >
               <div class="card-body text-center">
                 <FolderIcon class="h-12 w-12 text-primary mx-auto mb-2" />
                 <div class="text-3xl font-bold text-primary">{{ projectCount }}</div>
-                <div class="text-sm text-base-content/70">{{ t('profile.stats.projectsCreated') }}</div>
+                <div class="text-sm text-base-content/70">
+                  {{ t('profile.stats.projectsCreated') }}
+                </div>
               </div>
             </div>
 
-            <div class="card bg-linear-to-br from-secondary/20 to-secondary/5 border border-secondary/20 shadow-lg">
+            <div
+              class="card bg-linear-to-br from-secondary/20 to-secondary/5 border border-secondary/20 shadow-lg"
+            >
               <div class="card-body text-center">
                 <HeartIcon class="h-12 w-12 text-secondary mx-auto mb-2" />
                 <div class="text-3xl font-bold text-secondary">{{ totalLikes }}</div>
-                <div class="text-sm text-base-content/70">{{ t('profile.stats.likesReceived') }}</div>
+                <div class="text-sm text-base-content/70">
+                  {{ t('profile.stats.likesReceived') }}
+                </div>
               </div>
             </div>
 
-            <div class="card bg-linear-to-br from-accent/20 to-accent/5 border border-accent/20 shadow-lg">
+            <div
+              class="card bg-linear-to-br from-accent/20 to-accent/5 border border-accent/20 shadow-lg"
+            >
               <div class="card-body text-center">
                 <ChatBubbleLeftIcon class="h-12 w-12 text-accent mx-auto mb-2" />
                 <div class="text-3xl font-bold text-accent">{{ totalComments }}</div>
@@ -146,7 +171,10 @@
                 {{ t('profile.quickActions') }}
               </h3>
               <div class="space-y-3">
-                <RouterLink to="/projects/create" class="btn btn-outline btn-block gap-2 justify-start">
+                <RouterLink
+                  to="/projects/create"
+                  class="btn btn-outline btn-block gap-2 justify-start"
+                >
                   <PlusIcon class="h-4 w-4" />
                   {{ t('profile.createProject') }}
                 </RouterLink>
@@ -165,11 +193,12 @@
       </div>
     </div>
 
-
     <!-- Edit Profile Modal -->
     <div v-if="showEditModal" class="modal modal-open">
       <div class="modal-box w-11/12 max-w-2xl">
-        <div class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-6 border border-primary/20">
+        <div
+          class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-6 border border-primary/20"
+        >
           <div class="flex items-center gap-4">
             <div class="bg-primary/20 p-3 rounded-full">
               <UserIcon class="h-8 w-8 text-primary" />
@@ -212,7 +241,10 @@
               maxlength="500"
             ></textarea>
             <div class="label">
-              <span class="label-text-alt text-sm">{{ (editForm.bio || '').length }}/500 {{ t('home.createProject.charactersCount').split('/')[1] }}</span>
+              <span class="label-text-alt text-sm"
+                >{{ (editForm.bio || '').length }}/500
+                {{ t('home.createProject.charactersCount').split('/')[1] }}</span
+              >
             </div>
           </div>
 
@@ -230,14 +262,19 @@
               :placeholder="t('profile.placeholders.avatarUrl')"
             />
             <div v-if="editForm.avatar_url" class="mt-4">
-              <div class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-primary/30 flex flex-col items-center">
+              <div
+                class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-primary/30 flex flex-col items-center"
+              >
                 <img
                   :src="editForm.avatar_url"
                   :alt="t('common.imagePreview')"
                   class="w-24 h-24 rounded-full mx-auto shadow-md"
                   @error="avatarError = true"
                 />
-                <p v-if="avatarError" class="text-error text-sm mt-2 text-center flex items-center justify-center gap-1">
+                <p
+                  v-if="avatarError"
+                  class="text-error text-sm mt-2 text-center flex items-center justify-center gap-1"
+                >
                   <ExclamationTriangleIcon class="h-4 w-4" />
                   {{ t('common.imageError') }}
                 </p>
@@ -253,7 +290,9 @@
             </div>
           </div>
 
-          <div class="flex flex-col gap-4 pt-6 border-t border-base-300 w-full sm:flex-row sm:justify-end">
+          <div
+            class="flex flex-col gap-4 pt-6 border-t border-base-300 w-full sm:flex-row sm:justify-end"
+          >
             <button
               type="button"
               class="btn btn-outline btn-lg w-full sm:w-auto gap-2"
@@ -265,7 +304,7 @@
             <button
               type="submit"
               class="btn btn-primary btn-lg w-full sm:w-auto gap-2"
-              :class="{ 'loading': updating }"
+              :class="{ loading: updating }"
               :disabled="updating"
             >
               <CheckIcon v-if="!updating" class="h-5 w-5" />
@@ -306,7 +345,7 @@ import {
   PhotoIcon,
   XMarkIcon,
   CheckIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
 } from '@heroicons/vue/24/outline'
 
 const authStore = useAuthStore()
@@ -325,28 +364,26 @@ let refreshInterval: number | null = null
 const editForm = ref({
   full_name: '',
   bio: '',
-  avatar_url: ''
+  avatar_url: '',
 })
 
 const projectCount = computed(() => userProjects.value.length)
 const totalLikes = computed(() =>
-  userProjects.value.reduce((sum, p) => sum + (p.likes_count || 0), 0)
+  userProjects.value.reduce((sum, p) => sum + (p.likes_count || 0), 0),
 )
 const totalComments = computed(() =>
-  userProjects.value.reduce((sum, p) => sum + (p.comments_count || 0), 0)
+  userProjects.value.reduce((sum, p) => sum + (p.comments_count || 0), 0),
 )
-const completedProjects = computed(() =>
-  userProjects.value.filter(p => p.status === 'completed').length
+const completedProjects = computed(
+  () => userProjects.value.filter((p) => p.status === 'completed').length,
 )
-const recentProjects = computed(() =>
-  userProjects.value.slice(0, 5)
-)
+const recentProjects = computed(() => userProjects.value.slice(0, 5))
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -355,7 +392,7 @@ const getStatusClass = (status: string) => {
     planning: 'badge-warning',
     in_progress: 'badge-info',
     completed: 'badge-success',
-    on_hold: 'badge-error'
+    on_hold: 'badge-error',
   }
   return classes[status as keyof typeof classes] || 'badge-neutral'
 }
@@ -365,7 +402,7 @@ const getStatusText = (status: string) => {
     planning: 'Planificando',
     in_progress: 'En Progreso',
     completed: 'Completado',
-    on_hold: 'En Pausa'
+    on_hold: 'En Pausa',
   }
   return texts[status as keyof typeof texts] || status
 }
@@ -393,7 +430,7 @@ const handleUpdateProfile = async () => {
     await authStore.updateProfile({
       full_name: editForm.value.full_name,
       bio: editForm.value.bio || undefined,
-      avatar_url: editForm.value.avatar_url || undefined
+      avatar_url: editForm.value.avatar_url || undefined,
     })
 
     showEditModal.value = false
@@ -410,7 +447,7 @@ const initEditForm = () => {
     editForm.value = {
       full_name: profile.value.full_name,
       bio: profile.value.bio || '',
-      avatar_url: profile.value.avatar_url || ''
+      avatar_url: profile.value.avatar_url || '',
     }
   }
 }
@@ -433,15 +470,31 @@ onBeforeUnmount(() => {
 })
 
 // Watch for profile changes to update edit form
-watch(() => profile.value, () => {
-  initEditForm()
-}, { deep: true })
+watch(
+  () => profile.value,
+  () => {
+    initEditForm()
+  },
+  { deep: true },
+)
 
 // Watch for modal open to reinitialize form
-watch(() => showEditModal.value, (isOpen: boolean) => {
-  if (isOpen) {
-    initEditForm()
-    error.value = ''
-  }
-})
+watch(
+  () => showEditModal.value,
+  (isOpen: boolean) => {
+    if (isOpen) {
+      initEditForm()
+      error.value = ''
+    }
+  },
+)
 </script>
+
+<style scoped>
+.hero-background {
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(#000000bd, #000000bd), url('/public/banner.png');
+  background-repeat: no-repeat;
+}
+</style>

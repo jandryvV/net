@@ -3,19 +3,20 @@
     <!-- Header -->
     <div class="flex justify-between items-center">
       <h2 class="text-2xl font-bold">{{ t('tasks.title') }}</h2>
-      <button
-        v-if="canCreate"
-        @click="showAddModal = true"
-        class="btn btn-primary btn-sm"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+      <button v-if="canCreate" @click="showAddModal = true" class="btn btn-primary btn-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
         {{ t('tasks.addTask') }}
       </button>
-      <div v-else class="badge badge-ghost">
-        Solo el creador puede agregar tareas
-      </div>
+      <div v-else class="badge badge-ghost">Solo el creador puede agregar tareas</div>
     </div>
 
     <!-- Kanban Board -->
@@ -39,10 +40,7 @@
             @delete="deleteTask"
             @move="moveTask"
           />
-          <div
-            v-if="todoTasks.length === 0"
-            class="text-center text-base-content/60 py-8"
-          >
+          <div v-if="todoTasks.length === 0" class="text-center text-base-content/60 py-8">
             {{ t('tasks.noTasks') }}
           </div>
         </div>
@@ -67,10 +65,7 @@
             @delete="deleteTask"
             @move="moveTask"
           />
-          <div
-            v-if="inProgressTasks.length === 0"
-            class="text-center text-base-content/60 py-8"
-          >
+          <div v-if="inProgressTasks.length === 0" class="text-center text-base-content/60 py-8">
             {{ t('tasks.noTasks') }}
           </div>
         </div>
@@ -95,10 +90,7 @@
             @delete="deleteTask"
             @move="moveTask"
           />
-          <div
-            v-if="doneTasks.length === 0"
-            class="text-center text-base-content/60 py-8"
-          >
+          <div v-if="doneTasks.length === 0" class="text-center text-base-content/60 py-8">
             {{ t('tasks.noTasks') }}
           </div>
         </div>
@@ -183,7 +175,14 @@
                   @click="clearUserSelection"
                   class="btn btn-ghost btn-sm btn-circle absolute right-2 top-1/2 -translate-y-1/2"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -204,7 +203,10 @@
                   <div class="avatar">
                     <div class="w-8 h-8 rounded-full">
                       <img
-                        :src="user.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'User')}&background=random`"
+                        :src="
+                          user.avatar_url ||
+                          `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'User')}&background=random`
+                        "
                         :alt="user.full_name || 'User'"
                       />
                     </div>
@@ -223,11 +225,17 @@
               </div>
 
               <!-- Usuario seleccionado -->
-              <div v-if="selectedUser" class="flex items-center gap-2 mt-2 p-2 bg-base-200 rounded-lg">
+              <div
+                v-if="selectedUser"
+                class="flex items-center gap-2 mt-2 p-2 bg-base-200 rounded-lg"
+              >
                 <div class="avatar">
                   <div class="w-6 h-6 rounded-full">
                     <img
-                      :src="selectedUser.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.full_name || 'User')}&background=random`"
+                      :src="
+                        selectedUser.avatar_url ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.full_name || 'User')}&background=random`
+                      "
                       :alt="selectedUser.full_name || 'User'"
                     />
                   </div>
@@ -235,8 +243,19 @@
                 <div class="flex-1 text-sm">
                   <span class="font-semibold">{{ selectedUser.full_name }}</span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-success">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-4 h-4 text-success"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
             </div>
@@ -246,11 +265,7 @@
               <label class="label">
                 <span class="label-text">{{ t('tasks.form.dueDate') }}</span>
               </label>
-              <input
-                v-model="taskForm.due_date"
-                type="date"
-                class="input input-bordered w-full"
-              />
+              <input v-model="taskForm.due_date" type="date" class="input input-bordered w-full" />
             </div>
           </div>
 
@@ -308,7 +323,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   canCreate: true,
   canEdit: true,
-  canMove: true
+  canMove: true,
 })
 
 const emit = defineEmits<{
@@ -332,14 +347,14 @@ const taskForm = ref({
   status: 'todo' as Task['status'],
   priority: 'medium' as Task['priority'],
   assigned_to: '',
-  due_date: ''
+  due_date: '',
 })
 
 const editingTaskId = ref<string | null>(null)
 
-const todoTasks = computed(() => props.tasks.filter(t => t.status === 'todo'))
-const inProgressTasks = computed(() => props.tasks.filter(t => t.status === 'in_progress'))
-const doneTasks = computed(() => props.tasks.filter(t => t.status === 'done'))
+const todoTasks = computed(() => props.tasks.filter((t) => t.status === 'todo'))
+const inProgressTasks = computed(() => props.tasks.filter((t) => t.status === 'in_progress'))
+const doneTasks = computed(() => props.tasks.filter((t) => t.status === 'done'))
 
 // Buscar usuarios por email o nombre
 const searchUsers = async (query: string) => {
@@ -397,7 +412,7 @@ async function editTask(task: Task) {
     status: task.status,
     priority: task.priority,
     assigned_to: task.assigned_to || '',
-    due_date: task.due_date || ''
+    due_date: task.due_date || '',
   }
 
   // Cargar el usuario asignado si existe
@@ -447,7 +462,7 @@ function saveTask() {
       status: taskForm.value.status,
       priority: taskForm.value.priority,
       assigned_to: taskForm.value.assigned_to || undefined,
-      due_date: taskForm.value.due_date || undefined
+      due_date: taskForm.value.due_date || undefined,
     })
   } else {
     // Create new task
@@ -455,7 +470,7 @@ function saveTask() {
       project_id: props.projectId,
       title: taskForm.value.title.trim(),
       status: taskForm.value.status,
-      priority: taskForm.value.priority
+      priority: taskForm.value.priority,
     }
 
     // Solo agregar campos opcionales si tienen valor
@@ -487,7 +502,7 @@ function closeModal() {
     status: 'todo',
     priority: 'medium',
     assigned_to: '',
-    due_date: ''
+    due_date: '',
   }
 }
 </script>

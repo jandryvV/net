@@ -32,7 +32,13 @@
 
     <!-- Character count -->
     <label v-if="maxlength && showCount" class="label">
-      <span class="label-text-alt" :class="{ 'text-warning': characterCount > maxlength * 0.8, 'text-error': characterCount > maxlength }">
+      <span
+        class="label-text-alt"
+        :class="{
+          'text-warning': characterCount > maxlength * 0.8,
+          'text-error': characterCount > maxlength,
+        }"
+      >
         {{ characterCount }}/{{ maxlength }}
       </span>
     </label>
@@ -66,7 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   variant: 'default',
   showCount: false,
-  resize: 'vertical'
+  resize: 'vertical',
 })
 
 const emit = defineEmits<{
@@ -84,18 +90,18 @@ const textareaClasses = computed(() => {
   const sizeClasses = {
     sm: 'textarea-sm',
     md: 'textarea-md',
-    lg: 'textarea-lg'
+    lg: 'textarea-lg',
   }
   const variantClasses = {
     default: 'textarea-bordered',
     bordered: 'textarea-bordered border-2',
-    ghost: 'textarea-ghost'
+    ghost: 'textarea-ghost',
   }
   const resizeClasses = {
     none: 'resize-none',
     vertical: 'resize-y',
     horizontal: 'resize-x',
-    both: 'resize'
+    both: 'resize',
   }
 
   let classes = `${baseClasses} ${sizeClasses[props.size]} ${variantClasses[props.variant]} ${resizeClasses[props.resize]}`

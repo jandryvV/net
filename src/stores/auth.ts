@@ -16,7 +16,9 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       console.log('🔄 Initializing auth...')
-      const { data: { session } } = await supabase.auth.getSession()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
 
       if (session?.user) {
         console.log('✅ Found existing session for:', session.user.email)
@@ -40,11 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Fetch user profile
   const fetchProfile = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
+      const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single()
 
       if (error) throw error
       profile.value = data
@@ -66,9 +64,9 @@ export const useAuthStore = defineStore('auth', () => {
         password,
         options: {
           data: {
-            full_name: fullName
-          }
-        }
+            full_name: fullName,
+          },
+        },
       })
 
       console.log('Auth signup result:', { data, error })
@@ -82,15 +80,13 @@ export const useAuthStore = defineStore('auth', () => {
         console.log('Creating profile for user:', data.user.id)
 
         // Create profile
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([
-            {
-              id: data.user.id,
-              email: data.user.email!,
-              full_name: fullName,
-            }
-          ])
+        const { error: profileError } = await supabase.from('profiles').insert([
+          {
+            id: data.user.id,
+            email: data.user.email!,
+            full_name: fullName,
+          },
+        ])
 
         console.log('Profile creation result:', { profileError })
 
@@ -117,7 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       })
 
       if (error) throw error
@@ -158,10 +154,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     loading.value = true
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', user.value.id)
+      const { error } = await supabase.from('profiles').update(updates).eq('id', user.value.id)
 
       if (error) throw error
 
@@ -183,14 +176,14 @@ export const useAuthStore = defineStore('auth', () => {
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: user.value.email!,
-        password: currentPassword
+        password: currentPassword,
       })
 
       if (signInError) throw new Error('Contraseña actual incorrecta')
 
       // Update password
       const { error } = await supabase.auth.updateUser({
-        password: newPassword
+        password: newPassword,
       })
 
       if (error) throw error
@@ -207,7 +200,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`
+        redirectTo: `${window.location.origin}/reset-password`,
       })
 
       if (error) throw error
@@ -259,6 +252,6 @@ export const useAuthStore = defineStore('auth', () => {
     updateProfile,
     changePassword,
     resetPassword,
-    deleteAccount
+    deleteAccount,
   }
 })

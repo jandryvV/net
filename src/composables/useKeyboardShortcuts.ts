@@ -160,7 +160,7 @@ export function useKeyboardShortcuts() {
       { key: 'Alt + E', description: 'Detener lectura', requiresAuth: false },
       { key: 'Alt + +', description: 'Aumentar zoom', requiresAuth: false },
       { key: 'Alt + -', description: 'Disminuir zoom', requiresAuth: false },
-      { key: 'Alt + 0', description: 'Restablecer zoom', requiresAuth: false }
-    ]
+      { key: 'Alt + 0', description: 'Restablecer zoom', requiresAuth: false },
+    ],
   }
 }

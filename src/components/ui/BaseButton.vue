@@ -1,10 +1,5 @@
 <template>
-  <button
-    :type="type"
-    :disabled="disabled"
-    :class="buttonClasses"
-    @click="handleClick"
-  >
+  <button :type="type" :disabled="disabled" :class="buttonClasses" @click="handleClick">
     <!-- Loading spinner -->
     <span v-if="loading" class="loading loading-spinner loading-sm"></span>
 
@@ -26,7 +21,16 @@ import { computed } from 'vue'
 
 interface Props {
   type?: 'button' | 'submit' | 'reset'
-  variant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'link' | 'info' | 'success' | 'warning' | 'error'
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'accent'
+    | 'ghost'
+    | 'link'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error'
   size?: 'xs' | 'sm' | 'md' | 'lg'
   shape?: 'square' | 'circle'
   outline?: boolean
@@ -43,7 +47,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   type: 'button',
   variant: 'primary',
-  size: 'md'
+  size: 'md',
 })
 
 const emit = defineEmits<{
@@ -62,19 +66,19 @@ const buttonClasses = computed(() => {
     info: 'btn-info',
     success: 'btn-success',
     warning: 'btn-warning',
-    error: 'btn-error'
+    error: 'btn-error',
   }
 
   const sizeClasses = {
     xs: 'btn-xs',
     sm: 'btn-sm',
     md: 'btn-md',
-    lg: 'btn-lg'
+    lg: 'btn-lg',
   }
 
   const shapeClasses = {
     square: 'btn-square',
-    circle: 'btn-circle'
+    circle: 'btn-circle',
   }
 
   let classes = `${baseClasses} ${variantClasses[props.variant]} ${sizeClasses[props.size]}`
@@ -111,7 +115,7 @@ const iconClasses = computed(() => {
     xs: 'h-3 w-3',
     sm: 'h-4 w-4',
     md: 'h-5 w-5',
-    lg: 'h-6 w-6'
+    lg: 'h-6 w-6',
   }
 
   return sizeMap[props.size]

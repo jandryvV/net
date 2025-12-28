@@ -1,6 +1,5 @@
 <template>
   <div class="min-h-screen bg-base-200">
-    <!-- Navigation -->
     <NavBar />
 
     <!-- Main Content -->
@@ -8,17 +7,17 @@
       <router-view />
     </main>
 
-    <!-- Text to Speech Floating Button -->
     <TextToSpeechButton />
 
-    <!-- Keyboard Shortcuts Help Button -->
     <KeyboardShortcutsButton />
 
-    <!-- Keyboard Shortcuts Modal -->
     <KeyboardShortcutsModal />
 
     <!-- Loading overlay -->
-    <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div
+      v-if="loading"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
       <span class="loading loading-spinner loading-lg text-primary"></span>
     </div>
   </div>

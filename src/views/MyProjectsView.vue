@@ -2,10 +2,12 @@
   <div class="min-h-screen bg-base-200">
     <div class="container mx-auto px-4 py-8 max-w-7xl">
       <!-- Header mejorado -->
-      <div class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 mb-8 border border-primary/20">
+      <div class="hero-background rounded-2xl p-8 mb-8 border border-base-300 shadow-lg">
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div>
-            <h1 class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1
+              class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
+            >
               {{ t('myProjects.title') }}
             </h1>
             <p class="text-base-content/70 text-lg">
@@ -46,7 +48,9 @@
 
       <!-- Stats Cards mejoradas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all">
+        <div
+          class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all"
+        >
           <div class="card-body p-6">
             <div class="flex items-center gap-4">
               <div class="bg-primary/10 p-3 rounded-full">
@@ -60,7 +64,9 @@
           </div>
         </div>
 
-        <div class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all">
+        <div
+          class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all"
+        >
           <div class="card-body p-6">
             <div class="flex items-center gap-4">
               <div class="bg-success/10 p-3 rounded-full">
@@ -68,13 +74,17 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-success">{{ completedCount }}</div>
-                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.completed') }}</div>
+                <div class="text-sm text-base-content/60">
+                  {{ t('myProjects.stats.completed') }}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all">
+        <div
+          class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all"
+        >
           <div class="card-body p-6">
             <div class="flex items-center gap-4">
               <div class="bg-warning/10 p-3 rounded-full">
@@ -82,13 +92,17 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-warning">{{ inProgressCount }}</div>
-                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.inProgress') }}</div>
+                <div class="text-sm text-base-content/60">
+                  {{ t('myProjects.stats.inProgress') }}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all">
+        <div
+          class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-all"
+        >
           <div class="card-body p-6">
             <div class="flex items-center gap-4">
               <div class="bg-error/10 p-3 rounded-full">
@@ -96,7 +110,9 @@
               </div>
               <div>
                 <div class="text-2xl font-bold text-error">{{ totalLikes }}</div>
-                <div class="text-sm text-base-content/60">{{ t('myProjects.stats.totalLikes') }}</div>
+                <div class="text-sm text-base-content/60">
+                  {{ t('myProjects.stats.totalLikes') }}
+                </div>
               </div>
             </div>
           </div>
@@ -107,64 +123,67 @@
       <div class="card bg-base-100 shadow-lg border border-base-300 mb-8">
         <div class="card-body p-6">
           <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-2 text-base-content/60">
-          <FunnelIcon class="h-5 w-5" />
-          <span class="font-medium">{{ t('myProjects.filters.title') }}</span>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-4 w-full">
-          <div class="form-control">
-            <select v-model="statusFilter" class="select select-bordered select-lg w-full lg:w-auto">
-          <option value="">{{ t('myProjects.filters.allStatus') }}</option>
-          <option value="planning">{{ t('project.status.planning') }}</option>
-          <option value="in_progress">{{ t('project.status.in_progress') }}</option>
-          <option value="completed">{{ t('project.status.completed') }}</option>
-          <option value="on_hold">{{ t('project.status.on_hold') }}</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <select v-model="sortBy" class="select select-bordered select-lg w-full lg:w-auto">
-          <option value="created_at">{{ t('myProjects.filters.sortBy.newest') }}</option>
-          <option value="updated_at">{{ t('myProjects.filters.sortBy.lastUpdate') }}</option>
-          <option value="likes_count">{{ t('myProjects.filters.sortBy.popular') }}</option>
-          <option value="title">{{ t('myProjects.filters.sortBy.alphabetic') }}</option>
-            </select>
-          </div>
-          <div class="form-control flex-1">
-            <div class="input-group">
-          <input
-            v-model="searchQuery"
-            type="text"
-            :placeholder="t('myProjects.filters.searchPlaceholder')"
-            class="input input-bordered input-lg w-full"
-          />
+            <div class="flex items-center gap-2 text-base-content/60">
+              <FunnelIcon class="h-5 w-5" />
+              <span class="font-medium">{{ t('myProjects.filters.title') }}</span>
             </div>
-          </div>
-        </div>
+            <div class="flex flex-col sm:flex-row gap-4 w-full">
+              <div class="form-control">
+                <select
+                  v-model="statusFilter"
+                  class="select select-bordered select-lg w-full lg:w-auto"
+                >
+                  <option value="">{{ t('myProjects.filters.allStatus') }}</option>
+                  <option value="planning">{{ t('project.status.planning') }}</option>
+                  <option value="in_progress">{{ t('project.status.in_progress') }}</option>
+                  <option value="completed">{{ t('project.status.completed') }}</option>
+                  <option value="on_hold">{{ t('project.status.on_hold') }}</option>
+                </select>
+              </div>
+              <div class="form-control">
+                <select v-model="sortBy" class="select select-bordered select-lg w-full lg:w-auto">
+                  <option value="created_at">{{ t('myProjects.filters.sortBy.newest') }}</option>
+                  <option value="updated_at">
+                    {{ t('myProjects.filters.sortBy.lastUpdate') }}
+                  </option>
+                  <option value="likes_count">{{ t('myProjects.filters.sortBy.popular') }}</option>
+                  <option value="title">{{ t('myProjects.filters.sortBy.alphabetic') }}</option>
+                </select>
+              </div>
+              <div class="form-control flex-1">
+                <div class="input-group">
+                  <input
+                    v-model="searchQuery"
+                    type="text"
+                    :placeholder="t('myProjects.filters.searchPlaceholder')"
+                    class="input input-bordered input-lg w-full"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-    <!-- Projects List -->
-    <div v-if="loading" class="flex justify-center py-12">
-      <span class="loading loading-spinner loading-lg"></span>
-    </div>
+      <!-- Projects List -->
+      <div v-if="loading" class="flex justify-center py-12">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
 
-    <div v-else-if="filteredProjects.length === 0" class="text-center py-12">
-      <FolderIcon class="mx-auto h-16 w-16 text-base-content/30 mb-4" />
-      <h3 class="text-xl font-semibold mb-2">
-      {{ statusFilter ? t('myProjects.empty.titleFiltered') : t('myProjects.empty.title') }}
-      </h3>
-      <p class="text-base-content/70 mb-4">
-      {{ statusFilter ? t('myProjects.empty.subtitleFiltered') : t('myProjects.empty.subtitle') }}
-      </p>
-      <button
-      v-if="!statusFilter"
-      class="btn btn-primary"
-      @click="showCreateModal = true"
-      >
-      {{ t('myProjects.empty.action') }}
-      </button>
-    </div>
+      <div v-else-if="filteredProjects.length === 0" class="text-center py-12">
+        <FolderIcon class="mx-auto h-16 w-16 text-base-content/30 mb-4" />
+        <h3 class="text-xl font-semibold mb-2">
+          {{ statusFilter ? t('myProjects.empty.titleFiltered') : t('myProjects.empty.title') }}
+        </h3>
+        <p class="text-base-content/70 mb-4">
+          {{
+            statusFilter ? t('myProjects.empty.subtitleFiltered') : t('myProjects.empty.subtitle')
+          }}
+        </p>
+        <button v-if="!statusFilter" class="btn btn-primary" @click="showCreateModal = true">
+          {{ t('myProjects.empty.action') }}
+        </button>
+      </div>
 
       <div v-else class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div
@@ -192,19 +211,32 @@
           <div class="card-body p-6">
             <!-- Header con estado y menú -->
             <div class="flex items-center justify-between mb-4">
-              <div v-if="!project.image_url" class="badge badge-lg" :class="getStatusClass(project.status)">
+              <div
+                v-if="!project.image_url"
+                class="badge badge-lg"
+                :class="getStatusClass(project.status)"
+              >
                 <component :is="getStatusIcon(project.status)" class="h-4 w-4 mr-2" />
                 {{ getStatusText(project.status) }}
               </div>
               <div v-else class="flex-1"></div>
 
               <div class="dropdown dropdown-end" @click.stop>
-                <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle hover:btn-primary">
+                <div
+                  tabindex="0"
+                  role="button"
+                  class="btn btn-ghost btn-sm btn-circle hover:btn-primary"
+                >
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                    <path
+                      d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"
+                    ></path>
                   </svg>
                 </div>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+                <ul
+                  tabindex="0"
+                  class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300"
+                >
                   <li>
                     <a @click="viewProjectDetails(project)" class="flex items-center gap-2">
                       <EyeIcon class="h-4 w-4" />
@@ -224,7 +256,10 @@
                     </a>
                   </li>
                   <li v-if="activeTab === 'my'">
-                    <a @click="deleteProjectConfirm(project)" class="flex items-center gap-2 text-error">
+                    <a
+                      @click="deleteProjectConfirm(project)"
+                      class="flex items-center gap-2 text-error"
+                    >
                       <TrashIcon class="h-4 w-4" />
                       {{ t('myProjects.card.delete') }}
                     </a>
@@ -304,12 +339,12 @@
           <button class="btn btn-ghost" @click="projectToDelete = null">
             {{ t('myProjects.deleteConfirm.cancel') }}
           </button>
-          <button
-            class="btn btn-error"
-            :class="{ 'loading': deleting }"
-            @click="handleDeleteProject"
-          >
-            {{ deleting ? t('myProjects.deleteConfirm.deleting') : t('myProjects.deleteConfirm.confirm') }}
+          <button class="btn btn-error" :class="{ loading: deleting }" @click="handleDeleteProject">
+            {{
+              deleting
+                ? t('myProjects.deleteConfirm.deleting')
+                : t('myProjects.deleteConfirm.confirm')
+            }}
           </button>
         </div>
       </div>
@@ -344,7 +379,7 @@ import {
   DocumentIcon,
   ExclamationCircleIcon,
   FunnelIcon,
-  UsersIcon
+  UsersIcon,
 } from '@/icons'
 
 const router = useRouter()
@@ -366,16 +401,16 @@ const projectToDelete = ref<Project | null>(null)
 const deleting = ref(false)
 let refreshInterval: number | null = null
 
-const completedCount = computed(() =>
-  userProjects.value.filter(p => p.status === 'completed').length
+const completedCount = computed(
+  () => userProjects.value.filter((p) => p.status === 'completed').length,
 )
 
-const inProgressCount = computed(() =>
-  userProjects.value.filter(p => p.status === 'in_progress').length
+const inProgressCount = computed(
+  () => userProjects.value.filter((p) => p.status === 'in_progress').length,
 )
 
 const totalLikes = computed(() =>
-  userProjects.value.reduce((sum, p) => sum + (p.likes_count || 0), 0)
+  userProjects.value.reduce((sum, p) => sum + (p.likes_count || 0), 0),
 )
 
 const currentProjects = computed(() => {
@@ -387,16 +422,17 @@ const filteredProjects = computed(() => {
 
   // Filter by status
   if (statusFilter.value) {
-    filtered = filtered.filter(p => p.status === statusFilter.value)
+    filtered = filtered.filter((p) => p.status === statusFilter.value)
   }
 
   // Filter by search query
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase().trim()
-    filtered = filtered.filter(p =>
-      p.title.toLowerCase().includes(query) ||
-      p.description.toLowerCase().includes(query) ||
-      p.tags?.some(tag => tag.toLowerCase().includes(query))
+    filtered = filtered.filter(
+      (p) =>
+        p.title.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        p.tags?.some((tag) => tag.toLowerCase().includes(query)),
     )
   }
 
@@ -430,8 +466,8 @@ const fetchUserProjects = async () => {
 
     // Cargar proyectos donde el usuario es miembro del equipo
     const allProjects = projectsStore.projects
-    teamProjects.value = allProjects.filter(p =>
-      p.team_members?.includes(profile.value!.id) && p.created_by !== profile.value!.id
+    teamProjects.value = allProjects.filter(
+      (p) => p.team_members?.includes(profile.value!.id) && p.created_by !== profile.value!.id,
     )
   } catch (error) {
     console.error('Error fetching user projects:', error)
@@ -465,10 +501,10 @@ const formatDate = (dateString: string): string => {
 // Get status icon component
 const getStatusIcon = (status: string) => {
   const iconMap: Record<string, any> = {
-    'planning': RocketLaunchIcon,
-    'in_progress': ClockIcon,
-    'completed': CheckIcon,
-    'on_hold': ExclamationCircleIcon
+    planning: RocketLaunchIcon,
+    in_progress: ClockIcon,
+    completed: CheckIcon,
+    on_hold: ExclamationCircleIcon,
   }
   return iconMap[status] || DocumentIcon
 }
@@ -502,11 +538,13 @@ const shareProject = (project: Project) => {
     navigator.share({
       title: project.title,
       text: project.description,
-      url: window.location.origin + `/project/${project.id}`
+      url: window.location.origin + `/project/${project.id}`,
     })
   } else {
     // Fallback: copy to clipboard
-    navigator.clipboard.writeText(`${project.title} - ${window.location.origin}/project/${project.id}`)
+    navigator.clipboard.writeText(
+      `${project.title} - ${window.location.origin}/project/${project.id}`,
+    )
     // TODO: Show toast notification
   }
 }
@@ -516,21 +554,21 @@ const getStatusClass = (status: string) => {
     planning: 'badge-warning',
     in_progress: 'badge-info',
     completed: 'badge-success',
-    on_hold: 'badge-error'
+    on_hold: 'badge-error',
   }
   return classes[status as keyof typeof classes] || 'badge-neutral'
 }
 
 const getStatusText = (status: string) => {
   const statusMap: Record<string, string> = {
-    'planning': t('project.status.planning'),
-    'Planificando': t('project.status.planning'),
-    'in_progress': t('project.status.in_progress'),
+    planning: t('project.status.planning'),
+    Planificando: t('project.status.planning'),
+    in_progress: t('project.status.in_progress'),
     'En Progreso': t('project.status.in_progress'),
-    'completed': t('project.status.completed'),
-    'Completado': t('project.status.completed'),
-    'on_hold': t('project.status.on_hold'),
-    'En Pausa': t('project.status.on_hold')
+    completed: t('project.status.completed'),
+    Completado: t('project.status.completed'),
+    on_hold: t('project.status.on_hold'),
+    'En Pausa': t('project.status.on_hold'),
   }
   return statusMap[status] || status
 }
@@ -572,5 +610,12 @@ onBeforeUnmount(() => {
 .bg-clip-text {
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+.hero-background {
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner2.jpg');
+  background-repeat: no-repeat;
 }
 </style>

@@ -2,7 +2,9 @@
   <div v-if="show" class="modal modal-open">
     <div class="modal-box w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto">
       <!-- Header mejorado -->
-      <div class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-8 border border-primary/20">
+      <div
+        class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-8 border border-primary/20"
+      >
         <div class="flex items-center gap-4">
           <div class="bg-primary/20 p-3 rounded-full">
             <RocketLaunchIcon class="h-8 w-8 text-primary" />
@@ -72,7 +74,10 @@
             </span>
           </label>
           <div>
-            <select v-model="form.status" class="select select-bordered select-lg focus:select-primary transition-all duration-300 bg-base-100 shadow-sm hover:shadow-md">
+            <select
+              v-model="form.status"
+              class="select select-bordered select-lg focus:select-primary transition-all duration-300 bg-base-100 shadow-sm hover:shadow-md"
+            >
               <option value="">Selecciona un estado</option>
               <option value="planning">Planificando</option>
               <option value="in_progress">En Progreso</option>
@@ -173,7 +178,10 @@
               />
 
               <!-- Autocompletado simple -->
-              <ul v-if="showMemberSuggestions && memberSuggestions.length > 0" class="absolute z-50 left-0 right-0 bg-base-100 border border-base-300 rounded mt-1 max-h-40 overflow-auto">
+              <ul
+                v-if="showMemberSuggestions && memberSuggestions.length > 0"
+                class="absolute z-50 left-0 right-0 bg-base-100 border border-base-300 rounded mt-1 max-h-40 overflow-auto"
+              >
                 <li
                   v-for="suggestion in memberSuggestions"
                   :key="suggestion.email"
@@ -231,18 +239,14 @@
 
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-base-300">
-          <button
-            type="button"
-            class="btn btn-outline btn-lg flex-1 gap-2"
-            @click="$emit('close')"
-          >
+          <button type="button" class="btn btn-outline btn-lg flex-1 gap-2" @click="$emit('close')">
             <XMarkIcon class="h-5 w-5" />
             Cancelar
           </button>
           <button
             type="submit"
             class="btn btn-primary btn-lg flex-1 gap-2"
-            :class="{ 'loading': loading }"
+            :class="{ loading: loading }"
             :disabled="loading"
           >
             <RocketLaunchIcon v-if="!loading" class="h-5 w-5" />
@@ -273,7 +277,7 @@ import {
   UserIcon,
   XMarkIcon,
   ExclamationTriangleIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
 } from '@heroicons/vue/24/outline'
 import FormProgress from '@/components/ui/FormProgress.vue'
 
@@ -298,7 +302,7 @@ const form = ref({
   status: '' as const,
   tags: [] as string[],
   image_url: '',
-  team_members: [] as string[]
+  team_members: [] as string[],
 })
 
 const tagInput = ref('')
@@ -315,13 +319,15 @@ const allUsers = [
   { id: 'u1', full_name: 'Ana García', email: 'ana@example.com' },
   { id: 'u2', full_name: 'Carlos Mendoza', email: 'carlos@example.com' },
   { id: 'u3', full_name: 'María López', email: 'maria@example.com' },
-  { id: 'u4', full_name: 'Juan Pérez', email: 'juan@example.com' }
+  { id: 'u4', full_name: 'Juan Pérez', email: 'juan@example.com' },
 ]
 
 const memberSuggestions = computed(() => {
   const q = memberInput.value.toLowerCase()
   if (!q) return []
-  return allUsers.filter(u => u.email.toLowerCase().includes(q) || u.full_name.toLowerCase().includes(q)).slice(0, 6)
+  return allUsers
+    .filter((u) => u.email.toLowerCase().includes(q) || u.full_name.toLowerCase().includes(q))
+    .slice(0, 6)
 })
 
 // Form Progress Computeds
@@ -338,9 +344,27 @@ const formProgress = computed(() => {
 })
 
 const currentStep = computed(() => {
-  if ((form.value.image_url.trim().length > 0 || form.value.team_members.length > 0) && form.value.tags.length > 0 && form.value.status && form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 5
-  if (form.value.tags.length > 0 && form.value.status && form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 4
-  if (form.value.status && form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 3
+  if (
+    (form.value.image_url.trim().length > 0 || form.value.team_members.length > 0) &&
+    form.value.tags.length > 0 &&
+    form.value.status &&
+    form.value.description.trim().length > 0 &&
+    form.value.title.trim().length > 0
+  )
+    return 5
+  if (
+    form.value.tags.length > 0 &&
+    form.value.status &&
+    form.value.description.trim().length > 0 &&
+    form.value.title.trim().length > 0
+  )
+    return 4
+  if (
+    form.value.status &&
+    form.value.description.trim().length > 0 &&
+    form.value.title.trim().length > 0
+  )
+    return 3
   if (form.value.description.trim().length > 0 && form.value.title.trim().length > 0) return 2
   if (form.value.title.trim().length > 0) return 1
   return 0
@@ -364,8 +388,8 @@ const progressLabel = computed(() => {
 
 const addTag = () => {
   if (tagInput.value.trim()) {
-    const tags = tagInput.value.split(',').map(tag => tag.trim().toLowerCase())
-    form.value.tags.push(...tags.filter(tag => tag && !form.value.tags.includes(tag)))
+    const tags = tagInput.value.split(',').map((tag) => tag.trim().toLowerCase())
+    form.value.tags.push(...tags.filter((tag) => tag && !form.value.tags.includes(tag)))
     tagInput.value = ''
   }
 }
@@ -377,14 +401,17 @@ const removeTag = (index: number) => {
 const addMember = () => {
   if (!memberInput.value.trim()) return
 
-  const members = memberInput.value.split(',').map(member => member.trim()).filter(Boolean)
-  const invalid = members.find(m => !isValidEmail(m))
+  const members = memberInput.value
+    .split(',')
+    .map((member) => member.trim())
+    .filter(Boolean)
+  const invalid = members.find((m) => !isValidEmail(m))
   if (invalid) {
     error.value = `Email inválido: ${invalid}`
     return
   }
 
-  members.forEach(member => {
+  members.forEach((member) => {
     if (!form.value.team_members.includes(member)) {
       form.value.team_members.push(member)
     }
@@ -413,7 +440,7 @@ const resetForm = () => {
     status: '',
     tags: [],
     image_url: '',
-    team_members: []
+    team_members: [],
   }
   tagInput.value = ''
   memberInput.value = ''
@@ -450,7 +477,7 @@ const handleSubmit = async () => {
       tags: form.value.tags,
       image_url: form.value.image_url.trim() || undefined,
       team_members: form.value.team_members,
-      created_by: profile.value.id
+      created_by: profile.value.id,
     })
 
     if (createError) {
@@ -459,7 +486,9 @@ const handleSubmit = async () => {
       // Mostrar éxito breve
       successMessage.value = 'Proyecto creado correctamente'
       showSuccessToast.value = true
-      setTimeout(() => { showSuccessToast.value = false }, 2500)
+      setTimeout(() => {
+        showSuccessToast.value = false
+      }, 2500)
 
       resetForm()
       emit('created')
@@ -471,19 +500,26 @@ const handleSubmit = async () => {
   }
 }
 
-watch(() => props.show, (newShow) => {
-  if (newShow) {
-    resetForm()
-  }
-})
+watch(
+  () => props.show,
+  (newShow) => {
+    if (newShow) {
+      resetForm()
+    }
+  },
+)
 
-watch(() => form.value.image_url, () => {
-  imageError.value = false
-})
+watch(
+  () => form.value.image_url,
+  () => {
+    imageError.value = false
+  },
+)
 
 // Utilidades
 const isValidEmail = (email: string) => {
-  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i
+  const re =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i
   return re.test(String(email).toLowerCase())
 }
 </script>

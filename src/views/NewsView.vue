@@ -1,12 +1,17 @@
 <template>
   <div class="min-h-screen bg-base-200">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-primary to-secondary text-primary-content">
+    <div class="bg-linear-to-r from-primary to-secondary text-primary-content">
       <div class="max-w-7xl mx-auto px-4 py-12">
         <div class="text-center">
           <div class="flex items-center justify-center gap-3 mb-4">
             <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+              />
             </svg>
             <h1 class="text-4xl font-bold">{{ t('news.title') }}</h1>
           </div>
@@ -61,7 +66,7 @@
                 <div class="badge" :class="getCategoryBadgeColor(item.category)">
                   {{ getCategoryLabel(item.category) }}
                 </div>
-                <button 
+                <button
                   @click="(e) => handleNewsMenuClick(e, item)"
                   class="btn btn-ghost btn-sm btn-circle"
                 >
@@ -93,7 +98,12 @@
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
 
@@ -104,8 +114,18 @@
                   :key="index"
                   class="flex items-start gap-2 text-sm"
                 >
-                  <svg class="h-5 w-5 text-success shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  <svg
+                    class="h-5 w-5 text-success shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   <span>{{ feature }}</span>
                 </li>
@@ -114,11 +134,7 @@
 
             <!-- Tags -->
             <div v-if="item.tags && item.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
-              <span
-                v-for="tag in item.tags"
-                :key="tag"
-                class="badge badge-outline badge-sm"
-              >
+              <span v-for="tag in item.tags" :key="tag" class="badge badge-outline badge-sm">
                 #{{ tag }}
               </span>
             </div>
@@ -130,8 +146,18 @@
       <div v-else class="text-center py-12">
         <div class="card bg-base-100 shadow-lg border border-base-300">
           <div class="card-body p-12">
-            <svg class="h-16 w-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            <svg
+              class="h-16 w-16 mx-auto mb-4 opacity-50"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+              />
             </svg>
             <h3 class="text-xl font-semibold mb-2">{{ t('news.noNews') }}</h3>
             <p class="text-base-content/70">{{ t('news.comingSoon') }}</p>
@@ -164,7 +190,7 @@ import {
   EllipsisVerticalIcon,
   ShareIcon,
   BookmarkIcon,
-  ClipboardDocumentIcon
+  ClipboardDocumentIcon,
 } from '@/icons'
 
 const { t, locale } = useTranslation()
@@ -180,20 +206,20 @@ const categories = computed(() => [
   { key: 'features', label: t('news.categories.features'), icon: SparklesIcon },
   { key: 'improvements', label: t('news.categories.improvements'), icon: RocketLaunchIcon },
   { key: 'fixes', label: t('news.categories.fixes'), icon: WrenchScrewdriverIcon },
-  { key: 'announcements', label: t('news.categories.announcements'), icon: MegaphoneIcon }
+  { key: 'announcements', label: t('news.categories.announcements'), icon: MegaphoneIcon },
 ])
 
 // News data
 const newsItems = computed(() => {
   const isSpanish = locale.value === 'es'
-  
+
   return [
     {
       id: 1,
       category: 'features',
       date: '2025-11-02',
       title: isSpanish ? 'Sistema de Lector de Voz' : 'Text-to-Speech System',
-      content: isSpanish 
+      content: isSpanish
         ? 'Hemos implementado un completo sistema de lector de voz para mejorar la accesibilidad de la plataforma. Ahora puedes escuchar cualquier contenido de la aplicación con solo hacer clic.'
         : 'We have implemented a complete text-to-speech system to improve platform accessibility. Now you can listen to any application content with just one click.',
       features: isSpanish
@@ -202,16 +228,16 @@ const newsItems = computed(() => {
             'Control de velocidad y volumen de voz',
             'Atajos de teclado (Alt+R, Alt+S, Alt+X, Alt+T)',
             'Selección automática de voz según idioma',
-            'Botón flotante de fácil acceso'
+            'Botón flotante de fácil acceso',
           ]
         : [
             'Full page or text selection reading',
             'Voice speed and volume control',
             'Keyboard shortcuts (Alt+R, Alt+S, Alt+X, Alt+T)',
             'Automatic voice selection by language',
-            'Easy-access floating button'
+            'Easy-access floating button',
           ],
-      tags: ['accessibility', 'voice', 'ux']
+      tags: ['accessibility', 'voice', 'ux'],
     },
     {
       id: 2,
@@ -227,16 +253,16 @@ const newsItems = computed(() => {
             'Bordes más gruesos y visibles',
             'Sombras y efectos mejorados',
             'Enlaces subrayados para mejor identificación',
-            'Adaptación a temas claro/oscuro'
+            'Adaptación a temas claro/oscuro',
           ]
         : [
             'Enhanced color contrast',
             'Thicker and more visible borders',
             'Improved shadows and effects',
             'Underlined links for better identification',
-            'Light/dark theme adaptation'
+            'Light/dark theme adaptation',
           ],
-      tags: ['accessibility', 'design', 'ux']
+      tags: ['accessibility', 'design', 'ux'],
     },
     {
       id: 3,
@@ -252,16 +278,16 @@ const newsItems = computed(() => {
             'Persistencia de preferencia de idioma',
             'Todas las vistas traducidas',
             'Mensajes de error y éxito localizados',
-            'Fechas y formatos adaptados'
+            'Fechas y formatos adaptados',
           ]
         : [
             'Real-time language switching',
             'Language preference persistence',
             'All views translated',
             'Localized error and success messages',
-            'Adapted dates and formats'
+            'Adapted dates and formats',
           ],
-      tags: ['i18n', 'localization', 'ux']
+      tags: ['i18n', 'localization', 'ux'],
     },
     {
       id: 4,
@@ -271,7 +297,7 @@ const newsItems = computed(() => {
       content: isSpanish
         ? 'Rediseño completo de la página de registro con un layout moderno de dos columnas, efectos glassmorphism y panel de beneficios. Incluye visualización de contraseña para mayor facilidad de uso.'
         : 'Complete redesign of the registration page with a modern two-column layout, glassmorphism effects and benefits panel. Includes password visibility for ease of use.',
-      tags: ['ui', 'design', 'registration']
+      tags: ['ui', 'design', 'registration'],
     },
     {
       id: 5,
@@ -287,16 +313,16 @@ const newsItems = computed(() => {
             '11 secciones en Política de Privacidad',
             'Iconos visuales para cada sección',
             'Diseño responsive y scrolleable',
-            'Información actualizada al 2 de noviembre de 2025'
+            'Información actualizada al 2 de noviembre de 2025',
           ]
         : [
             '8 sections in Terms of Use',
             '11 sections in Privacy Policy',
             'Visual icons for each section',
             'Responsive and scrollable design',
-            'Information updated as of November 2, 2025'
+            'Information updated as of November 2, 2025',
           ],
-      tags: ['legal', 'compliance', 'ui']
+      tags: ['legal', 'compliance', 'ui'],
     },
     {
       id: 6,
@@ -312,17 +338,17 @@ const newsItems = computed(() => {
             'Colabora con otros desarrolladores',
             'Comparte tu progreso y aprendizajes',
             'Descubre proyectos innovadores',
-            'Comunidad activa y soporte continuo'
+            'Comunidad activa y soporte continuo',
           ]
         : [
             'Create and manage unlimited projects',
             'Collaborate with other developers',
             'Share your progress and learnings',
             'Discover innovative projects',
-            'Active community and continuous support'
+            'Active community and continuous support',
           ],
-      tags: ['announcement', 'welcome', 'community']
-    }
+      tags: ['announcement', 'welcome', 'community'],
+    },
   ]
 })
 
@@ -331,7 +357,7 @@ const filteredNews = computed(() => {
   if (activeCategory.value === 'all') {
     return newsItems.value
   }
-  return newsItems.value.filter(item => item.category === activeCategory.value)
+  return newsItems.value.filter((item) => item.category === activeCategory.value)
 })
 
 // Helper functions
@@ -340,7 +366,7 @@ const getCategoryColor = (category: string) => {
     features: 'bg-primary/10 text-primary',
     improvements: 'bg-success/10 text-success',
     fixes: 'bg-warning/10 text-warning',
-    announcements: 'bg-info/10 text-info'
+    announcements: 'bg-info/10 text-info',
   }
   return colors[category] || 'bg-base-200 text-base-content'
 }
@@ -350,7 +376,7 @@ const getCategoryBadgeColor = (category: string) => {
     features: 'badge-primary',
     improvements: 'badge-success',
     fixes: 'badge-warning',
-    announcements: 'badge-info'
+    announcements: 'badge-info',
   }
   return colors[category] || 'badge-ghost'
 }
@@ -360,7 +386,7 @@ const getCategoryIcon = (category: string) => {
     features: SparklesIcon,
     improvements: RocketLaunchIcon,
     fixes: WrenchScrewdriverIcon,
-    announcements: MegaphoneIcon
+    announcements: MegaphoneIcon,
   }
   return icons[category] || NewspaperIcon
 }
@@ -374,7 +400,7 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString(locale.value === 'es' ? 'es-ES' : 'en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 
@@ -387,18 +413,18 @@ const newsContextMenuItems = computed((): ContextMenuItem[] => [
   {
     label: locale.value === 'es' ? 'Compartir' : 'Share',
     icon: ShareIcon,
-    action: () => handleShareNews()
+    action: () => handleShareNews(),
   },
   {
     label: locale.value === 'es' ? 'Copiar enlace' : 'Copy link',
     icon: ClipboardDocumentIcon,
-    action: () => handleCopyLink()
+    action: () => handleCopyLink(),
   },
   {
     label: locale.value === 'es' ? 'Guardar' : 'Save',
     icon: BookmarkIcon,
-    action: () => handleSaveNews()
-  }
+    action: () => handleSaveNews(),
+  },
 ])
 
 const handleNewsContextMenu = (event: MouseEvent, item: any) => {
@@ -415,10 +441,10 @@ const handleNewsMenuClick = (event: MouseEvent, item: any) => {
 
 const handleShareNews = () => {
   if (!currentNewsItem.value) return
-  
+
   const url = `${window.location.origin}/news#${currentNewsItem.value.id}`
   const text = currentNewsItem.value.title
-  
+
   if (navigator.share) {
     navigator.share({ title: text, url })
   } else {
@@ -429,7 +455,7 @@ const handleShareNews = () => {
 
 const handleCopyLink = () => {
   if (!currentNewsItem.value) return
-  
+
   const url = `${window.location.origin}/news#${currentNewsItem.value.id}`
   navigator.clipboard.writeText(url)
   // TODO: Show toast "Enlace copiado"

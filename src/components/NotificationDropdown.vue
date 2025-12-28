@@ -3,8 +3,19 @@
     <!-- Bell Icon Button -->
     <label tabindex="0" class="btn btn-ghost btn-circle">
       <div class="indicator">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+          />
         </svg>
         <span v-if="unreadCount > 0" class="badge badge-sm badge-error indicator-item">
           {{ unreadCount > 9 ? '9+' : unreadCount }}
@@ -13,16 +24,15 @@
     </label>
 
     <!-- Dropdown Menu -->
-    <div tabindex="0" class="dropdown-content z-50 mt-3 card card-compact w-80 bg-base-100 shadow-xl border border-base-300">
+    <div
+      tabindex="0"
+      class="dropdown-content z-50 mt-3 card card-compact w-80 bg-base-100 shadow-xl border border-base-300"
+    >
       <div class="card-body p-0">
         <!-- Header -->
         <div class="flex items-center justify-between p-4 border-b border-base-300">
           <h3 class="font-bold text-lg">{{ t('notifications.title') }}</h3>
-          <button
-            v-if="unreadCount > 0"
-            @click="markAllAsRead"
-            class="btn btn-ghost btn-xs"
-          >
+          <button v-if="unreadCount > 0" @click="markAllAsRead" class="btn btn-ghost btn-xs">
             {{ t('notifications.markAllRead') }}
           </button>
         </div>
@@ -34,8 +44,19 @@
           </div>
 
           <div v-else-if="notifications.length === 0" class="text-center py-8 text-base-content/60">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-2 opacity-50">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-12 h-12 mx-auto mb-2 opacity-50"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"
+              />
             </svg>
             <p class="text-sm">{{ t('notifications.empty') }}</p>
           </div>
@@ -46,7 +67,7 @@
               :key="notification.id"
               :class="[
                 'p-4 border-b border-base-300 transition-colors',
-                !notification.read ? 'bg-base-200' : 'hover:bg-base-200'
+                !notification.read ? 'bg-base-200' : 'hover:bg-base-200',
               ]"
             >
               <div class="flex items-start gap-3">
@@ -54,7 +75,10 @@
                 <div class="avatar">
                   <div class="w-10 h-10 rounded-full">
                     <img
-                      :src="notification.from_user?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(notification.from_user?.full_name || 'Usuario')}&background=random`"
+                      :src="
+                        notification.from_user?.avatar_url ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(notification.from_user?.full_name || 'Usuario')}&background=random`
+                      "
                       :alt="notification.from_user?.full_name || 'Usuario'"
                     />
                   </div>
@@ -70,7 +94,10 @@
                   </p>
 
                   <!-- Actions for project invites -->
-                  <div v-if="notification.type === 'project_invite' && !notification.read" class="flex gap-2 mt-3">
+                  <div
+                    v-if="notification.type === 'project_invite' && !notification.read"
+                    class="flex gap-2 mt-3"
+                  >
                     <button
                       @click="handleAcceptInvite(notification)"
                       class="btn btn-success btn-xs"

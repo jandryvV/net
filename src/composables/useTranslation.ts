@@ -16,7 +16,7 @@ export function useTranslation() {
     (newLang) => {
       locale.value = newLang
     },
-    { immediate: true }
+    { immediate: true },
   )
 
   /**
@@ -39,6 +39,6 @@ export function useTranslation() {
     t,
     locale,
     changeLanguage,
-    toggleLanguage
+    toggleLanguage,
   }
 }

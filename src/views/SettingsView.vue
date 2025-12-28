@@ -2,13 +2,17 @@
   <div class="min-h-screen bg-base-200">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
       <!-- Header -->
-      <div class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 mb-8 border border-primary/20">
+      <div
+        class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 mb-8 border border-primary/20"
+      >
         <div class="flex items-center gap-4">
           <div class="bg-primary/20 p-3 rounded-full">
             <Cog6ToothIcon class="h-8 w-8 text-primary" />
           </div>
           <div>
-            <h1 class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1
+              class="text-4xl font-bold mb-2 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
+            >
               {{ t('settings.title') }}
             </h1>
             <p class="text-base-content/70 text-lg">
@@ -26,7 +30,7 @@
               <ul class="menu menu-vertical w-full">
                 <li>
                   <a
-                    :class="{ 'active': activeTab === 'account' }"
+                    :class="{ active: activeTab === 'account' }"
                     @click="activeTab = 'account'"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
@@ -36,7 +40,7 @@
                 </li>
                 <li>
                   <a
-                    :class="{ 'active': activeTab === 'security' }"
+                    :class="{ active: activeTab === 'security' }"
                     @click="activeTab = 'security'"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
@@ -46,7 +50,7 @@
                 </li>
                 <li>
                   <a
-                    :class="{ 'active': activeTab === 'appearance' }"
+                    :class="{ active: activeTab === 'appearance' }"
                     @click="activeTab = 'appearance'"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
@@ -56,7 +60,7 @@
                 </li>
                 <li>
                   <a
-                    :class="{ 'active': activeTab === 'notifications' }"
+                    :class="{ active: activeTab === 'notifications' }"
                     @click="activeTab = 'notifications'"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
@@ -66,7 +70,7 @@
                 </li>
                 <li>
                   <a
-                    :class="{ 'active': activeTab === 'privacy' }"
+                    :class="{ active: activeTab === 'privacy' }"
                     @click="activeTab = 'privacy'"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
@@ -76,7 +80,7 @@
                 </li>
                 <li>
                   <a
-                    :class="{ 'active': activeTab === 'about' }"
+                    :class="{ active: activeTab === 'about' }"
                     @click="activeTab = 'about'"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg"
                   >
@@ -91,90 +95,100 @@
 
         <!-- Main Content -->
         <div class="lg:col-span-3">
-            <!-- Account Settings -->
-            <div v-if="activeTab === 'account'" class="space-y-6">
-                <div class="card bg-base-100 shadow-lg border border-base-300">
-                <div class="card-body">
+          <!-- Account Settings -->
+          <div v-if="activeTab === 'account'" class="space-y-6">
+            <div class="card bg-base-100 shadow-lg border border-base-300">
+              <div class="card-body">
                 <h2 class="card-title text-2xl mb-6 flex items-center gap-2">
-                <UserIcon class="h-6 w-6 text-primary" />
-                {{ t('settings.account.title') }}
+                  <UserIcon class="h-6 w-6 text-primary" />
+                  {{ t('settings.account.title') }}
                 </h2>
 
                 <form @submit.prevent="updateAccount" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div class="form-control flex flex-col">
-                  <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.account.fullName') }}</span>
-                  </label>
-                  <input
-                  v-model="accountForm.full_name"
-                  type="text"
-                  class="input input-bordered input-lg"
-                  :placeholder="t('settings.account.placeholders.fullName')"
-                  />
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-control flex flex-col">
+                      <label class="label mb-2">
+                        <span class="label-text font-semibold">{{
+                          t('settings.account.fullName')
+                        }}</span>
+                      </label>
+                      <input
+                        v-model="accountForm.full_name"
+                        type="text"
+                        class="input input-bordered input-lg"
+                        :placeholder="t('settings.account.placeholders.fullName')"
+                      />
+                    </div>
+
+                    <div class="form-control flex flex-col">
+                      <label class="label mb-2">
+                        <span class="label-text font-semibold">{{
+                          t('settings.account.email')
+                        }}</span>
+                      </label>
+                      <input
+                        v-model="accountForm.email"
+                        type="email"
+                        class="input input-bordered input-lg"
+                        placeholder="tu@email.com"
+                        readonly
+                      />
+                      <div class="label">
+                        <span class="label-text-alt text-warning"
+                          >El email no se puede cambiar</span
+                        >
+                      </div>
+                    </div>
                   </div>
 
                   <div class="form-control flex flex-col">
-                  <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.account.email') }}</span>
-                  </label>
-                  <input
-                  v-model="accountForm.email"
-                  type="email"
-                  class="input input-bordered input-lg"
-                  placeholder="tu@email.com"
-                  readonly
-                  />
-                  <div class="label">
-                  <span class="label-text-alt text-warning">El email no se puede cambiar</span>
+                    <label class="label mb-2">
+                      <span class="label-text font-semibold">{{ t('settings.account.bio') }}</span>
+                    </label>
+                    <textarea
+                      v-model="accountForm.bio"
+                      class="textarea textarea-bordered h-32"
+                      :placeholder="t('settings.account.placeholders.bio')"
+                      maxlength="500"
+                      readonly
+                      :style="{
+                        resize: 'none',
+                        pointerEvents: 'none',
+                        backgroundColor: 'var(--b1)',
+                      }"
+                    ></textarea>
+                    <div class="label">
+                      <span class="label-text-alt">{{ (accountForm.bio || '').length }}/500</span>
+                    </div>
                   </div>
+
+                  <div class="form-control flex flex-col">
+                    <label class="label mb-2">
+                      <span class="label-text font-semibold">{{
+                        t('settings.account.avatarUrl')
+                      }}</span>
+                    </label>
+                    <input
+                      v-model="accountForm.avatar_url"
+                      type="url"
+                      class="input input-bordered input-lg"
+                      :placeholder="t('settings.account.placeholders.avatarUrl')"
+                    />
                   </div>
-                </div>
 
-                <div class="form-control flex flex-col">
-                  <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.account.bio') }}</span>
-                  </label>
-                  <textarea
-                  v-model="accountForm.bio"
-                  class="textarea textarea-bordered h-32"
-                  :placeholder="t('settings.account.placeholders.bio')"
-                  maxlength="500"
-                  readonly
-                    :style="{
-                    resize: 'none',
-                    pointerEvents: 'none',
-                    backgroundColor: 'var(--b1)'
-                    }"
-                  ></textarea>
-                  <div class="label">
-                  <span class="label-text-alt">{{ (accountForm.bio || '').length }}/500</span>
+                  <div class="flex justify-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-lg gap-2"
+                      :class="{ loading: updating }"
+                      :disabled="updating"
+                    >
+                      <CheckIcon v-if="!updating" class="h-5 w-5" />
+                      {{
+                        updating ? t('settings.account.saving') : t('settings.account.saveChanges')
+                      }}
+                    </button>
                   </div>
-                </div>
-
-                <div class="form-control flex flex-col">
-                  <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.account.avatarUrl') }}</span>
-                  </label>
-                  <input
-                  v-model="accountForm.avatar_url"
-                  type="url"
-                  class="input input-bordered input-lg"
-                  :placeholder="t('settings.account.placeholders.avatarUrl')"
-                  />
-                </div>
-
-                <div class="flex justify-end">
-                  <button
-                  type="submit"
-                  class="btn btn-primary btn-lg gap-2"
-                  :class="{ 'loading': updating }"
-                  :disabled="updating"
-                  >
-                  <CheckIcon v-if="!updating" class="h-5 w-5" />
-                  {{ updating ? t('settings.account.saving') : t('settings.account.saveChanges') }}
-                  </button>
-                </div>
                 </form>
               </div>
             </div>
@@ -190,12 +204,11 @@
                   <div class="flex justify-between items-center p-4 bg-base-100 rounded-lg border">
                     <div>
                       <h4 class="font-semibold">{{ t('settings.account.deleteAccount') }}</h4>
-                      <p class="text-sm text-base-content/70">{{ t('settings.account.deleteAccountWarning') }}</p>
+                      <p class="text-sm text-base-content/70">
+                        {{ t('settings.account.deleteAccountWarning') }}
+                      </p>
                     </div>
-                    <button
-                      class="btn btn-error btn-outline"
-                      @click="showDeleteModal = true"
-                    >
+                    <button class="btn btn-error btn-outline" @click="showDeleteModal = true">
                       {{ t('settings.account.deleteAccountConfirm') }}
                     </button>
                   </div>
@@ -204,73 +217,83 @@
             </div>
           </div>
 
-            <!-- Security Settings -->
-            <div v-if="activeTab === 'security'" class="space-y-6">
+          <!-- Security Settings -->
+          <div v-if="activeTab === 'security'" class="space-y-6">
             <div class="card bg-base-100 shadow-lg border border-base-300">
               <div class="card-body">
-              <h2 class="card-title text-2xl mb-6 flex items-center gap-2">
-                <LockClosedIcon class="h-6 w-6 text-primary" />
-                {{ t('settings.security.title') }}
-              </h2>
+                <h2 class="card-title text-2xl mb-6 flex items-center gap-2">
+                  <LockClosedIcon class="h-6 w-6 text-primary" />
+                  {{ t('settings.security.title') }}
+                </h2>
 
-              <form @submit.prevent="changePassword" class="space-y-6">
-                <div class="form-control flex flex-col">
-                <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.security.currentPassword') }}</span>
-                </label>
-                <input
-                  v-model="passwordForm.currentPassword"
-                  type="password"
-                  class="input input-bordered input-lg"
-                  :placeholder="t('settings.security.placeholders.currentPassword')"
-                  required
-                />
-                </div>
+                <form @submit.prevent="changePassword" class="space-y-6">
+                  <div class="form-control flex flex-col">
+                    <label class="label mb-2">
+                      <span class="label-text font-semibold">{{
+                        t('settings.security.currentPassword')
+                      }}</span>
+                    </label>
+                    <input
+                      v-model="passwordForm.currentPassword"
+                      type="password"
+                      class="input input-bordered input-lg"
+                      :placeholder="t('settings.security.placeholders.currentPassword')"
+                      required
+                    />
+                  </div>
 
-                <div class="form-control flex flex-col">
-                <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.security.newPassword') }}</span>
-                </label>
-                <input
-                  v-model="passwordForm.newPassword"
-                  type="password"
-                  class="input input-bordered input-lg"
-                  :placeholder="t('settings.security.placeholders.newPassword')"
-                  required
-                  minlength="6"
-                />
-                </div>
+                  <div class="form-control flex flex-col">
+                    <label class="label mb-2">
+                      <span class="label-text font-semibold">{{
+                        t('settings.security.newPassword')
+                      }}</span>
+                    </label>
+                    <input
+                      v-model="passwordForm.newPassword"
+                      type="password"
+                      class="input input-bordered input-lg"
+                      :placeholder="t('settings.security.placeholders.newPassword')"
+                      required
+                      minlength="6"
+                    />
+                  </div>
 
-                <div class="form-control flex flex-col">
-                <label class="label mb-2">
-                  <span class="label-text font-semibold">{{ t('settings.security.confirmPassword') }}</span>
-                </label>
-                <input
-                  v-model="passwordForm.confirmPassword"
-                  type="password"
-                  class="input input-bordered input-lg"
-                  :placeholder="t('settings.security.placeholders.confirmPassword')"
-                  required
-                />
-                </div>
+                  <div class="form-control flex flex-col">
+                    <label class="label mb-2">
+                      <span class="label-text font-semibold">{{
+                        t('settings.security.confirmPassword')
+                      }}</span>
+                    </label>
+                    <input
+                      v-model="passwordForm.confirmPassword"
+                      type="password"
+                      class="input input-bordered input-lg"
+                      :placeholder="t('settings.security.placeholders.confirmPassword')"
+                      required
+                    />
+                  </div>
 
-                <div v-if="passwordError" class="alert alert-error">
-                <ExclamationTriangleIcon class="h-5 w-5" />
-                {{ passwordError }}
-                </div>
+                  <div v-if="passwordError" class="alert alert-error">
+                    <ExclamationTriangleIcon class="h-5 w-5" />
+                    {{ passwordError }}
+                  </div>
 
-                <div class="flex justify-end">
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-lg gap-2"
-                  :class="{ 'loading': changingPassword }"
-                  :disabled="changingPassword"
-                >
-                  <KeyIcon v-if="!changingPassword" class="h-5 w-5" />
-                  {{ changingPassword ? t('settings.security.changing') : t('settings.security.changePassword') }}
-                </button>
-                </div>
-              </form>
+                  <div class="flex justify-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-lg gap-2"
+                      :class="{ loading: changingPassword }"
+                      :disabled="changingPassword"
+                    >
+                      <KeyIcon v-if="!changingPassword" class="h-5 w-5" />
+                      {{
+                        changingPassword
+                          ? t('settings.security.changing')
+                          : t('settings.security.changePassword')
+                      }}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
 
@@ -289,10 +312,14 @@
                     @click="sendPasswordReset"
                     class="btn btn-outline btn-warning gap-2"
                     :disabled="sendingReset"
-                    :class="{ 'loading': sendingReset }"
+                    :class="{ loading: sendingReset }"
                   >
                     <KeyIcon v-if="!sendingReset" class="h-5 w-5" />
-                    {{ sendingReset ? t('settings.security.sending') : t('settings.security.sendResetLink') }}
+                    {{
+                      sendingReset
+                        ? t('settings.security.sending')
+                        : t('settings.security.sendResetLink')
+                    }}
                   </button>
                 </div>
               </div>
@@ -307,7 +334,9 @@
                 </h3>
                 <div class="flex justify-between items-center">
                   <div>
-                    <p class="text-base-content/80">Agrega una capa extra de seguridad a tu cuenta</p>
+                    <p class="text-base-content/80">
+                      Agrega una capa extra de seguridad a tu cuenta
+                    </p>
                     <p class="text-sm text-base-content/60 mt-1">Proximamente disponible</p>
                   </div>
                   <input type="checkbox" class="toggle toggle-primary" disabled />
@@ -331,7 +360,11 @@
                     v-for="theme in themes"
                     :key="theme.name"
                     class="card cursor-pointer border-2 transition-all"
-                    :class="currentTheme === theme.name ? 'border-primary shadow-lg' : 'border-base-300 hover:border-primary/50'"
+                    :class="
+                      currentTheme === theme.name
+                        ? 'border-primary shadow-lg'
+                        : 'border-base-300 hover:border-primary/50'
+                    "
                     @click="setTheme(theme.name)"
                   >
                     <div class="card-body p-4 text-center">
@@ -347,47 +380,67 @@
             <!-- Font Size -->
             <div class="card bg-base-100 shadow-lg border border-base-300">
               <div class="card-body">
-              <h3 class="card-title text-xl mb-4 flex items-center gap-2">
-                <DocumentTextIcon class="h-6 w-6 text-primary" />
-                Tamaño de Fuente
-              </h3>
+                <h3 class="card-title text-xl mb-4 flex items-center gap-2">
+                  <DocumentTextIcon class="h-6 w-6 text-primary" />
+                  Tamaño de Fuente
+                </h3>
 
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                <span>Tamaño de fuente</span>
-                <div class="flex items-center gap-4">
-                  <button
-                  class="btn btn-sm btn-ghost"
-                  @click="fontSize = Math.max(12, fontSize - 1); updateFontSize()"
-                  :disabled="fontSize <= 12"
-                  aria-label="Disminuir tamaño"
-                  >-</button>
-                  <span class="text-sm w-10 text-center">{{ fontSize }}px</span>
-                  <button
-                  class="btn btn-sm btn-ghost"
-                  @click="fontSize = Math.min(20, fontSize + 1); updateFontSize()"
-                  :disabled="fontSize >= 20"
-                  aria-label="Aumentar tamaño"
-                  >+</button>
-                  <button
-                  class="btn btn-xs btn-outline ml-2"
-                  @click="fontSize = 14; updateFontSize()"
-                  :disabled="fontSize === 14"
-                  aria-label="Restablecer"
-                  >Restablecer</button>
-                </div>
-                </div>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span>Tamaño de fuente</span>
+                    <div class="flex items-center gap-4">
+                      <button
+                        class="btn btn-sm btn-ghost"
+                        @click="
+                          () => {
+                            fontSize = Math.max(12, fontSize - 1)
+                            updateFontSize()
+                          }
+                        "
+                        :disabled="fontSize <= 12"
+                        aria-label="Disminuir tamaño"
+                      >
+                        -
+                      </button>
+                      <span class="text-sm w-10 text-center">{{ fontSize }}px</span>
+                      <button
+                        class="btn btn-sm btn-ghost"
+                        @click="
+                          () => {
+                            fontSize = Math.min(20, fontSize + 1)
+                            updateFontSize()
+                          }
+                        "
+                        :disabled="fontSize >= 20"
+                        aria-label="Aumentar tamaño"
+                      >
+                        +
+                      </button>
+                      <button
+                        class="btn btn-xs btn-outline ml-2"
+                        @click="
+                          () => {
+                            fontSize = 14
+                            updateFontSize()
+                          }
+                        "
+                        :disabled="fontSize === 14"
+                        aria-label="Restablecer"
+                      >
+                        Restablecer
+                      </button>
+                    </div>
+                  </div>
 
-                <div class="bg-base-200 p-4 rounded-lg">
-                <p :style="{ fontSize: fontSize + 'px' }">
-                  Este es un ejemplo de texto con el tamaño de fuente seleccionado.
-                </p>
+                  <div class="bg-base-200 p-4 rounded-lg">
+                    <p :style="{ fontSize: fontSize + 'px' }">
+                      Este es un ejemplo de texto con el tamaño de fuente seleccionado.
+                    </p>
+                  </div>
                 </div>
               </div>
-              </div>
             </div>
-            </div>
-
+          </div>
 
           <!-- Notifications Settings -->
           <div v-if="activeTab === 'notifications'" class="space-y-6">
@@ -403,7 +456,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Comentarios en proyectos</h4>
-                        <p class="text-sm text-base-content/70">Recibe notificaciones cuando comenten tus proyectos</p>
+                        <p class="text-sm text-base-content/70">
+                          Recibe notificaciones cuando comenten tus proyectos
+                        </p>
                       </div>
                       <input
                         v-model="notifications.comments"
@@ -418,7 +473,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Likes en proyectos</h4>
-                        <p class="text-sm text-base-content/70">Recibe notificaciones cuando den like a tus proyectos</p>
+                        <p class="text-sm text-base-content/70">
+                          Recibe notificaciones cuando den like a tus proyectos
+                        </p>
                       </div>
                       <input
                         v-model="notifications.likes"
@@ -433,7 +490,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Nuevos seguidores</h4>
-                        <p class="text-sm text-base-content/70">Recibe notificaciones de nuevos seguidores</p>
+                        <p class="text-sm text-base-content/70">
+                          Recibe notificaciones de nuevos seguidores
+                        </p>
                       </div>
                       <input
                         v-model="notifications.followers"
@@ -448,7 +507,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Actualizaciones del sistema</h4>
-                        <p class="text-sm text-base-content/70">Recibe notificaciones sobre nuevas funciones</p>
+                        <p class="text-sm text-base-content/70">
+                          Recibe notificaciones sobre nuevas funciones
+                        </p>
                       </div>
                       <input
                         v-model="notifications.updates"
@@ -463,7 +524,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Email de notificaciones</h4>
-                        <p class="text-sm text-base-content/70">Recibe un resumen semanal por email</p>
+                        <p class="text-sm text-base-content/70">
+                          Recibe un resumen semanal por email
+                        </p>
                       </div>
                       <input
                         v-model="notifications.email"
@@ -492,7 +555,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Perfil público</h4>
-                        <p class="text-sm text-base-content/70">Tu perfil será visible para otros usuarios</p>
+                        <p class="text-sm text-base-content/70">
+                          Tu perfil será visible para otros usuarios
+                        </p>
                       </div>
                       <input
                         v-model="privacy.publicProfile"
@@ -507,7 +572,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Mostrar email</h4>
-                        <p class="text-sm text-base-content/70">Tu email será visible en tu perfil público</p>
+                        <p class="text-sm text-base-content/70">
+                          Tu email será visible en tu perfil público
+                        </p>
                       </div>
                       <input
                         v-model="privacy.showEmail"
@@ -522,7 +589,9 @@
                     <div class="flex justify-between items-center">
                       <div>
                         <h4 class="font-semibold">Proyectos privados por defecto</h4>
-                        <p class="text-sm text-base-content/70">Los nuevos proyectos serán privados automáticamente</p>
+                        <p class="text-sm text-base-content/70">
+                          Los nuevos proyectos serán privados automáticamente
+                        </p>
                       </div>
                       <input
                         v-model="privacy.defaultPrivateProjects"
@@ -552,7 +621,7 @@
                     class="btn btn-outline btn-primary gap-2"
                     @click="exportData"
                     :disabled="exporting"
-                    :class="{ 'loading': exporting }"
+                    :class="{ loading: exporting }"
                   >
                     <ArrowDownTrayIcon v-if="!exporting" class="h-5 w-5" />
                     {{ exporting ? 'Exportando...' : 'Descargar Mis Datos' }}
@@ -621,12 +690,14 @@
         <h3 class="font-bold text-lg text-error mb-4">Eliminar Cuenta</h3>
         <div class="space-y-4">
           <p class="text-base-content/80">
-            Esta acción eliminará permanentemente tu cuenta y todos tus datos.
-            No podrás recuperar tu cuenta después de eliminarla.
+            Esta acción eliminará permanentemente tu cuenta y todos tus datos. No podrás recuperar
+            tu cuenta después de eliminarla.
           </p>
 
           <div class="bg-error/10 p-4 rounded-lg border border-error/20">
-            <p class="text-sm font-semibold mb-2">Para confirmar, escribe "ELIMINAR" en el campo:</p>
+            <p class="text-sm font-semibold mb-2">
+              Para confirmar, escribe "ELIMINAR" en el campo:
+            </p>
             <input
               v-model="deleteConfirmation"
               type="text"
@@ -637,13 +708,11 @@
         </div>
 
         <div class="modal-action">
-          <button class="btn btn-ghost" @click="showDeleteModal = false">
-            Cancelar
-          </button>
+          <button class="btn btn-ghost" @click="showDeleteModal = false">Cancelar</button>
           <button
             class="btn btn-error"
             :disabled="deleteConfirmation !== 'ELIMINAR' || deleting"
-            :class="{ 'loading': deleting }"
+            :class="{ loading: deleting }"
             @click="deleteAccount"
           >
             {{ deleting ? 'Eliminando...' : 'Eliminar Cuenta' }}
@@ -684,7 +753,7 @@ import {
   ViewColumnsIcon,
   ArrowDownTrayIcon,
   QuestionMarkCircleIcon,
-  ChatBubbleLeftIcon
+  ChatBubbleLeftIcon,
 } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
@@ -707,13 +776,13 @@ const accountForm = ref({
   full_name: '',
   email: '',
   bio: '',
-  avatar_url: ''
+  avatar_url: '',
 })
 
 const passwordForm = ref({
   currentPassword: '',
   newPassword: '',
-  confirmPassword: ''
+  confirmPassword: '',
 })
 
 // Error handling
@@ -733,13 +802,13 @@ const themes = [
     name: 'light',
     label: 'Claro',
     description: 'Tema clásico',
-    preview: 'w-8 h-8 bg-white border-2 border-gray-300 rounded'
+    preview: 'w-8 h-8 bg-white border-2 border-gray-300 rounded',
   },
   {
     name: 'dark',
     label: 'Oscuro',
     description: 'Fácil para los ojos',
-    preview: 'w-8 h-8 bg-gray-800 rounded'
+    preview: 'w-8 h-8 bg-gray-800 rounded',
   },
 ]
 
@@ -753,14 +822,14 @@ const notifications = ref({
   likes: true,
   followers: true,
   updates: false,
-  email: false
+  email: false,
 })
 
 // Privacy settings
 const privacy = ref({
   publicProfile: true,
   showEmail: false,
-  defaultPrivateProjects: false
+  defaultPrivateProjects: false,
 })
 
 // Initialize forms
@@ -770,7 +839,7 @@ const initializeForms = () => {
       full_name: profile.value.full_name || '',
       email: profile.value.email || '',
       bio: profile.value.bio || '',
-      avatar_url: profile.value.avatar_url || ''
+      avatar_url: profile.value.avatar_url || '',
     }
   }
 
@@ -828,14 +897,14 @@ const changePassword = async () => {
   try {
     await authStore.changePassword(
       passwordForm.value.currentPassword,
-      passwordForm.value.newPassword
+      passwordForm.value.newPassword,
     )
 
     // Reset form
     passwordForm.value = {
       currentPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
     }
 
     showSuccess('Contraseña cambiada correctamente')
@@ -888,8 +957,10 @@ const updateFontSize = () => {
 }
 
 const updateDensity = () => {
-  document.documentElement.className = document.documentElement.className
-    .replace(/density-\w+/g, '')
+  document.documentElement.className = document.documentElement.className.replace(
+    /density-\w+/g,
+    '',
+  )
   document.documentElement.classList.add(`density-${interfaceDensity.value}`)
   localStorage.setItem('interfaceDensity', interfaceDensity.value)
   // No mostrar mensaje para cambios de densidad
@@ -910,7 +981,7 @@ const exportData = async () => {
   exporting.value = true
   try {
     // Simulate data export
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     const userData = {
       profile: profile.value,
@@ -919,9 +990,9 @@ const exportData = async () => {
         fontSize: fontSize.value,
         density: interfaceDensity.value,
         notifications: notifications.value,
-        privacy: privacy.value
+        privacy: privacy.value,
       },
-      exportDate: new Date().toISOString()
+      exportDate: new Date().toISOString(),
     }
 
     const blob = new Blob([JSON.stringify(userData, null, 2)], { type: 'application/json' })

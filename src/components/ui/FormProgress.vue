@@ -7,28 +7,21 @@
           class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500 ease-out"
           :class="progressColor"
           :style="{ width: `${progress}%` }"
-        >
-        </div>
+        ></div>
       </div>
-      
+
       <!-- Progress Text -->
       <div class="flex items-center justify-between text-sm">
         <span class="text-base-content/70 font-medium">
           {{ label }}
         </span>
-        <span class="text-base-content/60 font-semibold">
-          {{ Math.round(progress) }}%
-        </span>
+        <span class="text-base-content/60 font-semibold"> {{ Math.round(progress) }}% </span>
       </div>
     </div>
 
     <!-- Steps Indicators (optional) -->
     <div v-if="showSteps && steps > 0" class="flex justify-between mt-3">
-      <div
-        v-for="step in steps"
-        :key="step"
-        class="flex flex-col items-center flex-1"
-      >
+      <div v-for="step in steps" :key="step" class="flex flex-col items-center flex-1">
         <div
           class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 mb-1"
           :class="getStepClass(step)"
@@ -40,7 +33,12 @@
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+              d="M5 13l4 4L19 7"
+            />
           </svg>
           <span v-else class="text-xs font-bold">{{ step }}</span>
         </div>
@@ -74,7 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
   showSteps: false,
   steps: 0,
   currentStep: 1,
-  stepLabels: undefined
+  stepLabels: undefined,
 })
 
 const progressColor = computed(() => {

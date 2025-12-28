@@ -10,17 +10,20 @@
       <!-- Header -->
       <div class="mb-6">
         <div class="flex items-center gap-3 mb-4">
-          <button
-            class="btn btn-ghost btn-sm"
-            @click="$router.back()"
-          >
+          <button class="btn btn-ghost btn-sm" @click="$router.back()">
             <ArrowLeftIcon class="h-5 w-5" />
             {{ t('projectEdit.back') }}
           </button>
           <div class="breadcrumbs text-sm">
             <ul>
-              <li><router-link to="/">{{ t('projectEdit.breadcrumb.home') }}</router-link></li>
-              <li><router-link :to="`/projects/${project?.id}`">{{ project?.title || 'Proyecto' }}</router-link></li>
+              <li>
+                <router-link to="/">{{ t('projectEdit.breadcrumb.home') }}</router-link>
+              </li>
+              <li>
+                <router-link :to="`/projects/${project?.id}`">{{
+                  project?.title || 'Proyecto'
+                }}</router-link>
+              </li>
               <li>{{ t('projectEdit.breadcrumb.edit') }}</li>
             </ul>
           </div>
@@ -41,10 +44,7 @@
           </div>
 
           <!-- Progress Bar -->
-          <FormProgress
-            :progress="editFormProgress"
-            :label="editFormProgressLabel"
-          />
+          <FormProgress :progress="editFormProgress" :label="editFormProgressLabel" />
 
           <form @submit.prevent="updateProject" class="space-y-6">
             <!-- Título -->
@@ -73,7 +73,10 @@
                     {{ t('projectEdit.form.statusLabel') }}
                   </span>
                 </label>
-                <select v-model="editForm.status" class="select select-bordered select-lg w-full focus:select-primary">
+                <select
+                  v-model="editForm.status"
+                  class="select select-bordered select-lg w-full focus:select-primary"
+                >
                   <option value="planning">{{ t('projectEdit.form.statusPlanning') }}</option>
                   <option value="in_progress">{{ t('projectEdit.form.statusInProgress') }}</option>
                   <option value="completed">{{ t('projectEdit.form.statusCompleted') }}</option>
@@ -101,7 +104,9 @@
             <!-- Vista previa de imagen -->
             <div v-if="editForm.image_url" class="form-control">
               <div class="bg-base-200 rounded-xl p-4 border-2 border-dashed border-base-300">
-                <p class="text-sm font-medium text-base-content/60 mb-2">{{ t('projectEdit.form.imagePreview') }}</p>
+                <p class="text-sm font-medium text-base-content/60 mb-2">
+                  {{ t('projectEdit.form.imagePreview') }}
+                </p>
                 <img
                   :src="editForm.image_url"
                   alt="Vista previa"
@@ -126,7 +131,9 @@
                 required
               ></textarea>
               <label class="label">
-                <span class="label-text-alt text-base-content/40">{{ t('projectEdit.form.charactersCount', { count: editForm.description.length }) }}</span>
+                <span class="label-text-alt text-base-content/40">{{
+                  t('projectEdit.form.charactersCount', { count: editForm.description.length })
+                }}</span>
               </label>
             </div>
 
@@ -146,7 +153,9 @@
                   class="input input-bordered input-lg w-full focus:input-primary"
                 />
                 <label class="label">
-                  <span class="label-text-alt text-base-content/40">{{ t('projectEdit.form.tagsSeparator') }}</span>
+                  <span class="label-text-alt text-base-content/40">{{
+                    t('projectEdit.form.tagsSeparator')
+                  }}</span>
                 </label>
               </div>
 
@@ -165,7 +174,9 @@
                   class="input input-bordered input-lg w-full focus:input-primary"
                 />
                 <label class="label">
-                  <span class="label-text-alt text-base-content/40">{{ t('projectEdit.form.teamHelper') }}</span>
+                  <span class="label-text-alt text-base-content/40">{{
+                    t('projectEdit.form.teamHelper')
+                  }}</span>
                 </label>
               </div>
             </div>
@@ -182,11 +193,7 @@
               </button>
 
               <div class="flex gap-3">
-                <button
-                  type="button"
-                  class="btn btn-ghost btn-lg"
-                  @click="$router.back()"
-                >
+                <button type="button" class="btn btn-ghost btn-lg" @click="$router.back()">
                   <XMarkIcon class="h-5 w-5" />
                   {{ t('projectEdit.actions.cancel') }}
                 </button>
@@ -214,17 +221,10 @@
           {{ t('projectEdit.deleteModal.message') }}
         </p>
         <div class="modal-action">
-          <button
-            class="btn btn-ghost"
-            @click="showDeleteModal = false"
-          >
+          <button class="btn btn-ghost" @click="showDeleteModal = false">
             {{ t('projectEdit.deleteModal.cancel') }}
           </button>
-          <button
-            class="btn btn-error"
-            :disabled="isDeleting"
-            @click="deleteProject"
-          >
+          <button class="btn btn-error" :disabled="isDeleting" @click="deleteProject">
             <span v-if="isDeleting" class="loading loading-spinner loading-sm"></span>
             {{ t('projectEdit.deleteModal.confirm') }}
           </button>
@@ -256,7 +256,7 @@ import {
   TrashIcon,
   XMarkIcon,
   CheckIcon,
-  FolderIcon
+  FolderIcon,
 } from '@/icons'
 
 const route = useRoute()
@@ -280,7 +280,7 @@ const teamMemberEmails = ref<string[]>([])
 
 // Computed
 const projectId = computed(() => route.params.id as string)
-const project = computed(() => projects.value.find(p => p.id === projectId.value))
+const project = computed(() => projects.value.find((p) => p.id === projectId.value))
 
 const isProjectOwner = computed(() => {
   return user.value && project.value && project.value.created_by === user.value.id
@@ -293,7 +293,7 @@ const editForm = ref({
   status: 'planning' as 'planning' | 'in_progress' | 'completed' | 'on_hold',
   image_url: '',
   tags: '',
-  team_members: ''
+  team_members: '',
 })
 
 // Edit Form Progress
@@ -335,7 +335,7 @@ const initForm = async () => {
       status: project.value.status as 'planning' | 'in_progress' | 'completed' | 'on_hold',
       image_url: project.value.image_url || '',
       tags: project.value.tags?.join(', ') || '',
-      team_members: project.value.team_members?.join(', ') || ''
+      team_members: project.value.team_members?.join(', ') || '',
     }
 
     // Cargar emails de los colaboradores
@@ -348,14 +348,11 @@ const initForm = async () => {
 
 const loadTeamMemberEmails = async (memberIds: string[]) => {
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('email')
-      .in('id', memberIds)
+    const { data, error } = await supabase.from('profiles').select('email').in('id', memberIds)
 
     if (error) throw error
 
-    teamMemberEmails.value = data?.map(profile => profile.email).filter(Boolean) || []
+    teamMemberEmails.value = data?.map((profile) => profile.email).filter(Boolean) || []
   } catch (error) {
     console.error('Error loading team member emails:', error)
     teamMemberEmails.value = []
@@ -369,12 +366,18 @@ const updateProject = async () => {
   try {
     // Procesar tags
     const tags = editForm.value.tags
-      ? editForm.value.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+      ? editForm.value.tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0)
       : []
 
     // Procesar miembros del equipo
     const teamMembers = editForm.value.team_members
-      ? editForm.value.team_members.split(',').map(email => email.trim()).filter(email => email.length > 0)
+      ? editForm.value.team_members
+          .split(',')
+          .map((email) => email.trim())
+          .filter((email) => email.length > 0)
       : []
 
     await projectsStore.updateProject(project.value.id, {
@@ -383,7 +386,7 @@ const updateProject = async () => {
       status: editForm.value.status,
       image_url: editForm.value.image_url || undefined,
       tags,
-      team_members: teamMembers
+      team_members: teamMembers,
     })
 
     // Redirigir de vuelta al proyecto
@@ -425,7 +428,7 @@ onMounted(async () => {
     await projectsStore.fetchProjects()
 
     // Buscar el proyecto específico
-    const foundProject = projects.value.find(p => p.id === projectId.value)
+    const foundProject = projects.value.find((p) => p.id === projectId.value)
 
     if (!foundProject) {
       console.error('Project not found with ID:', projectId.value)
