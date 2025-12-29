@@ -21,14 +21,21 @@
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal px-1 gap-1">
         <li>
-          <router-link to="/" class="btn btn-ghost btn-sm" :class="{ 'btn-active': $route.path === '/' }">
+          <router-link
+            to="/"
+            class="btn btn-ghost btn-sm"
+            :class="{ 'btn-active': $route.path === '/' }"
+          >
             <HomeIcon class="h-4 w-4" />
             {{ $t('nav.home') }}
           </router-link>
         </li>
         <li v-if="profile">
-          <router-link to="/my-projects" class="btn btn-ghost btn-sm"
-            :class="{ 'btn-active': $route.path === '/my-projects' }">
+          <router-link
+            to="/my-projects"
+            class="btn btn-ghost btn-sm"
+            :class="{ 'btn-active': $route.path === '/my-projects' }"
+          >
             <FolderIcon class="h-4 w-4" />
             {{ $t('nav.myProjects') }}
           </router-link>
@@ -56,8 +63,10 @@
           <MoonIcon v-else-if="theme === 'dark'" class="h-4 w-4" />
           <ComputerDesktopIcon v-else class="h-4 w-4" />
         </div>
-        <ul tabindex="0"
-          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-48 border border-base-300 z-50">
+        <ul
+          tabindex="0"
+          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-48 border border-base-300 z-50"
+        >
           <li>
             <a @click="setTheme('light')" :class="{ active: theme === 'light' }">
               <SunIcon class="h-4 w-4" />
@@ -84,8 +93,10 @@
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm">
           <LanguageIcon class="h-4 w-4" />
         </div>
-        <ul tabindex="0"
-          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-48 border border-base-300 z-50">
+        <ul
+          tabindex="0"
+          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-48 border border-base-300 z-50"
+        >
           <li>
             <a @click="changeLanguage('es')" :class="{ active: locale === 'es' }">
               🇪🇸 {{ $t('language.spanish') }}
@@ -107,40 +118,58 @@
 
       <!-- Accessibility Menu - Hidden on very small screens -->
       <div class="dropdown dropdown-end hidden sm:block">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm"
-          :class="{ 'btn-primary': highContrast || ttsEnabled }">
+        <div
+          tabindex="0"
+          role="button"
+          class="btn btn-ghost btn-circle btn-sm"
+          :class="{ 'btn-primary': highContrast || ttsEnabled }"
+        >
           <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+            />
           </svg>
         </div>
-        <ul tabindex="0"
-          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-64 border border-base-300 z-50">
+        <ul
+          tabindex="0"
+          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-64 border border-base-300 z-50"
+        >
           <li class="menu-title">
             <span>{{ $t('accessibility.title') }}</span>
           </li>
           <li>
             <a @click="toggleHighContrast" :class="{ active: highContrast }">
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                />
               </svg>
               {{ $t('accessibility.highContrast') }}
               <span v-if="highContrast" class="badge badge-primary badge-sm">{{
                 $t('common.active')
-                }}</span>
+              }}</span>
             </a>
           </li>
           <li>
             <a @click="handleToggleTTS" :class="{ active: ttsEnabled }">
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.586a2 2 0 001.414.586h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 012.828 0l.814.814A2 2 0 0017.414 16h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 000-2.828l-.814-.814a2 2 0 01-.586-1.414V8a2 2 0 00-.586-1.414L19 5.172a2 2 0 00-2.828 0L15 6" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.586a2 2 0 001.414.586h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 012.828 0l.814.814A2 2 0 0017.414 16h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 000-2.828l-.814-.814a2 2 0 01-.586-1.414V8a2 2 0 00-.586-1.414L19 5.172a2 2 0 00-2.828 0L15 6"
+                />
               </svg>
               {{ $t('accessibility.textToSpeech') }}
               <span v-if="ttsEnabled" class="badge badge-primary badge-sm">{{
                 $t('common.active')
-                }}</span>
+              }}</span>
             </a>
           </li>
           <div class="divider my-1"></div>
@@ -150,17 +179,39 @@
           <li>
             <div class="flex items-center justify-between p-2">
               <div class="flex gap-1">
-                <button @click="handleDecreaseZoom" class="btn btn-xs btn-circle" :title="$t('accessibility.zoomOut')">
+                <button
+                  @click="handleDecreaseZoom"
+                  class="btn btn-xs btn-circle"
+                  :title="$t('accessibility.zoomOut')"
+                >
                   <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 12H4"
+                    />
                   </svg>
                 </button>
-                <button @click="handleResetZoom" class="btn btn-xs" :title="$t('accessibility.resetZoom')">
+                <button
+                  @click="handleResetZoom"
+                  class="btn btn-xs"
+                  :title="$t('accessibility.resetZoom')"
+                >
                   {{ zoomLevel }}%
                 </button>
-                <button @click="handleIncreaseZoom" class="btn btn-xs btn-circle" :title="$t('accessibility.zoomIn')">
+                <button
+                  @click="handleIncreaseZoom"
+                  class="btn btn-xs btn-circle"
+                  :title="$t('accessibility.zoomIn')"
+                >
                   <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"
+                    />
                   </svg>
                 </button>
               </div>
@@ -170,8 +221,12 @@
           <li v-if="ttsEnabled">
             <a @click="handleReadPage" :disabled="isSpeaking">
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
               </svg>
               {{ $t('accessibility.readPage') }}
             </a>
@@ -179,10 +234,18 @@
           <li v-if="ttsEnabled && isSpeaking">
             <a @click="handleStopTTS" class="text-error">
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"
+                />
               </svg>
               {{ $t('accessibility.stop') }}
             </a>
@@ -197,13 +260,20 @@
       <div v-if="profile" class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle btn-sm avatar">
           <div class="w-8 rounded-full ring-1 ring-primary ring-offset-1 ring-offset-base-100">
-            <img :src="profile.avatar_url ||
-              `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.full_name)}&background=random`
-              " :alt="profile.full_name" class="rounded-full" />
+            <img
+              :src="
+                profile.avatar_url ||
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.full_name)}&background=random`
+              "
+              :alt="profile.full_name"
+              class="rounded-full"
+            />
           </div>
         </div>
-        <ul tabindex="0"
-          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-56 border border-base-300 z-50">
+        <ul
+          tabindex="0"
+          class="dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-56 border border-base-300 z-50"
+        >
           <li class="menu-title">
             <span class="truncate">{{ profile.full_name }}</span>
           </li>
@@ -260,13 +330,18 @@
     </div>
 
     <!-- Mobile Sidebar Overlay -->
-    <div v-if="sidebarOpen" class="fixed inset-0 modal modal-open bg-opacity-50 z-40 lg:hidden" @click="closeSidebar">
-    </div>
+    <div
+      v-if="sidebarOpen"
+      class="fixed inset-0 modal modal-open bg-opacity-50 z-40 lg:hidden"
+      @click="closeSidebar"
+    ></div>
 
     <!-- Mobile Sidebar -->
-    <div v-if="sidebarOpen"
+    <div
+      v-if="sidebarOpen"
       class="fixed inset-y-0 left-0 w-72 bg-base-100 shadow-xl z-50 lg:hidden transform transition-transform duration-300 ease-in-out"
-      :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }">
+      :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
+    >
       <div class="p-4 h-full overflow-y-auto">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
@@ -282,13 +357,21 @@
         <!-- Navigation Menu -->
         <ul class="menu w-full space-y-1">
           <li>
-            <router-link to="/" @click="closeSidebar" class="flex items-center gap-3 p-3 rounded-lg">
+            <router-link
+              to="/"
+              @click="closeSidebar"
+              class="flex items-center gap-3 p-3 rounded-lg"
+            >
               <HomeIcon class="h-5 w-5" />
               {{ $t('nav.home') }}
             </router-link>
           </li>
           <li v-if="profile">
-            <router-link to="/my-projects" @click="closeSidebar" class="flex items-center gap-3 p-3 rounded-lg">
+            <router-link
+              to="/my-projects"
+              @click="closeSidebar"
+              class="flex items-center gap-3 p-3 rounded-lg"
+            >
               <FolderIcon class="h-5 w-5" />
               {{ $t('nav.myProjects') }}
             </router-link>
@@ -321,63 +404,109 @@
 
         <!-- Mobile Accessibility -->
         <div class="mt-6 pt-6 border-t border-base-300">
-          <h3 class="text-sm font-semibold text-base-content/70 mb-3">{{ $t('nav.accessibility') }}</h3>
+          <h3 class="text-sm font-semibold text-base-content/70 mb-3">
+            {{ $t('nav.accessibility') }}
+          </h3>
 
           <!-- High Contrast Toggle -->
-          <button @click="toggleHighContrast" class="flex items-center gap-3 p-3 rounded-lg w-full"
-            :class="highContrast ? 'bg-primary text-primary-content' : 'hover:bg-base-200'">
+          <button
+            @click="toggleHighContrast"
+            class="flex items-center gap-3 p-3 rounded-lg w-full"
+            :class="highContrast ? 'bg-primary text-primary-content' : 'hover:bg-base-200'"
+          >
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
             </svg>
             {{ $t('accessibility.highContrast') }}
             <span v-if="highContrast" class="badge badge-primary badge-sm">{{
               $t('common.active')
-              }}</span>
+            }}</span>
           </button>
           <!-- Text to Speech Toggle -->
-          <button @click="handleToggleTTS" class="flex items-center gap-3 p-3 rounded-lg w-full mt-2"
-            :class="ttsEnabled ? 'bg-primary text-primary-content' : 'hover:bg-base-200'">
+          <button
+            @click="handleToggleTTS"
+            class="flex items-center gap-3 p-3 rounded-lg w-full mt-2"
+            :class="ttsEnabled ? 'bg-primary text-primary-content' : 'hover:bg-base-200'"
+          >
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.586a2 2 0 001.414.586h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 012.828 0l.814.814A2 2 0 0017.414 16h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 000-2.828l-.814-.814a2 2 0 01-.586-1.414V8a2 2 0 00-.586-1.414L19 5.172a2 2 0 00-2.828 0L15 6" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.586a2 2 0 001.414.586h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 012.828 0l.814.814A2 2 0 0017.414 16h2.172a2 2 0 001.414-.586l.814-.814a2 2 0 000-2.828l-.814-.814a2 2 0 01-.586-1.414V8a2 2 0 00-.586-1.414L19 5.172a2 2 0 00-2.828 0L15 6"
+              />
             </svg>
             {{ $t('accessibility.textToSpeech') }}
             <span v-if="ttsEnabled" class="badge badge-primary badge-sm">{{
               $t('common.active')
-              }}</span>
+            }}</span>
           </button>
         </div>
 
         <!-- Zoom Controls -->
         <div class="mt-6 pt-6 border-t border-base-300">
-          <h3 class="text-sm font-semibold text-base-content/70 mb-3">{{ $t('accessibility.zoom') }}</h3>
+          <h3 class="text-sm font-semibold text-base-content/70 mb-3">
+            {{ $t('accessibility.zoom') }}
+          </h3>
           <div class="flex items-center gap-2">
-            <button @click="handleDecreaseZoom" class="btn btn-xs btn-circle" :title="$t('accessibility.zoomOut')">
+            <button
+              @click="handleDecreaseZoom"
+              class="btn btn-xs btn-circle"
+              :title="$t('accessibility.zoomOut')"
+            >
               <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20 12H4"
+                />
               </svg>
             </button>
-            <button @click="handleResetZoom" class="btn btn-xs" :title="$t('accessibility.resetZoom')">
+            <button
+              @click="handleResetZoom"
+              class="btn btn-xs"
+              :title="$t('accessibility.resetZoom')"
+            >
               {{ zoomLevel }}%
             </button>
-            <button @click="handleIncreaseZoom" class="btn btn-xs btn-circle" :title="$t('accessibility.zoomIn')">
+            <button
+              @click="handleIncreaseZoom"
+              class="btn btn-xs btn-circle"
+              :title="$t('accessibility.zoomIn')"
+            >
               <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
             </button>
           </div>
         </div>
 
-
-
         <!-- Auth Actions for Mobile -->
         <div v-if="!profile" class="mt-6 pt-6 border-t border-base-300 space-y-2">
-          <router-link to="/login" @click="closeSidebar" class="btn btn-ghost w-full justify-start gap-3">
+          <router-link
+            to="/login"
+            @click="closeSidebar"
+            class="btn btn-ghost w-full justify-start gap-3"
+          >
             <ArrowRightOnRectangleIcon class="h-5 w-5" />
             {{ $t('nav.login') }}
           </router-link>
-          <router-link to="/register" @click="closeSidebar" class="btn btn-primary w-full justify-start gap-3">
+          <router-link
+            to="/register"
+            @click="closeSidebar"
+            class="btn btn-primary w-full justify-start gap-3"
+          >
             <UserPlusIcon class="h-5 w-5" />
             {{ $t('nav.register') }}
           </router-link>

@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen bg-base-200">
+  <HomeViewSkeleton v-if="initialLoading" />
+  <div v-else class="min-h-screen bg-base-200">
     <!-- Bienvenida personalizada -->
     <div class="hero-background from-primary to-secondary text-primary-content">
       <div class="max-w-7xl mx-auto px-4 py-8">
@@ -336,11 +337,7 @@
           </div>
 
           <!-- Feed de Proyectos -->
-          <div v-if="loading" class="flex justify-center py-12">
-            <span class="loading loading-spinner loading-lg"></span>
-          </div>
-
-          <div v-else-if="filteredProjects.length === 0" class="text-center py-12">
+          <div v-if="filteredProjects.length === 0" class="text-center py-12">
             <div class="card bg-base-100 shadow-lg border border-base-300">
               <div class="card-body p-12">
                 <FolderIcon class="h-16 w-16 mx-auto mb-4 opacity-50" />
@@ -563,6 +560,7 @@
     <div
       v-if="showAdvancedFilters"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 modal-open"
+      @click.self="showAdvancedFilters = false"
     >
       <div
         class="bg-base-100 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
@@ -781,6 +779,7 @@ import {
 } from '@/icons'
 import type AppFooterVue from '@/components/AppFooter.vue'
 import AppFooter from '@/components/AppFooter.vue'
+import HomeViewSkeleton from '@/components/HomeViewSkeleton.vue'
 
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
@@ -857,6 +856,9 @@ const showTermsModal = ref(false)
 const showPrivacyModal = ref(false)
 const newProjectTitle = ref('')
 const newProjectDescription = ref('')
+
+// Estado de carga inicial
+const initialLoading = ref(false)
 const newProjectStatus = ref<'planning' | 'in_progress' | 'completed' | 'on_hold'>('planning')
 const newProjectImageUrl = ref('')
 const newProjectTags = ref<string[]>([])
@@ -1277,13 +1279,15 @@ const clearAdvancedFilters = () => {
   showAdvancedFilters.value = false
 }
 
-onMounted(() => {
-  projectsStore.fetchProjects()
+onMounted(async () => {
+  initialLoading.value = true
+  await projectsStore.fetchProjects()
+  initialLoading.value = false
 
-  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados
-  refreshInterval = setInterval(() => {
-    projectsStore.fetchProjects()
-  }, 30000)
+  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados (sin mostrar skeleton)
+  // refreshInterval = setInterval(() => {
+  //   projectsStore.fetchProjects()
+  // }, 30000)
 })
 
 onBeforeUnmount(() => {
@@ -1306,14 +1310,14 @@ onBeforeUnmount(() => {
 .hero-background {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner1.jpg');
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/images/banner1.jpg');
   background-repeat: no-repeat;
 }
 
 .filter-background {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner3.jpg');
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/images/banner3.jpg');
   background-repeat: no-repeat;
 }
 

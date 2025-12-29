@@ -615,7 +615,7 @@ onBeforeUnmount(() => {
 .project-background {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner2.jpg');
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/images/banner2.jpg');
   background-repeat: no-repeat;
 }
 </style>

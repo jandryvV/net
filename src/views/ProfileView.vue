@@ -1,16 +1,11 @@
 <template>
   <div class="min-h-screen bg-linear-to-br from-base-200 via-base-100 to-base-200">
-    <div v-if="loading" class="flex justify-center items-center py-20">
-      <div class="text-center space-y-4">
-        <span class="loading loading-spinner loading-lg text-primary"></span>
-        <p class="text-base-content/60">{{ t('profile.loading') }}</p>
-      </div>
-    </div>
+    <ProfileSkeleton v-if="initialLoading" />
 
     <div v-else-if="profile" class="container mx-auto px-4 py-8 max-w-6xl">
       <!-- Cover Section -->
       <div class="relative mb-8">
-        <div class="h-48 bg-linear-to-r from-primary to-secondary rounded-2xl shadow-xl"></div>
+        <div class="h-48 rounded-2xl shadow-xl profile-background"></div>
         <div class="absolute -bottom-16 left-8">
           <div class="avatar">
             <div
@@ -89,7 +84,9 @@
                   <p>{{ t('profile.noProjects') }}</p>
                   <p class="text-sm">{{ t('profile.createFirst') }}</p>
                 </div>
+
                 <div
+                  v-else
                   v-for="project in recentProjects"
                   :key="project.id"
                   class="flex items-center gap-3 p-3 bg-base-200 rounded-lg hover:bg-base-300 transition-colors cursor-pointer"
@@ -195,18 +192,26 @@
 
     <!-- Edit Profile Modal -->
     <div v-if="showEditModal" class="modal modal-open">
-      <div class="modal-box w-11/12 max-w-2xl">
+      <div class="modal-box w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto">
         <div
           class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-6 border border-primary/20"
         >
-          <div class="flex items-center gap-4">
-            <div class="bg-primary/20 p-3 rounded-full">
-              <UserIcon class="h-8 w-8 text-primary" />
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="bg-primary/20 p-3 rounded-full">
+                <UserIcon class="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold mb-1">{{ t('profile.editTitle') }}</h3>
+                <p class="text-base-content/60">{{ t('profile.editSubtitle') }}</p>
+              </div>
             </div>
-            <div>
-              <h3 class="text-2xl font-bold mb-1">{{ t('profile.editTitle') }}</h3>
-              <p class="text-base-content/60">{{ t('profile.editSubtitle') }}</p>
-            </div>
+            <button
+              @click="showEditModal = false"
+              class="btn btn-ghost btn-sm btn-circle text-base-content hover:bg-base-300"
+            >
+              <XMarkIcon class="h-6 w-6" />
+            </button>
           </div>
         </div>
 
@@ -282,14 +287,6 @@
             </div>
           </div>
 
-          <div v-if="error" class="alert alert-error shadow-lg w-full">
-            <ExclamationTriangleIcon class="h-6 w-6" />
-            <div>
-              <h3 class="font-bold">{{ t('common.error') }}</h3>
-              <div class="text-xs">{{ error }}</div>
-            </div>
-          </div>
-
           <div
             class="flex flex-col gap-4 pt-6 border-t border-base-300 w-full sm:flex-row sm:justify-end"
           >
@@ -315,6 +312,66 @@
         </form>
       </div>
       <div class="modal-backdrop" @click="showEditModal = false"></div>
+    </div>
+
+    <!-- Alertas flotantes en esquina inferior derecha -->
+    <div class="fixed bottom-6 right-6 z-50 space-y-3 max-w-md">
+      <!-- Alerta de éxito -->
+      <Transition name="slide-fade">
+        <div v-if="showSuccessAlert" role="alert" class="alert alert-success shadow-2xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="h-6 w-6 shrink-0 stroke-current"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>{{ successAlertMessage }}</span>
+          <button @click="showSuccessAlert = false" class="btn btn-ghost btn-sm btn-circle">
+            <XMarkIcon class="h-4 w-4" />
+          </button>
+        </div>
+      </Transition>
+
+      <!-- Alerta de error -->
+      <Transition name="slide-fade">
+        <div v-if="showErrorAlert" role="alert" class="alert alert-error shadow-2xl">
+          <ExclamationTriangleIcon class="h-6 w-6 shrink-0" />
+          <span>{{ errorAlertMessage }}</span>
+          <button @click="showErrorAlert = false" class="btn btn-ghost btn-sm btn-circle">
+            <XMarkIcon class="h-4 w-4" />
+          </button>
+        </div>
+      </Transition>
+
+      <!-- Alerta de advertencia -->
+      <Transition name="slide-fade">
+        <div v-if="showWarningAlert" role="alert" class="alert alert-warning shadow-2xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="h-6 w-6 shrink-0 stroke-current"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            ></path>
+          </svg>
+          <span>{{ warningAlertMessage }}</span>
+          <button @click="showWarningAlert = false" class="btn btn-ghost btn-sm btn-circle">
+            <XMarkIcon class="h-4 w-4" />
+          </button>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -347,6 +404,7 @@ import {
   CheckIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/vue/24/outline'
+import ProfileSkeleton from '@/components/ProfileSkeleton.vue'
 
 const authStore = useAuthStore()
 const projectsStore = useProjectsStore()
@@ -359,6 +417,17 @@ const updating = ref(false)
 const error = ref('')
 const avatarError = ref(false)
 const userProjects = ref<Project[]>([])
+const projectsLoading = ref(true)
+const initialLoading = ref(true)
+
+// Estados para alertas
+const showSuccessAlert = ref(false)
+const successAlertMessage = ref('')
+const showErrorAlert = ref(false)
+const errorAlertMessage = ref('')
+const showWarningAlert = ref(false)
+const warningAlertMessage = ref('')
+
 let refreshInterval: number | null = null
 
 const editForm = ref({
@@ -407,8 +476,37 @@ const getStatusText = (status: string) => {
   return texts[status as keyof typeof texts] || status
 }
 
-const loadUserProjects = async () => {
+// Métodos para mostrar alertas
+const showSuccessNotification = (message: string) => {
+  successAlertMessage.value = message
+  showSuccessAlert.value = true
+  setTimeout(() => {
+    showSuccessAlert.value = false
+  }, 5000)
+}
+
+const showErrorNotification = (message: string) => {
+  errorAlertMessage.value = message
+  showErrorAlert.value = true
+  setTimeout(() => {
+    showErrorAlert.value = false
+  }, 5000)
+}
+
+const showWarningNotification = (message: string) => {
+  warningAlertMessage.value = message
+  showWarningAlert.value = true
+  setTimeout(() => {
+    showWarningAlert.value = false
+  }, 5000)
+}
+
+const loadUserProjects = async (showLoading = true) => {
   if (!profile.value) return
+
+  if (showLoading) {
+    projectsLoading.value = true
+  }
 
   try {
     // Refrescar proyectos completos con contadores actualizados
@@ -417,25 +515,47 @@ const loadUserProjects = async () => {
     userProjects.value = projects
   } catch (error) {
     console.error('Error loading user projects:', error)
+  } finally {
+    if (showLoading) {
+      projectsLoading.value = false
+    }
   }
 }
 
 const handleUpdateProfile = async () => {
   if (!profile.value) return
 
+  // Validaciones
+  if (!editForm.value.full_name.trim()) {
+    showWarningNotification(
+      t('profile.validation.nameRequired') || 'El nombre completo es requerido',
+    )
+    return
+  }
+
+  if (editForm.value.full_name.trim().length < 3) {
+    showWarningNotification(
+      t('profile.validation.nameMinLength') || 'El nombre debe tener al menos 3 caracteres',
+    )
+    return
+  }
+
   updating.value = true
   error.value = ''
 
   try {
     await authStore.updateProfile({
-      full_name: editForm.value.full_name,
-      bio: editForm.value.bio || undefined,
-      avatar_url: editForm.value.avatar_url || undefined,
+      full_name: editForm.value.full_name.trim(),
+      bio: editForm.value.bio?.trim() || undefined,
+      avatar_url: editForm.value.avatar_url?.trim() || undefined,
     })
 
     showEditModal.value = false
-  } catch (err) {
-    error.value = 'Error al actualizar el perfil'
+    showSuccessNotification(t('profile.updateSuccess') || '¡Perfil actualizado exitosamente!')
+  } catch (err: any) {
+    console.error('Error updating profile:', err)
+    const errorMessage = err?.message || t('profile.updateError') || 'Error al actualizar el perfil'
+    showErrorNotification(errorMessage)
   } finally {
     updating.value = false
   }
@@ -453,12 +573,14 @@ const initEditForm = () => {
 }
 
 onMounted(async () => {
-  await loadUserProjects()
+  initialLoading.value = true
+  await loadUserProjects(true)
+  initialLoading.value = false
   initEditForm()
 
-  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados
+  // Refrescar proyectos cada 30 segundos para obtener contadores actualizados (sin mostrar loading)
   refreshInterval = setInterval(() => {
-    loadUserProjects()
+    loadUserProjects(false)
   }, 30000)
 })
 
@@ -491,10 +613,44 @@ watch(
 </script>
 
 <style scoped>
-.hero-background {
+.profile-background {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(#000000bd, #000000bd), url('/public/banner.png');
   background-repeat: no-repeat;
+  background-image:
+    linear-gradient(#000000bd, #000000bd), url('src/assets/svg/profile-banner-placeholder.svg');
+}
+
+/* Animaciones para alertas */
+.slide-fade-enter-active {
+  animation: slide-fade-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.slide-fade-leave-active {
+  animation: slide-fade-out 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes slide-fade-in {
+  0% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-fade-out {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
 }
 </style>

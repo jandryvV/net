@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 py-8 max-w-6xl">
       <!-- Header -->
       <div
-        class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 mb-8 border border-primary/20"
+        class="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 mb-8 border border-base-300 shadow-lg setting-background"
       >
         <div class="flex items-center gap-4">
           <div class="bg-primary/20 p-3 rounded-full">
@@ -372,70 +372,6 @@
                       <h3 class="font-semibold">{{ theme.label }}</h3>
                       <p class="text-xs text-base-content/60">{{ theme.description }}</p>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Font Size -->
-            <div class="card bg-base-100 shadow-lg border border-base-300">
-              <div class="card-body">
-                <h3 class="card-title text-xl mb-4 flex items-center gap-2">
-                  <DocumentTextIcon class="h-6 w-6 text-primary" />
-                  Tamaño de Fuente
-                </h3>
-
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between">
-                    <span>Tamaño de fuente</span>
-                    <div class="flex items-center gap-4">
-                      <button
-                        class="btn btn-sm btn-ghost"
-                        @click="
-                          () => {
-                            fontSize = Math.max(12, fontSize - 1)
-                            updateFontSize()
-                          }
-                        "
-                        :disabled="fontSize <= 12"
-                        aria-label="Disminuir tamaño"
-                      >
-                        -
-                      </button>
-                      <span class="text-sm w-10 text-center">{{ fontSize }}px</span>
-                      <button
-                        class="btn btn-sm btn-ghost"
-                        @click="
-                          () => {
-                            fontSize = Math.min(20, fontSize + 1)
-                            updateFontSize()
-                          }
-                        "
-                        :disabled="fontSize >= 20"
-                        aria-label="Aumentar tamaño"
-                      >
-                        +
-                      </button>
-                      <button
-                        class="btn btn-xs btn-outline ml-2"
-                        @click="
-                          () => {
-                            fontSize = 14
-                            updateFontSize()
-                          }
-                        "
-                        :disabled="fontSize === 14"
-                        aria-label="Restablecer"
-                      >
-                        Restablecer
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="bg-base-200 p-4 rounded-lg">
-                    <p :style="{ fontSize: fontSize + 'px' }">
-                      Este es un ejemplo de texto con el tamaño de fuente seleccionado.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -861,10 +797,6 @@ const initializeForms = () => {
   if (savedPrivacy) {
     privacy.value = JSON.parse(savedPrivacy)
   }
-
-  // Apply saved settings
-  updateFontSize()
-  updateDensity()
 }
 
 // Account functions
@@ -951,21 +883,6 @@ const setTheme = (theme: string) => {
   showSuccess('Tema actualizado')
 }
 
-const updateFontSize = () => {
-  document.documentElement.style.fontSize = fontSize.value + 'px'
-  localStorage.setItem('fontSize', fontSize.value.toString())
-}
-
-const updateDensity = () => {
-  document.documentElement.className = document.documentElement.className.replace(
-    /density-\w+/g,
-    '',
-  )
-  document.documentElement.classList.add(`density-${interfaceDensity.value}`)
-  localStorage.setItem('interfaceDensity', interfaceDensity.value)
-  // No mostrar mensaje para cambios de densidad
-}
-
 // Settings functions
 const saveNotificationSettings = () => {
   localStorage.setItem('notifications', JSON.stringify(notifications.value))
@@ -1046,5 +963,12 @@ onMounted(() => {
 
 :global(.density-comfortable) {
   --spacing-unit: 1.5rem;
+}
+
+.setting-background {
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/images/banner6.jpg');
+  background-repeat: no-repeat;
 }
 </style>

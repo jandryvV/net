@@ -93,7 +93,9 @@
         class="bg-base-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
       >
         <!-- Header del Modal -->
-        <div class="bg-linear-to-r from-primary to-secondary text-primary-content p-6 term-background">
+        <div
+          class="bg-linear-to-r from-primary to-secondary text-primary-content p-6 term-background"
+        >
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-2xl font-bold">{{ t('termsModal.title') }}</h2>
@@ -217,7 +219,9 @@
         class="bg-base-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
       >
         <!-- Header del Modal -->
-        <div class="bg-linear-to-r from-primary to-secondary text-primary-content p-6 policy-background">
+        <div
+          class="bg-linear-to-r from-primary to-secondary text-primary-content p-6 policy-background"
+        >
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-2xl font-bold">{{ t('privacyModal.title') }}</h2>
@@ -430,20 +434,18 @@ const showTermsModal = ref(false)
 const showPrivacyModal = ref(false)
 </script>
 
-
 <style scoped>
-
 .term-background {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner4.jpg');
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/images/banner4.jpg');
   background-repeat: no-repeat;
 }
 
 .policy-background {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner5.jpg');
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/images/banner5.jpg');
   background-repeat: no-repeat;
 }
 </style>
