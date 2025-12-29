@@ -16,6 +16,7 @@ const messages = {
       register: 'Registrarse',
       logout: 'Cerrar Sesión',
       settings: 'Configuración',
+      accessibility: 'Accesibilidad',
     },
     auth: {
       login: {
@@ -571,21 +572,17 @@ const messages = {
     footer: {
       title: 'Colab',
       description:
-        'La plataforma líder para desarrolladores que buscan colaborar, compartir proyectos y construir el futuro de la tecnología juntos.',
+        'La plataforma líder para personas que buscan colaborar, compartir proyectos y construir el futuro de la tecnología juntos.',
       support: {
         title: 'Soporte',
         helpCenter: 'Centro de Ayuda',
         contact: 'Contacto',
-        liveChat: 'Chat en vivo',
         reportIssue: 'Reportar problema',
       },
       legal: {
         title: 'Legal',
         terms: 'Términos de Uso',
         privacy: 'Política de Privacidad',
-        cookies: 'Cookies',
-        conduct: 'Código de Conducta',
-        licenses: 'Licencias',
       },
       copyright: '© {year} Colab. Todos los derechos reservados.',
     },
@@ -891,6 +888,7 @@ const messages = {
       register: 'Sign Up',
       logout: 'Sign Out',
       settings: 'Settings',
+      accessibility: 'Accessibility',
     },
     auth: {
       login: {
@@ -1492,25 +1490,21 @@ const messages = {
       },
     },
     footer: {
-      title: 'DevConnect Platform',
+      title: 'Colab',
       description:
-        'The leading platform for developers looking to collaborate, share projects and build the future of technology together.',
+        'The leading platform for people looking to collaborate, share projects and build the future of technology together.',
       support: {
         title: 'Support',
         helpCenter: 'Help Center',
         contact: 'Contact',
-        liveChat: 'Live Chat',
         reportIssue: 'Report Issue',
       },
       legal: {
         title: 'Legal',
         terms: 'Terms of Use',
         privacy: 'Privacy Policy',
-        cookies: 'Cookies',
-        conduct: 'Code of Conduct',
-        licenses: 'Licenses',
       },
-      copyright: '© {year} DevConnect Platform. All rights reserved.',
+      copyright: '© {year} Colab. All rights reserved.',
     },
     termsModal: {
       title: 'Terms of Use',

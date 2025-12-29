@@ -14,12 +14,7 @@
     <KeyboardShortcutsModal />
 
     <!-- Loading overlay -->
-    <div
-      v-if="loading"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <span class="loading loading-spinner loading-lg text-primary"></span>
-    </div>
+    <AppLoader v-if="loading" />
   </div>
 </template>
 
@@ -33,6 +28,7 @@ import NavBar from '@/components/NavBar.vue'
 import TextToSpeechButton from '@/components/TextToSpeechButton.vue'
 import KeyboardShortcutsButton from '@/components/KeyboardShortcutsButton.vue'
 import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal.vue'
+import AppLoader from '@/components/AppLoader.vue'
 
 const authStore = useAuthStore()
 const uiStore = useUIStore()

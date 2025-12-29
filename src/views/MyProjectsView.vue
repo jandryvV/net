@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-base-200">
     <div class="container mx-auto px-4 py-8 max-w-7xl">
       <!-- Header mejorado -->
-      <div class="hero-background rounded-2xl p-8 mb-8 border border-base-300 shadow-lg">
+      <div class="project-background rounded-2xl p-8 mb-8 border border-base-300 shadow-lg">
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div>
             <h1
@@ -612,7 +612,7 @@ onBeforeUnmount(() => {
   background-clip: text;
 }
 
-.hero-background {
+.project-background {
   background-size: cover;
   background-position: center;
   background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner2.jpg');

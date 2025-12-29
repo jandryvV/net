@@ -562,13 +562,15 @@
     <!-- Modal de Filtros Avanzados -->
     <div
       v-if="showAdvancedFilters"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 modal-open"
     >
       <div
         class="bg-base-100 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
       >
         <!-- Header del Modal -->
-        <div class="bg-linear-to-r from-primary to-secondary text-primary-content p-6">
+        <div
+          class="bg-linear-to-r from-primary to-secondary text-primary-content p-6 filter-background"
+        >
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-2xl font-bold flex items-center gap-2">
@@ -1305,6 +1307,13 @@ onBeforeUnmount(() => {
   background-size: cover;
   background-position: center;
   background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner1.jpg');
+  background-repeat: no-repeat;
+}
+
+.filter-background {
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(#000000bd, #000000bd), url('/src/assets/banner3.jpg');
   background-repeat: no-repeat;
 }
 

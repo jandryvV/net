@@ -126,7 +126,7 @@
                 </div>
 
                 <!-- Unread indicator -->
-                <div v-if="!notification.read" class="flex-shrink-0">
+                <div v-if="!notification.read" class="shrink-0">
                   <div class="w-2 h-2 bg-primary rounded-full"></div>
                 </div>
               </div>
